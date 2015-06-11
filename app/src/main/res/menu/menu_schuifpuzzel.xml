@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".Schuifpuzzel">
+    <item android:id="@+id/action_settings" android:title="@string/action_settings"
+        android:orderInCategory="100" app:showAsAction="never" >
+        <menu android:id="@+id/difficulty">
+
+        </menu>
+    </item>
+
+    <item android:id="@+id/reset" android:title="@string/reset">
+
+    </item>
+
+    <item android:id="@+id/quit" android:title="@string/quit">
+
+    </item>
+
+    <item android:id="@+id/solution" android:title="@string/solution">
+
+    </item>
+</menu>

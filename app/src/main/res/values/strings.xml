@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Schuifpuzzel</string>
+`
+    <string name="action_settings">Difficulty</string>
+
+    <string name="easy">Easy</string>
+    <string name="medium">Medium</string>
+    <string name="hard">Hard</string>
+    
+    <string name="newgame">New Game</string>
+    <string name="moves">Moves: </string>
+    <string name="difficulty">Difficulty: </string>
+    <string name="winMessage">You won!</string>
+    <string name="reset">Reset</string>
+    <string name="quit">Quit</string>
+    <string name="difficulty_pref">net.brord.android.schuifpuzzel.difficulty</string>
+    <string name="solution">Solution</string>
+    <string name="dismiss">Solution - Tap to dismiss</string>
+</resources>
