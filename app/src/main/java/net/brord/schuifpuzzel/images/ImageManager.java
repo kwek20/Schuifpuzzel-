@@ -1,11 +1,11 @@
-package net.brord.schuifpuzzel;
+package net.brord.schuifpuzzel.images;
 
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+
+import net.brord.schuifpuzzel.Difficulty;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

@@ -1,4 +1,4 @@
-package net.brord.schuifpuzzel;
+package net.brord.schuifpuzzel.images;
 
 import android.content.Context;
 import android.view.View;
@@ -6,10 +6,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import net.brord.schuifpuzzel.GridManager;
+
 /**
  * Created by Brord on 4/2/2015.
  */
-public class ImageGridManager extends GridManager<ImageView>{
+public class ImageGridManager extends GridManager<ImageView> {
 
     private final int border;
 

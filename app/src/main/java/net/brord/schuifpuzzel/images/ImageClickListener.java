@@ -1,6 +1,5 @@
-package net.brord.schuifpuzzel;
+package net.brord.schuifpuzzel.images;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 

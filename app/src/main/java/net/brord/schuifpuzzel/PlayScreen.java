@@ -1,6 +1,5 @@
 package net.brord.schuifpuzzel;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -17,18 +16,14 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SubMenu;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
-import android.widget.PopupWindow;
 import android.widget.Toast;
 
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
+import net.brord.schuifpuzzel.images.ImageClickListener;
+import net.brord.schuifpuzzel.images.ImageGridManager;
+import net.brord.schuifpuzzel.images.ImageManager;
+import net.brord.schuifpuzzel.images.ImageTile;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

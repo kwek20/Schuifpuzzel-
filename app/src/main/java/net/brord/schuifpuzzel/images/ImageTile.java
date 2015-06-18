@@ -1,4 +1,4 @@
-package net.brord.schuifpuzzel;
+package net.brord.schuifpuzzel.images;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
