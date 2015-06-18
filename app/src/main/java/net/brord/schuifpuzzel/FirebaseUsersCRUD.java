@@ -2,15 +2,10 @@ package net.brord.schuifpuzzel;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-
-import java.util.Map;
-import java.util.Objects;
+import com.firebase.client.ValueEventListener;
 
 /**
  * Created by Iv on 18-6-2015.
@@ -21,6 +16,21 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User>{
     FirebaseUsersCRUD(Context context){
         super(context, "users");
         userInfo = "bla";
+    }
+    public ValueEventListener getChildEventListener(){
+        return new ValueEventListener(){
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String info = (String)dataSnapshot.getValue();
+                Log.d("FirebaseCrud", "user info:" + info);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        };
     }
 
     public String getAllUserData() {
