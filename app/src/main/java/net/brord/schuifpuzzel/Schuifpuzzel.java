@@ -19,8 +19,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
+
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
 public class Schuifpuzzel extends ActionBarActivity {
@@ -30,6 +39,22 @@ public class Schuifpuzzel extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        //creating user
+        ArrayList coords = new ArrayList<String>();
+        coords.add("100");
+        User user1 = new User("jan",coords,2);
+
+        //saving it in the firebase
+        FirebaseUsersCRUD usersFirebaseController = new FirebaseUsersCRUD(this);
+        usersFirebaseController.createUserData(user1);
+
+        //retrieving user info
+//        Map<String,Object> userInfo = usersFirebaseController.getAllUserData();
+        String userInfo = usersFirebaseController.getAllUserData();
+        Toast.makeText(Schuifpuzzel.this, "USER NAME IS: " + userInfo, Toast.LENGTH_LONG).show();
+
         setContentView(R.layout.activity_schuifpuzzel);
 
         loadDifficulty((RadioGroup) this.findViewById(R.id.radiogroup));
