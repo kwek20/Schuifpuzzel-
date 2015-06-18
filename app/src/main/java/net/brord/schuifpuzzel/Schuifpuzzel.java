@@ -39,6 +39,7 @@ public class Schuifpuzzel extends ActionBarActivity {
         User user1 = new User("jan","x100",2);
         User user2 = new User("piet","x222",3);
         User user3 = new User("mark","y22",2);
+        User user4 = new User("nik","x100",2);
         Map<String,User> users = new HashMap<String,User>();
         users.put("jan",user1);
         users.put("piet",user2);
@@ -46,9 +47,9 @@ public class Schuifpuzzel extends ActionBarActivity {
 
         //saving it in the firebase
         FirebaseUsersCRUD usersFirebaseController = new FirebaseUsersCRUD(this);
-        usersFirebaseController.setUserInFirebase(user1);
-        usersFirebaseController.setUsersInFirebase(users);
 
+        usersFirebaseController.setUsersInFirebase(users);
+        usersFirebaseController.setUserInFirebase(user4);
         //retrieving user info
         Object userInfo = usersFirebaseController.getObjUserData();
         Toast.makeText(Schuifpuzzel.this, "USER NAME IS: " + userInfo, Toast.LENGTH_LONG).show();
