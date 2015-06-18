@@ -6,6 +6,7 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import java.io.Serializable;
 
@@ -20,7 +21,6 @@ public abstract class FirebaseCRUD<T extends Serializable>{
     public FirebaseCRUD(Context context, String tag){
         Firebase.setAndroidContext(context);
         this.tag = tag;
-        Firebase.setAndroidContext(context);
         firebaseRef = FirebaseRef.getFirebaseRef().child("users");
     }
 
