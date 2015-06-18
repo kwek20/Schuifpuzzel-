@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
@@ -14,27 +15,30 @@ import net.brord.schuifpuzzel.User;
  */
 public class FirebaseUsersCRUD extends FirebaseCRUD<User>{
     String userInfo;
-
+    Firebase firebaseRef;
+    Firebase users;
     public FirebaseUsersCRUD(Context context){
         super(context, "users");
         userInfo = "bla";
-    }
-    public ValueEventListener getChildEventListener(){
-        return new ValueEventListener(){
+        firebaseRef = FirebaseRef.getFirebaseRef();
+        users = firebaseRef.child("users");
+        users.addValueEventListener( new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String info = (String)dataSnapshot.getValue();
-                Log.d("FirebaseCrud", "user info:" + info);
+                 userInfo = (String)dataSnapshot.getValue();
             }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-            }
-        };
-    }
 
+            }
+        });
+    }
     public String getAllUserData() {
         return userInfo;
+    }
+    public void setUserInFirebase(User user){
+        users.setValue(user);
     }
 //    data.addListenerForSingleValueEvent(new ValueEventListener() {
 //        @Override

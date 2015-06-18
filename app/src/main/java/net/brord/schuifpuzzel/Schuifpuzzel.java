@@ -41,7 +41,6 @@ public class Schuifpuzzel extends ActionBarActivity {
         usersFirebaseController.createData(user1);
 
         //retrieving user info
-//        Map<String,Object> userInfo = usersFirebaseController.getAllUserData();
         String userInfo = usersFirebaseController.getAllUserData();
         Toast.makeText(Schuifpuzzel.this, "USER NAME IS: " + userInfo, Toast.LENGTH_LONG).show();
 
