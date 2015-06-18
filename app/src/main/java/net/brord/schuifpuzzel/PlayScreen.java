@@ -92,6 +92,10 @@ public class PlayScreen extends ActionBarActivity {
         dialog.setTitle(R.string.dismiss);
     }
 
+    public void endTurn(View v){
+
+    }
+
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         Log.d("MAD", "onSaveInstanceState");
