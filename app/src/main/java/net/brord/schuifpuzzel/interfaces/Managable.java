@@ -1,4 +1,4 @@
-package net.brord.schuifpuzzel;
+package net.brord.schuifpuzzel.interfaces;
 
 /**
  * Project Arena<br/>

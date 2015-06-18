@@ -1,4 +1,4 @@
-package net.brord.schuifpuzzel;
+package net.brord.schuifpuzzel.interfaces;
 
 /**
  * Created by Brord on 4/1/2015.
