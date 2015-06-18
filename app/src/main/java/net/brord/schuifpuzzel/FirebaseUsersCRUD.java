@@ -17,7 +17,6 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User>{
         super(context, "users");
         userInfo = "bla";
     }
-
     public ValueEventListener getChildEventListener(){
         return new ValueEventListener(){
 
@@ -32,38 +31,7 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User>{
 
             }
         };
-//        return new ChildEventListener() {
-//
-//            @Override
-//            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
-////                Object userInformation = (Object) snapshot.getValue();
-//                Object userName = (Object)snapshot.getValue();
-//                Log.d("FirebaseCrud", "here user info" + userName.toString());
-//            }
-//
-//            @Override
-//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(FirebaseError firebaseError) {
-//
-//            }
-//        };
     }
-
-
     public void createUserData(User user){
         getFirebase().setValue(user);
     }
