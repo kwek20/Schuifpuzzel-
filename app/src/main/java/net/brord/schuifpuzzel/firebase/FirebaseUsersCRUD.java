@@ -21,7 +21,6 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User>{
     }
     public ValueEventListener getChildEventListener(){
         return new ValueEventListener(){
-
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String info = (String)dataSnapshot.getValue();
@@ -30,7 +29,6 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User>{
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-
             }
         };
     }
