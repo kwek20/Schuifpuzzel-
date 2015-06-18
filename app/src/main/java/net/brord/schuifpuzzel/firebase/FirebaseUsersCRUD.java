@@ -10,11 +10,15 @@ import com.firebase.client.ValueEventListener;
 
 import net.brord.schuifpuzzel.User;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Iv on 18-6-2015.
  */
 public class FirebaseUsersCRUD extends FirebaseCRUD<User>{
     String userInfo;
+    Object userObj;
     Firebase users;
     public FirebaseUsersCRUD(Context context){
         super(context, "users");
@@ -23,7 +27,9 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User>{
         users.addValueEventListener( new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d("FirebaseCrud", "received data is:" + dataSnapshot.getValue());
+//                Log.d("FirebaseCrud", "received data is:" + dataSnapshot.getValue());
+                userObj = dataSnapshot.child("userRoomNr").getValue();
+                Log.d("FirebaseCrud", "received data is:" + userObj);
             }
             @Override
             public void onCancelled(FirebaseError firebaseError) {
@@ -34,7 +40,13 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User>{
     public String getAllUserData() {
         return userInfo;
     }
+    public Object getObjUserData(){
+        return userObj;
+    }
     public void setUserInFirebase(User user){
         users.setValue(user);
+    }
+    public void setUsersInFirebase(Map<String,User> users){
+        super.getFirebase().setValue(users);
     }
 }
