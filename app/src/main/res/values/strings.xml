@@ -16,4 +16,7 @@
     <string name="difficulty_pref">net.brord.android.schuifpuzzel.difficulty</string>
     <string name="solution">Solution</string>
     <string name="dismiss">Solution - Tap to dismiss</string>
+    <string name="endturn">End turn</string>
+    <string name="currentPlayer">Aan zet: </string>
+    <string name="timeLeft">Tijd: </string>
 </resources>

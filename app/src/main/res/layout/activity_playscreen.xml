@@ -22,4 +22,42 @@
         android:focusableInTouchMode="true">
     </LinearLayout>
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:weightSum="1"
+
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+
+        android:id="@+id/statistics"
+        android:focusableInTouchMode="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/currentPlayer"
+            android:id="@+id/currentPlayer"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/timeLeft"
+            android:id="@+id/timeLeft"
+            android:layout_centerHorizontal="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/endturn"
+            android:id="@+id/endturn"
+            android:onClick="endTurn"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
+    </LinearLayout>
 </RelativeLayout>
