@@ -25,6 +25,8 @@ import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
@@ -47,8 +49,10 @@ public class PlayScreen extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("MAD", "onCreate " + savedInstanceState);
 
+        Firebase myFirebaseRef = new Firebase("https://npuzzle.firebaseio.com/");
+
+        Log.d("MAD", "onCreate " + savedInstanceState);
         setContentView(R.layout.activity_playscreen);
         LinearLayout group = (LinearLayout) findViewById(R.id.gameImage);
 
