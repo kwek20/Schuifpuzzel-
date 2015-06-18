@@ -3,12 +3,16 @@ package net.brord.schuifpuzzel;
 import android.content.Context;
 
 import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+
+import java.io.Serializable;
 
 /**
  * Created by Brord on 6/18/2015.
  */
-public abstract class FirebaseCRUD<T> {
+public abstract class FirebaseCRUD<T extends Serializable> implements ChildEventListener{
 
     private Firebase firebaseRef;
     private String tag;
@@ -19,10 +23,8 @@ public abstract class FirebaseCRUD<T> {
         this.tag = tag;
         Firebase.setAndroidContext(context);
         firebaseRef = FirebaseRef.getFirebaseRef().child("users");
-        firebaseRef.addChildEventListener(getChildEventListener());
+        firebaseRef.addChildEventListener(this);
     }
-
-    abstract ChildEventListener getChildEventListener();
 
     public String getTag() {
         return tag;
@@ -32,8 +34,37 @@ public abstract class FirebaseCRUD<T> {
         return firebaseRef;
     }
 
+    public void createData(T type){
+        getFirebase().setValue(type);
+    }
+
     @Override
     public String toString() {
         return "FirebaseCRUD<" + tag + ">";
+    }
+
+    @Override
+    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+    }
+
+    @Override
+    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+    }
+
+    @Override
+    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+    }
+
+    @Override
+    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+    }
+
+    @Override
+    public void onCancelled(FirebaseError firebaseError) {
+
     }
 }

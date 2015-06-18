@@ -23,39 +23,6 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User>{
         userInfo = "bla";
     }
 
-    public ChildEventListener getChildEventListener(){
-        return new ChildEventListener() {
-
-            @Override
-            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
-//                Object userInformation = (Object) snapshot.getValue();
-                userInfo = (String)snapshot.child("userName").getValue();
-                Log.d("FirebaseCrud", "here user info"+userInfo);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        };
-    }
-
-
     public void createUserData(User user){
         getFirebase().setValue(user);
     }

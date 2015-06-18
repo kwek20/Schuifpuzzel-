@@ -19,4 +19,6 @@
     <string name="endturn">End turn</string>
     <string name="currentPlayer">Aan zet: </string>
     <string name="timeLeft">Tijd: </string>
+
+    <string name="firebase">https://npuzzle.firebaseio.com</string>
 </resources>
