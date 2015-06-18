@@ -21,7 +21,7 @@ public class ImageGridManager extends GridManager<ImageView> {
     }
 
     @Override
-    ViewGroup.MarginLayoutParams getParams() {
+    public ViewGroup.MarginLayoutParams getParams() {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
         params.setMargins(0,0,border,border);
         //params.gravity = 1;
@@ -30,12 +30,12 @@ public class ImageGridManager extends GridManager<ImageView> {
     }
 
     @Override
-    ImageView newView(Context c) {
+    public ImageView newView(Context c) {
         return new ImageView(c);
     }
 
     @Override
-    ViewGroup getLayout(Context c) {
+    public ViewGroup getLayout(Context c) {
         return new LinearLayout(c);
     }
 }

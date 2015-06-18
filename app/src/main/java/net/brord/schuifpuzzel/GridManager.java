@@ -66,9 +66,9 @@ public abstract class GridManager<T extends View> {
         this.listener = listener;
     }
 
-    abstract ViewGroup.MarginLayoutParams getParams();
+    public abstract ViewGroup.MarginLayoutParams getParams();
 
-    abstract T newView(Context c);
+    public abstract T newView(Context c);
 
-    abstract ViewGroup getLayout(Context c);
+    public abstract ViewGroup getLayout(Context c);
 }
