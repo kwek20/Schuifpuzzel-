@@ -13,7 +13,7 @@ import java.io.Serializable;
 /**
  * Created by Brord on 6/18/2015.
  */
-public abstract class FirebaseCRUD<T extends Serializable> implements ChildEventListener{
+public abstract class FirebaseCRUD<T extends Serializable>{
 
     private Firebase firebaseRef;
     private String tag;
@@ -23,8 +23,8 @@ public abstract class FirebaseCRUD<T extends Serializable> implements ChildEvent
         this.tag = tag;
         Firebase.setAndroidContext(context);
         firebaseRef = FirebaseRef.getFirebaseRef().child("users");
-        firebaseRef.addChildEventListener(this);
     }
+
     public String getTag() {
         return tag;
     }
@@ -40,30 +40,5 @@ public abstract class FirebaseCRUD<T extends Serializable> implements ChildEvent
     @Override
     public String toString() {
         return "FirebaseCRUD<" + tag + ">";
-    }
-
-    @Override
-    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-    }
-
-    @Override
-    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-    }
-
-    @Override
-    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-    }
-
-    @Override
-    public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-    }
-
-    @Override
-    public void onCancelled(FirebaseError firebaseError) {
-
     }
 }
