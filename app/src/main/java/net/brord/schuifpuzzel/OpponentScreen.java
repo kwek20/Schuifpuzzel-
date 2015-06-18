@@ -7,20 +7,17 @@ import android.view.View;
 /**
  * Created by Brord on 6/18/2015.
  */
-public class StartScreen extends ActionBarActivity {
+public class OpponentScreen extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_startscreen);
+        setContentView(R.layout.activity_opponentscreen);
     }
 
-    public void singlePlayer(View v){
+    public void findOpponent(View v){
 
     }
 
-    public void multiPlayer(View v){
-
-    }
 }

@@ -20,30 +20,21 @@
         android:weightSum="1"
         android:gravity="center_vertical">
 
-        <TextView
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/app_name"
-            android:id="@+id/textView"
-            android:layout_gravity="center_horizontal" />
+            android:text="@string/create"
+            android:id="@+id/button"
+            android:layout_gravity="center_horizontal"
+            android:onClick="createGame" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/singleplayer"
-            android:id="@+id/button2"
+            android:text="@string/find"
+            android:id="@+id/button4"
             android:layout_gravity="center_horizontal"
-            android:onClick="singlePlayer" />
+            android:onClick="findOpponent" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/multiplayer"
-            android:id="@+id/button3"
-            android:layout_gravity="center_horizontal"
-            android:singleLine="true"
-            android:onClick="multiplayer"
-            android:nestedScrollingEnabled="false" />
     </LinearLayout>
 </RelativeLayout>
