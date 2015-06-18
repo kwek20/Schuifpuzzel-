@@ -15,19 +15,16 @@ import java.util.Objects;
 /**
  * Created by Iv on 18-6-2015.
  */
-public class FirebaseUsersCRUD {
-
-    Firebase myFirebaseRef;
-    Firebase users;
+public class FirebaseUsersCRUD extends FirebaseCRUD<User>{
     String userInfo;
 
     FirebaseUsersCRUD(Context context){
-
-        Firebase.setAndroidContext(context);
-        myFirebaseRef = FirebaseRef.getFirebaseRef();
-        users = myFirebaseRef.child("users");
+        super(context, "users");
         userInfo = "bla";
-        users.addChildEventListener(new ChildEventListener() {
+    }
+
+    public ChildEventListener getChildEventListener(){
+        return new ChildEventListener() {
 
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
@@ -55,10 +52,12 @@ public class FirebaseUsersCRUD {
             public void onCancelled(FirebaseError firebaseError) {
 
             }
-        });
+        };
     }
+
+
     public void createUserData(User user){
-        users.setValue(user);
+        getFirebase().setValue(user);
     }
     public String getAllUserData() {
         return userInfo;
