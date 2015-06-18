@@ -20,6 +20,8 @@ import android.widget.Toast;
 import net.brord.schuifpuzzel.firebase.FirebaseUsersCRUD;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class Schuifpuzzel extends ActionBarActivity {
@@ -35,13 +37,20 @@ public class Schuifpuzzel extends ActionBarActivity {
 
 
         User user1 = new User("jan","x100",2);
+        User user2 = new User("piet","x222",3);
+        User user3 = new User("mark","y22",2);
+        Map<String,User> users = new HashMap<String,User>();
+        users.put("jan",user1);
+        users.put("piet",user2);
+        users.put("mark",user3);
 
         //saving it in the firebase
         FirebaseUsersCRUD usersFirebaseController = new FirebaseUsersCRUD(this);
         usersFirebaseController.setUserInFirebase(user1);
+        usersFirebaseController.setUsersInFirebase(users);
 
         //retrieving user info
-        String userInfo = usersFirebaseController.getAllUserData();
+        Object userInfo = usersFirebaseController.getObjUserData();
         Toast.makeText(Schuifpuzzel.this, "USER NAME IS: " + userInfo, Toast.LENGTH_LONG).show();
 
         setContentView(R.layout.activity_schuifpuzzel);
