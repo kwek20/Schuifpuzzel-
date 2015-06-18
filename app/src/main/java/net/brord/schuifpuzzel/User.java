@@ -7,10 +7,10 @@ import java.util.ArrayList;
  */
 public class User {
     private String userName;
-    private ArrayList<String> userCoords;
+    private String userCoords;
     private int userRoomNr;
 
-    public User(String userName, ArrayList<String> userCoords, int userRoomNr){
+    public User(String userName, String userCoords, int userRoomNr){
         this.userName = userName;
         this.userCoords = userCoords;
         this.userRoomNr = userRoomNr;
@@ -18,7 +18,7 @@ public class User {
     public String getUserName(){
         return userName;
     }
-    public ArrayList<String> getUserCoords(){
+    public String getUserCoords(){
         return userCoords;
     }
     public int getUserRoomNr(){

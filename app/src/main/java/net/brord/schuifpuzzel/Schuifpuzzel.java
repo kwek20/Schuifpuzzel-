@@ -42,9 +42,9 @@ public class Schuifpuzzel extends ActionBarActivity {
 
 
         //creating user
-        ArrayList coords = new ArrayList<String>();
-        coords.add("100");
-        User user1 = new User("jan",coords,2);
+
+
+        User user1 = new User("jan","x100",2);
 
         //saving it in the firebase
         FirebaseUsersCRUD usersFirebaseController = new FirebaseUsersCRUD(this);

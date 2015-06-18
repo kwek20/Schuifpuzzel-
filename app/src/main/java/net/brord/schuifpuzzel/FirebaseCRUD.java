@@ -15,15 +15,11 @@ public abstract class FirebaseCRUD<T> {
 
     public FirebaseCRUD(Context context, String tag){
         Firebase.setAndroidContext(context);
-
         this.tag = tag;
         Firebase.setAndroidContext(context);
         firebaseRef = FirebaseRef.getFirebaseRef().child("users");
         firebaseRef.addChildEventListener(getChildEventListener());
     }
-
-    abstract ChildEventListener getChildEventListener();
-
     public String getTag() {
         return tag;
     }

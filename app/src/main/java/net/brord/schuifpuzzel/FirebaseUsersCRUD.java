@@ -2,15 +2,10 @@ package net.brord.schuifpuzzel;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-
-import java.util.Map;
-import java.util.Objects;
+import com.firebase.client.ValueEventListener;
 
 /**
  * Created by Iv on 18-6-2015.
@@ -23,29 +18,13 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User>{
         userInfo = "bla";
     }
 
-    public ChildEventListener getChildEventListener(){
-        return new ChildEventListener() {
+    public ValueEventListener getChildEventListener(){
+        return new ValueEventListener(){
 
             @Override
-            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
-//                Object userInformation = (Object) snapshot.getValue();
-                userInfo = (String)snapshot.child("userName").getValue();
-                Log.d("FirebaseCrud", "here user info"+userInfo);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String info = (String)dataSnapshot.getValue();
+                Log.d("FirebaseCrud", "user info:" + info);
             }
 
             @Override
@@ -53,6 +32,35 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User>{
 
             }
         };
+//        return new ChildEventListener() {
+//
+//            @Override
+//            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
+////                Object userInformation = (Object) snapshot.getValue();
+//                Object userName = (Object)snapshot.getValue();
+//                Log.d("FirebaseCrud", "here user info" + userName.toString());
+//            }
+//
+//            @Override
+//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(FirebaseError firebaseError) {
+//
+//            }
+//        };
     }
 
 
