@@ -21,7 +21,7 @@ public abstract class FirebaseCRUD<T extends Serializable>{
     public FirebaseCRUD(Context context, String tag){
         Firebase.setAndroidContext(context);
         this.tag = tag;
-        firebaseRef = FirebaseRef.getFirebaseRef().child("users");
+        firebaseRef = FirebaseRef.getFirebaseRef();
     }
 
     public String getTag() {

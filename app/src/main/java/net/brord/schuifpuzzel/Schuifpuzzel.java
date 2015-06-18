@@ -38,7 +38,7 @@ public class Schuifpuzzel extends ActionBarActivity {
 
         //saving it in the firebase
         FirebaseUsersCRUD usersFirebaseController = new FirebaseUsersCRUD(this);
-        usersFirebaseController.createData(user1);
+        usersFirebaseController.setUserInFirebase(user1);
 
         //retrieving user info
         String userInfo = usersFirebaseController.getAllUserData();
