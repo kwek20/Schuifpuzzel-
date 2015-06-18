@@ -23,9 +23,6 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User>{
         userInfo = "bla";
     }
 
-    public void createUserData(User user){
-        getFirebase().setValue(user);
-    }
     public String getAllUserData() {
         return userInfo;
     }
