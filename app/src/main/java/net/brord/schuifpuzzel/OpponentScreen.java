@@ -46,7 +46,6 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
     }
 
     public void findOpponent(View v){
-        if (!checkUsername())return;
         final EditText input = new EditText(this);
         new AlertDialog.Builder(OpponentScreen.this)
                 .setTitle(R.string.find)
@@ -55,7 +54,8 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         Editable value = input.getText();
-                        Log.d("MAD", value.toString());
+                        crud.queryUserData(value.toString(), USER_QUERIED, OpponentScreen.this);
+                        waitForNotification();
                     }
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
@@ -67,9 +67,11 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
     public void createGame(View v){
         TextView group = (TextView) findViewById(R.id.userName);
         crud.queryUserData(group.getText().toString(), USER_QUERIED, this);
+        waitForNotification();
     }
 
     private User loadUser() {
+        username = ((TextView) findViewById(R.id.userName)).getText().toString();
         return new User(username, getLocation());
     }
 
@@ -78,9 +80,6 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
         boolean enabled = service
                 .isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-        // check if enabled and if not send user to the GSP settings
-        // Better solution would be to display a dialog and suggesting to
-        // go to the settings
         if (!enabled) {
             Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             startActivity(intent);
@@ -108,27 +107,33 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
     public void onDataReceived(Object o, int ID) {
         if (ID == USER_LOADED){
             if (user != null && o != null){
+                //opponent found
+                startGame(o);
                 doneLoading();
-
             }
         } else if (ID == USER_QUERIED && o != null){
-            handleUserLoaded(o);
+            handleUserLoaded((boolean)o);
         }
     }
 
-    private void handleUserLoaded(Object o) {
-        if (true) {
+    private void startGame(Object o) {
+    }
+
+    private void handleUserLoaded(boolean exists) {
+        //user doesnt exist, add and wait
+        if (!exists) {
             user = loadUser();
             crud.setUserInFirebase(user);
             crud.queryForOpponent(user, USER_LOADED, OpponentScreen.this);
             waitForNotification();
         } else {
+            //user exists
             new AlertDialog.Builder(OpponentScreen.this)
                     .setTitle(R.string.error)
                     .setMessage(getString(R.string.unavailable))
                     .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
-
+                            doneLoading();
                         }
                     }).show();
         }

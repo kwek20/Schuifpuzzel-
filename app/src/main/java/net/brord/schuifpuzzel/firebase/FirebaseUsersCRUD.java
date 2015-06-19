@@ -46,22 +46,22 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User> {
     }
 
     public void setUserInFirebase(User user){
+        Log.d("MAD", "name: " + user.getUserName());
         users.child(user.getUserName()).setValue(user);
+        Log.d("MAD", "ADDED CHHILDDASFA");
     }
     public void setUsersInFirebase(Map<String,User> users){
         this.users.setValue(users);
     }
 
     public void queryUserData(final String userName, final int ID, final FirebaseListener listener) {
-        users.addValueEventListener( new ValueEventListener() {
+        users.child(userName).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                userInfo = (String)dataSnapshot.child(userName).getValue();
-                listener.onDataReceived(userInfo, ID);
+            public void onDataChange(DataSnapshot snapshot) {
+                listener.onDataReceived(snapshot.hasChildren(), ID);
             }
-
             @Override
-            public void onCancelled(FirebaseError firebaseError) {
+            public void onCancelled(FirebaseError arg0) {
                 listener.onDataCancelled(ID);
             }
         });
@@ -72,11 +72,11 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User> {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 //                Log.d("FirebaseCrud", "received data is:" + dataSnapshot.getValue());
-                userInfo = (String)dataSnapshot.child("mark").child("userName").getValue();
-                listener.onDataReceived(userInfo, ID);
+                listener.onDataReceived(dataSnapshot.child("").getValue(), ID);
             }
             @Override
             public void onCancelled(FirebaseError firebaseError) {
+                listener.onDataCancelled(ID);
             }
         });
     }
