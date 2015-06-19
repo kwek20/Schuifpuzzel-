@@ -26,6 +26,7 @@ import java.util.Map;
 
 public class Schuifpuzzel extends ActionBarActivity {
     public static String userInfo = "";
+    public String userInterfaceData = "";
 
     ClickListener clickListener = new ClickListener(this);
 

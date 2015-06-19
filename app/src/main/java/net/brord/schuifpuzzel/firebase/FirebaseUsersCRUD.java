@@ -10,6 +10,7 @@ import com.firebase.client.ValueEventListener;
 
 import net.brord.schuifpuzzel.Schuifpuzzel;
 import net.brord.schuifpuzzel.User;
+import net.brord.schuifpuzzel.interfaces.CallbackInterface;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,13 +18,12 @@ import java.util.Map;
 /**
  * Created by Iv on 18-6-2015.
  */
-public class FirebaseUsersCRUD extends FirebaseCRUD<User>{
+public class FirebaseUsersCRUD extends FirebaseCRUD<User> {
     Firebase users;
     public Boolean userExistance = false;
     public String userInfo = "bla";
-//    Schuifpuzzel puzzle = new Schuifpuzzel();
-
-    public FirebaseUsersCRUD(Context context){
+    private CallbackInterface callback;
+    public FirebaseUsersCRUD(Context context, final CallbackInterface cb){
         super(context, "users");
         users = super.getFirebase().child("users");
         users.addValueEventListener( new ValueEventListener() {
@@ -31,7 +31,8 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User>{
             public void onDataChange(DataSnapshot dataSnapshot) {
 //                Log.d("FirebaseCrud", "received data is:" + dataSnapshot.getValue());
                 userInfo = (String)dataSnapshot.child("mark").child("userName").getValue();
-                Schuifpuzzel.setUserInfo(userInfo);
+//                Schuifpuzzel.setUserInfo(userInfo);
+                cb.returnData(userInfo);
             }
             @Override
             public void onCancelled(FirebaseError firebaseError) {
@@ -39,7 +40,7 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User>{
         });
     }
     public Boolean userExists(String userName){
-        if (users.child(userName) == null){
+        if (users.child(userName).child(userName) == null){
             return false;
         }
         return true;
@@ -56,4 +57,5 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User>{
     public void setUsersInFirebase(Map<String,User> users){
         this.users.setValue(users);
     }
+
 }

@@ -24,6 +24,7 @@ import net.brord.schuifpuzzel.images.ImageClickListener;
 import net.brord.schuifpuzzel.images.ImageGridManager;
 import net.brord.schuifpuzzel.images.ImageManager;
 import net.brord.schuifpuzzel.images.ImageTile;
+import net.brord.schuifpuzzel.interfaces.CallbackInterface;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ import java.util.ArrayList;
 /**
  * Created by Brord on 23-3-2015.
  */
-public class PlayScreen extends ActionBarActivity {
+public class PlayScreen extends ActionBarActivity{
 
     private static final String MAD = "Mad";
     private static int BORDER = 10;

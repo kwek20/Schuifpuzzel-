@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 
 import net.brord.schuifpuzzel.firebase.FirebaseUsersCRUD;
+import net.brord.schuifpuzzel.interfaces.CallbackInterface;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,8 +14,8 @@ import java.util.Map;
 /**
  * Created by Brord on 6/18/2015.
  */
-public class StartScreen extends ActionBarActivity {
-
+public class StartScreen extends ActionBarActivity implements CallbackInterface{
+    public CallbackInterface cb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +31,7 @@ public class StartScreen extends ActionBarActivity {
         users.put("mark",user3);
 
         //saving it in the firebase
-        FirebaseUsersCRUD usersFirebaseController = new FirebaseUsersCRUD(this);
+        FirebaseUsersCRUD usersFirebaseController = new FirebaseUsersCRUD(this,cb);
         usersFirebaseController.setUsersInFirebase(users);
     }
 
@@ -42,5 +43,9 @@ public class StartScreen extends ActionBarActivity {
     public void multiPlayer(View v){
         Intent i = new Intent(this, OpponentScreen.class);
         startActivity(i);
+    }
+    @Override
+    public String returnData(String data) {
+        return data;
     }
 }
