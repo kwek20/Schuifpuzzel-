@@ -29,4 +29,5 @@
     <string name="find">Find game</string>
     <string name="error">Error!</string>
     <string name="unavailable">Username unavailable</string>
+    <string name="searching">Searching games...</string>
 </resources>
