@@ -22,6 +22,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".OpponentScreen">
+        </activity>
+        <activity
             android:name=".PlayScreen">
         </activity>
         <activity

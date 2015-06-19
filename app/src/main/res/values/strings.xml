@@ -9,7 +9,7 @@
     
     <string name="newgame">New Game</string>
     <string name="moves">Moves: </string>
-    <string name="difficulty">Difficulty: </string>
+    <string name="difficulty">Difficulty: \u0020</string>
     <string name="winMessage">You won!</string>
     <string name="reset">Reset</string>
     <string name="quit">Quit</string>
@@ -24,6 +24,7 @@
     <string name="singleplayer">Singleplayer</string>
     <string name="multiplayer">Multiplayer</string>
 
+    <string name="username">Username: \u0020</string>
     <string name="create">Create game</string>
     <string name="find">Find game</string>
 </resources>

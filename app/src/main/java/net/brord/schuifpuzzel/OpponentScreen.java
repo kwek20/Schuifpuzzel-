@@ -24,8 +24,8 @@ public class OpponentScreen extends ActionBarActivity {
     public void findOpponent(View v){
         final EditText input = new EditText(this);
         new AlertDialog.Builder(OpponentScreen.this)
-                .setTitle("Update Status")
-                .setMessage("Find Opponent")
+                .setTitle("Find opponent")
+                .setMessage("Username: ")
                 .setView(input)
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
