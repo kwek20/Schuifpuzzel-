@@ -6,4 +6,6 @@ package net.brord.schuifpuzzel.firebase;
 public interface FirebaseListener {
 
     void onDataReceived(Object o, int ID);
+
+    void onDataCancelled(int ID);
 }

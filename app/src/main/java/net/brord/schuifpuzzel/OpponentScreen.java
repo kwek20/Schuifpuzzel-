@@ -29,6 +29,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
 
     private static final String LOADER_TAG = "Loader";
     private static final int USER_LOADED = 1;
+    private static final int USER_QUERIED = 2;
 
     private String username;
     private User user;
@@ -64,29 +65,8 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
     }
 
     public void createGame(View v){
-        if (!checkUsername())return;
-
-        Log.d("MAD", "create");
-        user = loadUser();
-        crud.setUserInFirebase(user);
-        crud.queryForOpponent(user, USER_LOADED, OpponentScreen.this);
-        waitForNotification();
-    }
-
-    private boolean checkUsername() {
         TextView group = (TextView) findViewById(R.id.userName);
-        Log.d("MAD", "exists: " + crud.userExists(username = group.getText().toString()));
-        if (!crud.userExists(username = group.getText().toString())) return true;
-
-        new AlertDialog.Builder(OpponentScreen.this)
-                .setTitle(R.string.error)
-                .setMessage(getString(R.string.unavailable))
-                .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-
-                    }
-                }).show();
-        return false;
+        crud.queryUserData(group.getText().toString(), USER_QUERIED, this);
     }
 
     private User loadUser() {
@@ -131,8 +111,32 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
                 doneLoading();
 
             }
-            Log.d("MAD", "User found!");
+        } else if (ID == USER_QUERIED && o != null){
+            handleUserLoaded(o);
         }
+    }
+
+    private void handleUserLoaded(Object o) {
+        if (true) {
+            user = loadUser();
+            crud.setUserInFirebase(user);
+            crud.queryForOpponent(user, USER_LOADED, OpponentScreen.this);
+            waitForNotification();
+        } else {
+            new AlertDialog.Builder(OpponentScreen.this)
+                    .setTitle(R.string.error)
+                    .setMessage(getString(R.string.unavailable))
+                    .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+
+                        }
+                    }).show();
+        }
+    }
+
+    @Override
+    public void onDataCancelled(int ID) {
+
     }
 
     public static class LoaderDialog extends DialogFragment {

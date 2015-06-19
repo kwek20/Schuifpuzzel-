@@ -24,7 +24,7 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User> {
     public Boolean userExistance = false;
     public String userInfo = "bla";
     private CallbackInterface callback;
-    public FirebaseUsersCRUD(Context context, final CallbackInterface cb){
+    public FirebaseUsersCRUD(Context context){
         super(context, "users");
         users = super.getFirebase().child("users");
         users.addValueEventListener( new ValueEventListener() {
@@ -33,32 +33,39 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User> {
 //                Log.d("FirebaseCrud", "received data is:" + dataSnapshot.getValue());
                 userInfo = (String)dataSnapshot.child("mark").child("userName").getValue();
 //                Schuifpuzzel.setUserInfo(userInfo);
-                cb.returnData(userInfo);
+
             }
             @Override
             public void onCancelled(FirebaseError firebaseError) {
             }
         });
     }
-    public Boolean userExists(String userName){
-        if (users.child(userName).child(userName) == null){
-            return false;
-        }
-        return true;
-    }
+
     public String getAllUserData() {
         return userInfo;
     }
-    public void sendUserData(String data) {
-//        puzzle.setUserData(data);
-    }
+
     public void setUserInFirebase(User user){
-        users.setValue(user);
+        users.child(user.getUserName()).setValue(user);
     }
     public void setUsersInFirebase(Map<String,User> users){
         this.users.setValue(users);
     }
 
+    public void queryUserData(final String userName, final int ID, final FirebaseListener listener) {
+        users.addValueEventListener( new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                userInfo = (String)dataSnapshot.child(userName).getValue();
+                listener.onDataReceived(userInfo, ID);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                listener.onDataCancelled(ID);
+            }
+        });
+    }
 
     public void queryForOpponent(final User u, final int ID, final FirebaseListener listener) {
         users.addValueEventListener( new ValueEventListener() {

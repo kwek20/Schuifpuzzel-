@@ -31,7 +31,7 @@ public class StartScreen extends ActionBarActivity implements CallbackInterface{
         users.put("mark",user3);
 
         //saving it in the firebase
-        FirebaseUsersCRUD usersFirebaseController = new FirebaseUsersCRUD(this,cb);
+        FirebaseUsersCRUD usersFirebaseController = new FirebaseUsersCRUD(this);
         usersFirebaseController.setUsersInFirebase(users);
     }
 
