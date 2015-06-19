@@ -25,6 +25,7 @@ import java.util.Map;
 
 
 public class Schuifpuzzel extends ActionBarActivity {
+    public String userInfo = "blablabla";
 
     ClickListener clickListener = new ClickListener(this);
 
@@ -34,12 +35,9 @@ public class Schuifpuzzel extends ActionBarActivity {
 
 
         //creating user
-
-
         User user1 = new User("jan","x100",2);
         User user2 = new User("piet","x222",3);
         User user3 = new User("mark","y22",2);
-        User user4 = new User("nik","x100",2);
         Map<String,User> users = new HashMap<String,User>();
         users.put("jan",user1);
         users.put("piet",user2);
@@ -49,10 +47,10 @@ public class Schuifpuzzel extends ActionBarActivity {
         FirebaseUsersCRUD usersFirebaseController = new FirebaseUsersCRUD(this);
 
         usersFirebaseController.setUsersInFirebase(users);
-        usersFirebaseController.setUserInFirebase(user4);
         //retrieving user info
-        Object userInfo = usersFirebaseController.getObjUserData();
-        Toast.makeText(Schuifpuzzel.this, "USER NAME IS: " + userInfo, Toast.LENGTH_LONG).show();
+//        String userInfo = usersFirebaseController.getAllUserData();
+
+
 
         setContentView(R.layout.activity_schuifpuzzel);
 
@@ -62,6 +60,7 @@ public class Schuifpuzzel extends ActionBarActivity {
         loadImages((ViewGroup) this.findViewById(R.id.images));
 
         Log.d("MAD", savedInstanceState + "");
+
     }
 
     private void loadDifficultyPreference() {
