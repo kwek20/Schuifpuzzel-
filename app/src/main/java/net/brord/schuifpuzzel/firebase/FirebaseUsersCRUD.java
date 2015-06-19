@@ -20,7 +20,7 @@ import java.util.Map;
 public class FirebaseUsersCRUD extends FirebaseCRUD<User>{
     Firebase users;
     public String userInfo = "bla";
-    Schuifpuzzel puzzle = new Schuifpuzzel();
+//    Schuifpuzzel puzzle = new Schuifpuzzel();
 
     public FirebaseUsersCRUD(Context context){
         super(context, "users");
@@ -30,7 +30,7 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User>{
             public void onDataChange(DataSnapshot dataSnapshot) {
 //                Log.d("FirebaseCrud", "received data is:" + dataSnapshot.getValue());
                 userInfo = (String)dataSnapshot.child("mark").child("userName").getValue();
-                puzzle.userInfo = userInfo;
+                Schuifpuzzel.setUserInfo(userInfo);
             }
             @Override
             public void onCancelled(FirebaseError firebaseError) {
