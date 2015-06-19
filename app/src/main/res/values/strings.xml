@@ -30,4 +30,5 @@
     <string name="error">Error!</string>
     <string name="unavailable">Username unavailable</string>
     <string name="searching">Searching games...</string>
+    <string name="checking">Checking user info</string>
 </resources>

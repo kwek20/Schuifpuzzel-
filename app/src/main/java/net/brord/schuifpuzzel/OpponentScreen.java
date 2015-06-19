@@ -10,7 +10,6 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.app.FragmentManager;
 import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
@@ -30,10 +29,12 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
     private static final String LOADER_TAG = "Loader";
     private static final int USER_LOADED = 1;
     private static final int USER_QUERIED = 2;
+    private static final int OPPONENT_QUERIED = 3;
 
     private String username;
     private User user;
 
+    private static int message;
     private LoaderDialog loader;
     private FirebaseUsersCRUD crud;
 
@@ -54,8 +55,8 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         Editable value = input.getText();
-                        crud.queryUserData(value.toString(), USER_QUERIED, OpponentScreen.this);
-                        waitForNotification();
+                        crud.queryUserData(value.toString(), OPPONENT_QUERIED, OpponentScreen.this);
+                        waitForNotification(R.string.searching);
                     }
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
@@ -67,7 +68,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
     public void createGame(View v){
         TextView group = (TextView) findViewById(R.id.userName);
         crud.queryUserData(group.getText().toString(), USER_QUERIED, this);
-        waitForNotification();
+        waitForNotification(R.string.checking);
     }
 
     private User loadUser() {
@@ -92,7 +93,8 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
         return null;
     }
 
-    public void waitForNotification() {
+    public void waitForNotification(int message) {
+        this.message = message;
         (loader = new LoaderDialog()).show(getFragmentManager(), LOADER_TAG);
     }
 
@@ -112,7 +114,10 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
                 doneLoading();
             }
         } else if (ID == USER_QUERIED && o != null){
-            handleUserLoaded((boolean)o);
+            handleUserLoaded((boolean) o);
+        } else if (ID == OPPONENT_QUERIED && o != null){
+            //opponent exists
+            
         }
     }
 
@@ -125,7 +130,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
             user = loadUser();
             crud.setUserInFirebase(user);
             crud.queryForOpponent(user, USER_LOADED, OpponentScreen.this);
-            waitForNotification();
+            waitForNotification(R.string.searching);
         } else {
             //user exists
             new AlertDialog.Builder(OpponentScreen.this)
@@ -153,7 +158,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
 
             ProgressDialog _dialog = new ProgressDialog(getActivity());
             this.setStyle(STYLE_NO_TITLE, getTheme()); // You can use styles or inflate a view
-            _dialog.setMessage(getString(R.string.searching)); // set your messages if not inflated from XML
+            _dialog.setMessage(getString(message)); // set your messages if not inflated from XML
             _dialog.setCancelable(false);
             _dialog.setCanceledOnTouchOutside(false);
             return _dialog;
