@@ -20,13 +20,19 @@
         android:weightSum="1"
         android:gravity="center_vertical">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/username"
+            android:id="@+id/userNameLabel" />
+
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
-            android:text="@string/username"
             android:ems="10"
-            android:id="@+id/editText" />
+            android:id="@+id/userName" />
 
         <Button
             android:layout_width="wrap_content"

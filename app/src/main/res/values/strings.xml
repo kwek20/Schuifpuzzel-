@@ -27,4 +27,6 @@
     <string name="username">Username: \u0020</string>
     <string name="create">Create game</string>
     <string name="find">Find game</string>
+    <string name="error">Error!</string>
+    <string name="unavailable">Username unavailable</string>
 </resources>
