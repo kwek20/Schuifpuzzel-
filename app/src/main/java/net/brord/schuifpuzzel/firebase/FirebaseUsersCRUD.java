@@ -19,6 +19,7 @@ import java.util.Map;
  */
 public class FirebaseUsersCRUD extends FirebaseCRUD<User>{
     Firebase users;
+    public Boolean userExistance = false;
     public String userInfo = "bla";
 //    Schuifpuzzel puzzle = new Schuifpuzzel();
 
@@ -36,6 +37,12 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User>{
             public void onCancelled(FirebaseError firebaseError) {
             }
         });
+    }
+    public Boolean userExists(String userName){
+        if (users.child(userName) == null){
+            return false;
+        }
+        return true;
     }
     public String getAllUserData() {
         return userInfo;
