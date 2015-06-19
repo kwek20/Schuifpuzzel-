@@ -43,7 +43,7 @@
             android:id="@+id/button3"
             android:layout_gravity="center_horizontal"
             android:singleLine="true"
-            android:onClick="multiplayer"
+            android:onClick="multiPlayer"
             android:nestedScrollingEnabled="false" />
     </LinearLayout>
 </RelativeLayout>
