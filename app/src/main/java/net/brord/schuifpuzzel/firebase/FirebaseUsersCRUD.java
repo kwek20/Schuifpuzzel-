@@ -8,6 +8,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import net.brord.schuifpuzzel.OpponentScreen;
 import net.brord.schuifpuzzel.Schuifpuzzel;
 import net.brord.schuifpuzzel.User;
 
@@ -55,5 +56,19 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User>{
     }
     public void setUsersInFirebase(Map<String,User> users){
         this.users.setValue(users);
+    }
+
+    public void queryForOpponent(final User u, final int ID, final FirebaseListener listener) {
+        users.addValueEventListener( new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+//                Log.d("FirebaseCrud", "received data is:" + dataSnapshot.getValue());
+                userInfo = (String)dataSnapshot.child("mark").child("userName").getValue();
+                listener.onDataReceived(userInfo, ID);
+            }
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
     }
 }

@@ -21,9 +21,9 @@ public class StartScreen extends ActionBarActivity {
 
         setContentView(R.layout.activity_startscreen);
         //creating user
-        User user1 = new User("jan","x100",2);
-        User user2 = new User("piet","x222",3);
-        User user3 = new User("mark","y22",2);
+        User user1 = new User("jan",null);
+        User user2 = new User("piet",null);
+        User user3 = new User("mark",null);
         Map<String,User> users = new HashMap<String,User>();
         users.put("jan",user1);
         users.put("piet",user2);
