@@ -39,11 +39,7 @@ public class Schuifpuzzel extends ActionBarActivity {
         loadDifficulty((RadioGroup) this.findViewById(R.id.radiogroup));
         loadDifficultyPreference();
 
-        loadImages((ViewGroup) this.findViewById(R.id.images));
-
-        Log.d("MAD", savedInstanceState + "");
-        Toast toast = Toast.makeText(this, userInfo, Toast.LENGTH_LONG);
-        toast.show();
+        loadImages((ViewGroup) this.findViewById(R.id.images));;
     }
 
     private void loadDifficultyPreference() {

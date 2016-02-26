@@ -7,6 +7,7 @@ import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Display;
@@ -24,7 +25,6 @@ import net.brord.schuifpuzzel.images.ImageClickListener;
 import net.brord.schuifpuzzel.images.ImageGridManager;
 import net.brord.schuifpuzzel.images.ImageManager;
 import net.brord.schuifpuzzel.images.ImageTile;
-import net.brord.schuifpuzzel.interfaces.CallbackInterface;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -181,17 +181,27 @@ public class PlayScreen extends ActionBarActivity{
     }
 
     private void startCountdown() {
-        toast(dif.getDuration());
-        new CountDownTimer(dif.getDuration(), 1000) {
+        toast(dif.getDuration()/1000);
+        new CountDownTimer(dif.getDuration(), 100) {
 
+            long newInterval = dif.getDuration()-1000;
+
+            @Override
             public void onTick(long millisUntilFinished) {
-                toast(millisUntilFinished);
+                if (millisUntilFinished < newInterval) {
+                    toast(Math.ceil(millisUntilFinished/1000.0));
+                    Log.d("PUZZEL", "Millis: " + millisUntilFinished/1000.0);
+                    newInterval-=1000;
+                }
             }
 
+            @Override
             public void onFinish() {
                 manager.shuffle();
                 grid.getView(dif.getX() - 1, dif.getY() - 1).setVisibility(View.INVISIBLE);
                 clickListener.setActive(true);
+                t.cancel(); //cancel last toast
+
 
                 if (dif.getX() % 2 == 0) {
                     manager.swap(manager.getView(dif.getX() - 1, dif.getY() - 2), manager.getView(dif.getX() - 1, dif.getY() - 3));
@@ -201,8 +211,12 @@ public class PlayScreen extends ActionBarActivity{
         }.start();
     }
 
-    private void toast(long seconds){
-        Toast.makeText(PlayScreen.this, (CharSequence)("Starting in " + (seconds / 1000)), Toast.LENGTH_SHORT).show();
+    Toast t;
+    private void toast(double seconds){
+        if (t != null) t.cancel();
+
+        t = Toast.makeText(PlayScreen.this, (CharSequence) ("Starting in " + (int)seconds), Toast.LENGTH_LONG);
+        t.show();
     }
 
     private ImageView getImage(String name) {
