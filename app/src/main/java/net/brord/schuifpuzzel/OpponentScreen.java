@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -62,6 +61,8 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
             public void onClick(DialogInterface dialog, int whichButton) {
                 // Do nothing.
             }
+
+
         }).show();
     }
 
@@ -117,7 +118,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
             handleUserLoaded((boolean) o);
         } else if (ID == OPPONENT_QUERIED && o != null){
             //opponent exists
-            
+
         }
     }
 
@@ -150,7 +151,6 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
     }
 
     public static class LoaderDialog extends DialogFragment {
-
         public LoaderDialog(){}
 
         @Override
@@ -159,9 +159,14 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
             ProgressDialog _dialog = new ProgressDialog(getActivity());
             this.setStyle(STYLE_NO_TITLE, getTheme()); // You can use styles or inflate a view
             _dialog.setMessage(getString(message)); // set your messages if not inflated from XML
-            _dialog.setCancelable(false);
-            _dialog.setCanceledOnTouchOutside(false);
+            _dialog.setCancelable(true);
+            _dialog.setCanceledOnTouchOutside(true);
             return _dialog;
+        }
+
+        @Override
+        public void onCancel(DialogInterface dialog) {
+            super.onCancel(dialog);
         }
     }
 }

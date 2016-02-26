@@ -66,6 +66,7 @@ public class Schuifpuzzel extends ActionBarActivity {
     public int loadDifficulty(RadioGroup g){
         ViewGroup.LayoutParams BtnParam = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
+
         for (Difficulty d : Difficulty.values()){
             RadioButton b = new RadioButton(this);
             b.setLayoutParams(BtnParam);

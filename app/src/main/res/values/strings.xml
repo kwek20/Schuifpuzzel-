@@ -31,4 +31,6 @@
     <string name="unavailable">Username unavailable</string>
     <string name="searching">Searching games...</string>
     <string name="checking">Checking user info</string>
+
+    <string name="cancelledOpponentSearch">Cancelled search</string>
 </resources>

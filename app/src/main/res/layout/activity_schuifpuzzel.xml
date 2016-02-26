@@ -25,7 +25,9 @@
             android:layout_centerHorizontal="true"
 
             android:orientation="horizontal"
-            android:id="@+id/radiogroup">
+            android:id="@+id/radiogroup"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal">
         </RadioGroup>
     </LinearLayout>
 
