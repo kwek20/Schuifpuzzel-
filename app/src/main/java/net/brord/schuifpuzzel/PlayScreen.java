@@ -62,7 +62,7 @@ public class PlayScreen extends ActionBarActivity{
                 new Runnable() {
                     @Override
                     public void run() {
-                        win(); //WOOT!
+                        //win(); //WOOT!
                     }
                 });
 
@@ -153,7 +153,7 @@ public class PlayScreen extends ActionBarActivity{
                 dialog.show();
                 return true;
             case R.id.quit:
-                Intent i = new Intent(this, Schuifpuzzel.class);
+                Intent i = new Intent(this, StartScreen.class);
                 startActivity(i);
                 return true;
             default:
@@ -181,17 +181,16 @@ public class PlayScreen extends ActionBarActivity{
     }
 
     private void startCountdown() {
-        toast(dif.getDuration()/1000);
-        new CountDownTimer(dif.getDuration(), 100) {
+        toast(dif.getDuration() / 1000);
+        new CountDownTimer(dif.getDuration(), 100) { //interval 100 ticks
 
-            long newInterval = dif.getDuration()-1000;
+            long newInterval = dif.getDuration()-1000; //startinterval is duration - 1 sec
 
             @Override
             public void onTick(long millisUntilFinished) {
-                if (millisUntilFinished < newInterval) {
+                if (millisUntilFinished < newInterval) { //were after our  target
                     toast(Math.ceil(millisUntilFinished/1000.0));
-                    Log.d("PUZZEL", "Millis: " + millisUntilFinished/1000.0);
-                    newInterval-=1000;
+                    newInterval-=1000; //decrease and start again
                 }
             }
 
@@ -213,9 +212,12 @@ public class PlayScreen extends ActionBarActivity{
 
     Toast t;
     private void toast(double seconds){
+        toast("Starting in " + (int) seconds);
+    }
+    private void toast(String text){
         if (t != null) t.cancel();
 
-        t = Toast.makeText(PlayScreen.this, (CharSequence) ("Starting in " + (int)seconds), Toast.LENGTH_LONG);
+        t = Toast.makeText(PlayScreen.this, text, Toast.LENGTH_LONG);
         t.show();
     }
 
