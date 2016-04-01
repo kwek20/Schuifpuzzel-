@@ -11,11 +11,17 @@ import java.util.ArrayList;
  * Created by Iv on 18-6-2015.
  */
 public class User implements Serializable{
+    private static int uniqueId = 0;
+    public static int getUniqueId(){return uniqueId++;}
+
+    private int userId;
     private String userName;
     private Location userCoords;
     private Status roomStatus;
 
     public User(String userName, Location userCoords){
+        this.userId = getUniqueId();
+
         this.userName = userName;
         this.userCoords = userCoords;
         this.roomStatus = Status.NO_ROOM;
