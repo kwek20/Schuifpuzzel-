@@ -8,12 +8,9 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
-import net.brord.schuifpuzzel.OpponentScreen;
-import net.brord.schuifpuzzel.Schuifpuzzel;
-import net.brord.schuifpuzzel.User;
+import net.brord.schuifpuzzel.POD.User;
 import net.brord.schuifpuzzel.interfaces.CallbackInterface;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
