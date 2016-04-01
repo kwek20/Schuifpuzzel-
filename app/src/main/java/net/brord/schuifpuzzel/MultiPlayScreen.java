@@ -9,6 +9,7 @@ import android.graphics.PorterDuffXfermode;
 import net.brord.schuifpuzzel.POD.Room;
 import net.brord.schuifpuzzel.enums.DataReceived;
 import net.brord.schuifpuzzel.firebase.FirebaseListener;
+import net.brord.schuifpuzzel.firebase.FirebaseRoomCRUD;
 
 /**
  * Created by Brord on 4/1/2016.
@@ -20,8 +21,12 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
 
     private Canvas canvas;
 
+    private FirebaseRoomCRUD roomCrud;
+
     public MultiPlayScreen(Room room, int myId){
         this.room = room;
+
+        roomCrud = new FirebaseRoomCRUD(this);
 
         Bitmap bg = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
         canvas = new Canvas(bg);
