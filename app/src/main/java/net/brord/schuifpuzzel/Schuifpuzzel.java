@@ -15,13 +15,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
-import net.brord.schuifpuzzel.firebase.FirebaseUsersCRUD;
+import net.brord.schuifpuzzel.enums.Difficulty;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class Schuifpuzzel extends ActionBarActivity {

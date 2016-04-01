@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import net.brord.schuifpuzzel.enums.Difficulty;
+
 import java.lang.reflect.Field;
 
 /**

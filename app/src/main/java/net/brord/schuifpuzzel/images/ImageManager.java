@@ -5,7 +5,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
-import net.brord.schuifpuzzel.Difficulty;
+import net.brord.schuifpuzzel.enums.Difficulty;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

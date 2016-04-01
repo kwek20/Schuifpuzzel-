@@ -1,8 +1,8 @@
-package net.brord.schuifpuzzel;
+package net.brord.schuifpuzzel.enums;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.util.Log;
+
+import net.brord.schuifpuzzel.R;
 
 /**
  * Created by Brord on 23-3-2015.
