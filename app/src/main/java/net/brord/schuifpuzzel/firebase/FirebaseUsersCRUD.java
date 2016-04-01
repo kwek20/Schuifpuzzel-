@@ -44,27 +44,45 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User> {
     public String getAllUserData() {
         return userInfo;
     }
-
     public void setUserInFirebase(User user){
         Log.d("MAD", "name: " + user.getUserName());
         users.child(user.getUserName()).setValue(user);
         Log.d("MAD", "ADDED CHHILDDASFA");
+        Log.d("MAD", userInfo);
     }
     public void setUsersInFirebase(Map<String,User> users){
         this.users.setValue(users);
     }
 
     public void queryUserData(final String userName, final int ID, final FirebaseListener listener) {
-        users.child(userName).addListenerForSingleValueEvent(new ValueEventListener() {
+        users.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                listener.onDataReceived(snapshot.hasChildren(), ID);
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.hasChild(userName)){
+                    Log.d("MAD", "User founded");
+                    Log.d("MAD", (String)dataSnapshot.child(userName).child("userName").getValue());
+                }
+                else{
+                    Log.d("MAD","User not founded");
+                }
             }
+
             @Override
-            public void onCancelled(FirebaseError arg0) {
-                listener.onDataCancelled(ID);
+            public void onCancelled(FirebaseError firebaseError) {
+
             }
         });
+//        users.child(userName).addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot snapshot) {
+//                Log.d("MAD", (String) snapshot.child("userName").getValue());
+//                listener.onDataReceived(snapshot.hasChildren(), ID);
+//            }
+//            @Override
+//            public void onCancelled(FirebaseError arg0) {
+//                listener.onDataCancelled(ID);
+//            }
+//        });
     }
 
     public void queryForOpponent(final User u, final int ID, final FirebaseListener listener) {
