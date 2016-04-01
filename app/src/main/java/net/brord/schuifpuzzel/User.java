@@ -2,6 +2,8 @@ package net.brord.schuifpuzzel;
 
 import android.location.Location;
 
+import net.brord.schuifpuzzel.enums.Status;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -11,12 +13,12 @@ import java.util.ArrayList;
 public class User implements Serializable{
     private String userName;
     private Location userCoords;
-    private int userRoomNr;
+    private Status roomStatus;
 
     public User(String userName, Location userCoords){
         this.userName = userName;
         this.userCoords = userCoords;
-        this.userRoomNr = -1;
+        this.roomStatus = Status.NO_ROOM;
     }
     public String getUserName(){
         return userName;
@@ -25,11 +27,11 @@ public class User implements Serializable{
         return userCoords;
     }
 
-    public int getUserRoomNr(){
-        return userRoomNr;
+    public Status getStatus(){
+        return roomStatus;
     }
 
-    public void setUserRoomNr(int userRoomNr) {
-        this.userRoomNr = userRoomNr;
+    public void setStatus(Status roomStatus) {
+        this.roomStatus = roomStatus;
     }
 }
