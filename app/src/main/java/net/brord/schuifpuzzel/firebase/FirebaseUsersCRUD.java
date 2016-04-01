@@ -18,19 +18,16 @@ import java.util.Map;
  */
 public class FirebaseUsersCRUD extends FirebaseCRUD<User> {
     Firebase users;
-    public Boolean userExistance = false;
     public String userInfo = "bla";
-    private CallbackInterface callback;
+
     public FirebaseUsersCRUD(Context context){
         super(context, "users");
         users = super.getFirebase().child("users");
+
         users.addValueEventListener( new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-//                Log.d("FirebaseCrud", "received data is:" + dataSnapshot.getValue());
                 userInfo = (String)dataSnapshot.child("mark").child("userName").getValue();
-//                Schuifpuzzel.setUserInfo(userInfo);
-
             }
             @Override
             public void onCancelled(FirebaseError firebaseError) {

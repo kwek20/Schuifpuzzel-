@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import net.brord.schuifpuzzel.POD.User;
+import net.brord.schuifpuzzel.enums.DataReceived;
 import net.brord.schuifpuzzel.firebase.FirebaseListener;
 import net.brord.schuifpuzzel.firebase.FirebaseUsersCRUD;
 
@@ -24,9 +25,6 @@ import net.brord.schuifpuzzel.firebase.FirebaseUsersCRUD;
 public class OpponentScreen extends ActionBarActivity implements FirebaseListener {
 
     private static final String LOADER_TAG = "Loader";
-    private static final int USER_LOADED = 1;
-    private static final int USER_QUERIED = 2;
-    private static final int OPPONENT_QUERIED = 3;
 
     private String username;
     private User user;
@@ -55,7 +53,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         Editable value = input.getText();
-                        crud.queryUserData(value.toString(), OPPONENT_QUERIED, OpponentScreen.this);
+                        crud.queryUserData(value.toString(), DataReceived.OPPONENT_QUERIED.getId(), OpponentScreen.this);
                         waitForNotification(R.string.searching);
                     }
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -71,7 +69,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
         TextView group = (TextView) findViewById(R.id.userName);
 
         //does user exist?
-        crud.queryUserData(group.getText().toString(), USER_QUERIED, this);
+        crud.queryUserData(group.getText().toString(), DataReceived.USER_QUERIED.getId(), this);
         waitForNotification(R.string.checking);
     }
 
@@ -98,17 +96,20 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
 
     @Override
     public void onDataReceived(Object o, int ID) {
-        if (ID == USER_LOADED){
+        if (ID == DataReceived.USER_LOADED.getId()){
             if (user != null && o != null){
                 //opponent found
                 Log.d("MAD", "Opponent found");
                 startGame(o);
                 doneLoading();
             }
-        } else if (ID == USER_QUERIED && o != null){
+        } else if (ID == DataReceived.USER_QUERIED.getId() && o != null){
             //hey user
             handleUserLoaded((boolean) o);
-        } else if (ID == OPPONENT_QUERIED && o != null){
+
+        } else if (ID == DataReceived.OPPONENT_QUERIED.getId() && o != null){
+
+
             //opponent exists
             handleOpponentFounded((boolean) o);
 //            Log.d("MAD", "Opponent founded");
@@ -144,6 +145,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
             doneLoading();
             Log.d("MAD", "User added");
             //wait for the opponent
+            //crud.queryForOpponent(user, DataReceived.USER_LOADED.getId(), OpponentScreen.this);
             waitForNotification(R.string.searching);
             //crud.queryForOpponent(user, USER_LOADED, OpponentScreen.this);
 
