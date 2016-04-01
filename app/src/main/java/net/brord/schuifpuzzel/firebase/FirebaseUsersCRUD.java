@@ -58,18 +58,15 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User> {
         users.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.hasChild(userName)){
-                    Log.d("MAD", "User founded");
-                    Log.d("MAD", (String)dataSnapshot.child(userName).child("userName").getValue());
-                }
-                else{
-                    Log.d("MAD","User not founded");
-                }
+//                Log.d("MAD",(String)dataSnapshot.child("userName").getValue());
+//                listener.onDataReceived(dataSnapshot.hasChildren(), ID);
+
+                listener.onDataReceived(dataSnapshot.hasChild(userName), ID);
             }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-
+                listener.onDataCancelled(ID);
             }
         });
 //        users.child(userName).addListenerForSingleValueEvent(new ValueEventListener() {
