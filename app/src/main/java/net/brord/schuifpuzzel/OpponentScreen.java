@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -60,8 +61,6 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
             public void onClick(DialogInterface dialog, int whichButton) {
                 // Do nothing.
             }
-
-
         }).show();
     }
 
@@ -109,7 +108,6 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
 
         } else if (ID == DataReceived.OPPONENT_QUERIED.getId() && o != null){
 
-
             //opponent exists
             handleOpponentFounded((boolean) o);
 //            Log.d("MAD", "Opponent founded");
@@ -131,6 +129,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
                         public void onClick(DialogInterface dialog, int whichButton) {
                         }
                     }).show();
+            crud.queryForOpponent(user, DataReceived.USER_LOADED.getId(), OpponentScreen.this);
         }
     }
 
@@ -144,9 +143,12 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
             crud.setUserInFirebase(user);
             doneLoading();
             Log.d("MAD", "User added");
+            //we need to set all game settings before waiting for an opponent
+
+
             //wait for the opponent
             //crud.queryForOpponent(user, DataReceived.USER_LOADED.getId(), OpponentScreen.this);
-            waitForNotification(R.string.searching);
+            //waitForNotification(R.string.searching);
             //crud.queryForOpponent(user, USER_LOADED, OpponentScreen.this);
 
         } else {
@@ -166,7 +168,6 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
     public void onDataCancelled(int ID) {
 
     }
-
     public static class LoaderDialog extends DialogFragment {
         public LoaderDialog(){}
 
