@@ -42,10 +42,10 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User> {
         return userInfo;
     }
     public void setUserInFirebase(User user){
-        Log.d("MAD", "name: " + user.getUserName());
+        //Log.d("MAD", "name: " + user.getUserName());
         users.child(user.getUserName()).setValue(user);
-        Log.d("MAD", "ADDED CHHILDDASFA");
-        Log.d("MAD", userInfo);
+        //Log.d("MAD", "ADDED CHHILDDASFA");
+        //Log.d("MAD", userInfo);
     }
     public void setUsersInFirebase(Map<String,User> users){
         this.users.setValue(users);
@@ -73,7 +73,9 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User> {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 //                Log.d("FirebaseCrud", "received data is:" + dataSnapshot.getValue());
-                listener.onDataReceived(dataSnapshot.child("").getValue(), ID);
+                Log.d("MAD","Added user is: " + u.getUserName());
+                listener.onDataReceived(dataSnapshot.hasChild(u.getUserName()),ID);
+                //Slistener.onDataReceived(dataSnapshot.child("").getValue(), ID);
             }
             @Override
             public void onCancelled(FirebaseError firebaseError) {

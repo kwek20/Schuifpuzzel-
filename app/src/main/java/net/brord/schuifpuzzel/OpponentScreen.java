@@ -101,6 +101,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
         if (ID == USER_LOADED){
             if (user != null && o != null){
                 //opponent found
+                Log.d("MAD", "Opponent found");
                 startGame(o);
                 doneLoading();
             }
@@ -108,7 +109,6 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
             //hey user
             handleUserLoaded((boolean) o);
         } else if (ID == OPPONENT_QUERIED && o != null){
-
             //opponent exists
             handleOpponentFounded((boolean) o);
 //            Log.d("MAD", "Opponent founded");
@@ -141,8 +141,12 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
         if (!exists) {
             user = loadUser();
             crud.setUserInFirebase(user);
-            crud.queryForOpponent(user, USER_LOADED, OpponentScreen.this);
+            doneLoading();
+            Log.d("MAD", "User added");
+            //wait for the opponent
             waitForNotification(R.string.searching);
+            //crud.queryForOpponent(user, USER_LOADED, OpponentScreen.this);
+
         } else {
             //user exists
             new AlertDialog.Builder(OpponentScreen.this)
