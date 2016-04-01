@@ -28,9 +28,11 @@
     <string name="create">Create game</string>
     <string name="find">Find game</string>
     <string name="error">Error!</string>
+    <string name="success">Success!</string>
     <string name="unavailable">Username unavailable</string>
     <string name="searching">Searching games...</string>
     <string name="checking">Checking user info</string>
-
+    <string name="opponentunavailable">There is no opponent with that name</string>
+    <string name="opponentavailable">Opponent founded</string>
     <string name="cancelledOpponentSearch">Cancelled search</string>
 </resources>

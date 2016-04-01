@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -111,7 +112,26 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
             handleUserLoaded((boolean) o);
         } else if (ID == OPPONENT_QUERIED && o != null){
             //opponent exists
+            handleOpponentFounded((boolean) o);
+//            Log.d("MAD", "Opponent founded");
+        }
+    }
 
+    private void handleOpponentFounded(boolean founded) {
+        if(!founded){
+            Log.d("MAD", "Opponent not founded");
+
+        }
+        else{
+            Log.d("MAD", "Opponent founded");
+            doneLoading();
+            new AlertDialog.Builder(OpponentScreen.this)
+                    .setTitle(R.string.success)
+                    .setMessage(getString(R.string.opponentavailable))
+                    .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                        }
+                    }).show();
         }
     }
 
