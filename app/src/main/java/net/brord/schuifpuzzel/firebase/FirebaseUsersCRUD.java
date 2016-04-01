@@ -66,17 +66,6 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User> {
                 listener.onDataCancelled(ID);
             }
         });
-//        users.child(userName).addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot snapshot) {
-//                Log.d("MAD", (String) snapshot.child("userName").getValue());
-//                listener.onDataReceived(snapshot.hasChildren(), ID);
-//            }
-//            @Override
-//            public void onCancelled(FirebaseError arg0) {
-//                listener.onDataCancelled(ID);
-//            }
-//        });
     }
 
     public void queryForOpponent(final User u, final int ID, final FirebaseListener listener) {
