@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 
+import net.brord.schuifpuzzel.POD.User;
 import net.brord.schuifpuzzel.firebase.FirebaseUsersCRUD;
 import net.brord.schuifpuzzel.interfaces.CallbackInterface;
 

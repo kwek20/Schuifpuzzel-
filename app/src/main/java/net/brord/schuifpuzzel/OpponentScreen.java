@@ -5,12 +5,8 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.util.Log;
@@ -18,6 +14,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import net.brord.schuifpuzzel.POD.User;
 import net.brord.schuifpuzzel.firebase.FirebaseListener;
 import net.brord.schuifpuzzel.firebase.FirebaseUsersCRUD;
 
@@ -111,6 +108,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
             //hey user
             handleUserLoaded((boolean) o);
         } else if (ID == OPPONENT_QUERIED && o != null){
+
             //opponent exists
             handleOpponentFounded((boolean) o);
 //            Log.d("MAD", "Opponent founded");
