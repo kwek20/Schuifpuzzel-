@@ -1,9 +1,12 @@
 package net.brord.schuifpuzzel;
 
 import android.content.Context;
+import android.content.Intent;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
@@ -42,18 +45,20 @@ public class LocationManager {
     }
 
     public Location getLocation(){
-        Location loc;
+        android.location.LocationManager service = (android.location.LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        boolean enabled = service
+                .isProviderEnabled(android.location.LocationManager.GPS_PROVIDER);
 
-        if(locationManager.getLastKnownLocation(android.location.LocationManager.GPS_PROVIDER) != null) {
-            loc = locationManager.getLastKnownLocation(android.location.LocationManager.GPS_PROVIDER);
-        } else if(locationManager.getLastKnownLocation(android.location.LocationManager.NETWORK_PROVIDER) != null) {
-            loc = locationManager.getLastKnownLocation(android.location.LocationManager.NETWORK_PROVIDER);
+        if (!enabled) {
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            context.startActivity(intent);
         } else {
-            Toast.makeText(context, "Turn on GPS please.", Toast.LENGTH_SHORT).show();
-            loc = null;
+            Criteria criteria = new Criteria();
+            String provider = service.getBestProvider(criteria, false);
+            Location location = service.getLastKnownLocation(provider);
+            return location;
         }
-
-       return loc;
+        return null;
     }
 
 

@@ -37,12 +37,15 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
     private LoaderDialog loader;
     private FirebaseUsersCRUD crud;
 
+    private net.brord.schuifpuzzel.LocationManager locationManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_opponentscreen);
         crud = new FirebaseUsersCRUD(this);
+        locationManager = new net.brord.schuifpuzzel.LocationManager(this);
     }
 
     public void findOpponent(View v){
@@ -68,6 +71,8 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
 
     public void createGame(View v){
         TextView group = (TextView) findViewById(R.id.userName);
+
+        //does user exist?
         crud.queryUserData(group.getText().toString(), USER_QUERIED, this);
         waitForNotification(R.string.checking);
     }
@@ -78,20 +83,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
     }
 
     private Location getLocation() {
-        LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
-        boolean enabled = service
-                .isProviderEnabled(LocationManager.GPS_PROVIDER);
-
-        if (!enabled) {
-            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-            startActivity(intent);
-        } else {
-            Criteria criteria = new Criteria();
-            String provider = service.getBestProvider(criteria, false);
-            Location location = service.getLastKnownLocation(provider);
-            return location;
-        }
-        return null;
+        return locationManager.getLocation();
     }
 
     public void waitForNotification(int message) {
@@ -115,6 +107,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
                 doneLoading();
             }
         } else if (ID == USER_QUERIED && o != null){
+            //hey user
             handleUserLoaded((boolean) o);
         } else if (ID == OPPONENT_QUERIED && o != null){
             //opponent exists
