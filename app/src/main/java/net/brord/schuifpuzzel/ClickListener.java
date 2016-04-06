@@ -38,6 +38,7 @@ public class ClickListener implements View.OnClickListener{
         i.putExtra("difficulty", Difficulty.findByName(host, button.getText() + ""));
         i.putExtra("image", ((Button)v).getText());
 
+        host.setResult(Activity.RESULT_OK,i);
         host.finish();
     }
 }
