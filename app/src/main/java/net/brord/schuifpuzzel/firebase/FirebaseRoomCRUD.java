@@ -54,7 +54,7 @@ public class FirebaseRoomCRUD extends FirebaseCRUD<Room> {
         byte[] byteArray = stream.toByteArray();
         String imageFile = Base64.encodeToString(byteArray, Base64.DEFAULT);
         map.put("image", imageFile);
-
+        map.put("user1", user1.getUserName());
         base.setValue(map);
         return r;
     }
