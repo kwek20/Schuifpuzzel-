@@ -50,10 +50,11 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User> {
         users.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-//                Log.d("MAD",(String)dataSnapshot.child("userName").getValue());
-//                listener.onDataReceived(dataSnapshot.hasChildren(), ID);
-
-                listener.onDataReceived(dataSnapshot.hasChild(userName), ID);
+                User user = null;
+                if (dataSnapshot.hasChild(userName)){
+                    user = (User)dataSnapshot.child(userName).getValue();
+                }
+                listener.onDataReceived(user, ID);
             }
 
             @Override

@@ -124,7 +124,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
         } else if (ID == DataReceived.OPPONENT_QUERIED.getId() && o != null){
 
             //opponent exists
-            handleOpponentFounded((boolean) o);
+            handleOpponentFounded((User) o);
 //            Log.d("MAD", "Opponent founded");
         } else if (ID == DataReceived.WAIT_FOR_OPPONENT.getId() && o != null){
             startGame((String)o);
@@ -148,17 +148,21 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
     }
 
 
-    private void handleOpponentFounded(boolean founded) {
-        if(!founded){
+    private void handleOpponentFounded(User user) {
+        if(user == null){
             Log.d("MAD", "Opponent not founded");
         } else {
-            Log.d("MAD", "Opponent founded");
+            Log.d("MAD", "Opponent founded: " + user.getUserName());
             doneLoading();
+
+            Room r = roomCrud.getRoom(user.getRoomID());
+
             new AlertDialog.Builder(OpponentScreen.this)
                     .setTitle(R.string.success)
                     .setMessage(getString(R.string.opponentavailable))
                     .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
+
                         }
                     }).show();
             //crud.queryForOpponent(user, DataReceived.USER_LOADED.getId(), OpponentScreen.this);

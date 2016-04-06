@@ -7,6 +7,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -27,35 +28,53 @@ import java.util.Map;
 public class FirebaseRoomCRUD extends FirebaseCRUD<Room> {
     Firebase rooms;
 
+    java.util.List<Room> roomsList = new java.util.LinkedList<>();
+
     public FirebaseRoomCRUD(Context context){
         super(context, "rooms");
         rooms = super.getFirebase().child("rooms");
 
-        rooms.addValueEventListener( new ValueEventListener() {
+        rooms.addChildEventListener(new ChildEventListener() {
+            // Retrieve new posts as they are added to the database
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
+                Room room = snapshot.getValue(Room.class);
+                roomsList.add(room);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
             }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                roomsList.remove(dataSnapshot.getValue(Room.class));
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
             @Override
             public void onCancelled(FirebaseError firebaseError) {
+
             }
         });
     }
 
     public Room createRoomInFirebase(User user1, Difficulty difficulty, Bitmap bmp){
         Firebase base = rooms.push();
-        Room r = new Room(user1.getUserName(), base.getKey());
-        java.util.Map<String, Object> map = new java.util.HashMap<String, Object>();
-        map.put("difficulty", difficulty.getDifficulty());
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
         bmp.recycle();
         byte[] byteArray = stream.toByteArray();
         String imageFile = Base64.encodeToString(byteArray, Base64.DEFAULT);
-        map.put("image", imageFile);
-        map.put("user1", user1.getUserName());
-        base.setValue(map);
+
+        Room r = new Room(user1.getUserName(), base.getKey(), imageFile, difficulty);
+        base.setValue(r);
         return r;
     }
     public void setOpponentinRoom(User user2, String roomID){
@@ -69,6 +88,13 @@ public class FirebaseRoomCRUD extends FirebaseCRUD<Room> {
         byte[] imageAsBytes = Base64.decode(fb.getKey(), Base64.DEFAULT);
         Bitmap bmp = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
         return bmp;
+    }
+
+    public Room getRoom(String id){
+        for (Room r : roomsList){
+            if (r.getRoomId().equals(id)) return r;
+        }
+        return null;
     }
 
     public void queryRoomData(final String userName, final int ID, final FirebaseListener listener) {
