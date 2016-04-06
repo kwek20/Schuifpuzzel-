@@ -18,11 +18,18 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
+import com.google.android.gms.games.Player;
+
 import net.brord.schuifpuzzel.POD.Room;
 import net.brord.schuifpuzzel.POD.User;
 import net.brord.schuifpuzzel.enums.DataReceived;
 import net.brord.schuifpuzzel.enums.Difficulty;
 import net.brord.schuifpuzzel.firebase.FirebaseListener;
+import net.brord.schuifpuzzel.firebase.FirebaseRef;
 import net.brord.schuifpuzzel.firebase.FirebaseRoomCRUD;
 import net.brord.schuifpuzzel.firebase.FirebaseUsersCRUD;
 
@@ -33,10 +40,8 @@ import java.lang.reflect.Field;
  */
 public class OpponentScreen extends ActionBarActivity implements FirebaseListener {
 
-    private static final String LOADER_TAG = "Loader";
+    public static final String LOADER_TAG = "Loader";
 
-    private String username;
-    private String opponentName;
     private User user;
 
     private static int message;
@@ -47,9 +52,6 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
 
     private net.brord.schuifpuzzel.LocationManager locationManager;
 
-    private Difficulty difficulty = null;
-    private String image = null;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +61,26 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
         crud = new FirebaseUsersCRUD(this);
         roomCrud = new FirebaseRoomCRUD(this);
 
+        user = (User) savedInstanceState.getSerializable("user");
         locationManager = new net.brord.schuifpuzzel.LocationManager(this);
+        setGeoFireLocation();
+    }
+
+    public void setGeoFireLocation(){
+        GeoFire geoFire = new GeoFire(FirebaseRef.getFirebaseRef());
+        Location loc = locationManager.getLocation();
+        if(loc != null) {
+            geoFire.setLocation(user.getUserName(), new GeoLocation(loc.getLatitude(), loc.getLongitude()), new GeoFire.CompletionListener() {
+                @Override
+                public void onComplete(String key, FirebaseError error) {
+                    if (error != null) {
+                        System.err.println("There was an error saving the location to GeoFire: " + error);
+                    } else {
+                        System.out.println("Location saved on server successfully!");
+                    }
+                }
+            });
+        }
     }
 
     public void findOpponent(View v){
@@ -95,11 +116,6 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
         //wait for opponent
     }
 
-    private User loadUser() {
-        username = ((TextView) findViewById(R.id.userName)).getText().toString();
-        return new User(username, getLocation());
-    }
-
     public void doneLoading() {
 
         if (loader != null && loader.getShowsDialog()) {
@@ -116,10 +132,6 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
                 startGame((String)o);
                 doneLoading();
             }
-        } else if (ID == DataReceived.USER_QUERIED.getId()){
-            //hey user
-            handleUserLoaded( o != null);
-
         } else if (ID == DataReceived.OPPONENT_QUERIED.getId() && o != null){
 
             //opponent exists
@@ -136,16 +148,10 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
             if(resultCode == RESULT_OK){
                 TextView group = (TextView) findViewById(R.id.userName);
 
-                difficulty = (Difficulty) data.getSerializableExtra("difficulty");
-                image = data.getStringExtra("image");
-
-                //does user exist?
-                crud.queryUserData(group.getText().toString(), DataReceived.USER_QUERIED.getId(), this);
-                waitForNotification(R.string.checking);
+                makeRoom((Difficulty) data.getSerializableExtra("difficulty"), data.getStringExtra("image"));
             }
         }
     }
-
 
     private void handleOpponentFounded(User user) {
         if(user == null){
@@ -155,7 +161,6 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
             doneLoading();
 
             Room r = roomCrud.getRoom(user.getRoomID());
-            opponentName = ((TextView) findViewById(R.id.userName)).getText().toString();
             new AlertDialog.Builder(OpponentScreen.this)
                     .setTitle(R.string.success)
                     .setMessage(getString(R.string.opponentavailable))
@@ -164,7 +169,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
 
                         }
                     }).show();
-            roomCrud.setOpponentinRoom(opponentName,r.getRoomId());
+            roomCrud.setOpponentinRoom(user.getUserName(),r.getRoomId());
             //crud.queryForOpponent(user, DataReceived.USER_LOADED.getId(), OpponentScreen.this);
         }
     }
@@ -173,48 +178,27 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
 
     }
 
-    private void handleUserLoaded(boolean exists) {
-        //user doesnt exist, add and wait
-        if (!exists) {
-            user = loadUser();
-            crud.setUserInFirebase(user);
-            doneLoading();
-            Log.d("MAD", "User added");
-            try {
-                Field f = R.mipmap.class.getField(image);
-                Bitmap bmp = BitmapFactory.decodeResource(getResources(), f.getInt(null));
-                Room r = roomCrud.createRoomInFirebase(user, difficulty, bmp);
-                Log.d("MAD", "Room added");
+    private void makeRoom(Difficulty difficulty, String image) {
+        try {
+            Field f = R.mipmap.class.getField(image);
+            Bitmap bmp = BitmapFactory.decodeResource(getResources(), f.getInt(null));
+            Room r = roomCrud.createRoomInFirebase(user, difficulty, bmp);
+            Log.d("MAD", "Room added");
 
-                crud.assignRoomToUser(user, r);
-                //does user exist?
-                roomCrud.queryForOpponent(DataReceived.WAIT_FOR_OPPONENT.getId(), this);
-                waitForNotification(R.string.waiting);
-            } catch (NoSuchFieldException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        } else {
-            //user exists
-            new AlertDialog.Builder(OpponentScreen.this)
-                    .setTitle(R.string.error)
-                    .setMessage(getString(R.string.unavailable))
-                    .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            doneLoading();
-                        }
-                    }).show();
+            crud.assignRoomToUser(user, r);
+            //does user exist?
+            roomCrud.queryForOpponent(DataReceived.WAIT_FOR_OPPONENT.getId(), this);
+            waitForNotification(R.string.waiting);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         }
     }
 
     @Override
     public void onDataCancelled(int ID) {
 
-    }
-
-    private Location getLocation() {
-        return locationManager.getLocation();
     }
 
     public void waitForNotification(int message) {
