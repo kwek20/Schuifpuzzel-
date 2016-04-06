@@ -15,6 +15,7 @@ import com.firebase.client.ValueEventListener;
 import net.brord.schuifpuzzel.OpponentScreen;
 import net.brord.schuifpuzzel.POD.Room;
 import net.brord.schuifpuzzel.POD.User;
+import net.brord.schuifpuzzel.enums.Difficulty;
 import net.brord.schuifpuzzel.interfaces.CallbackInterface;
 
 import java.io.ByteArrayOutputStream;
@@ -41,11 +42,11 @@ public class FirebaseRoomCRUD extends FirebaseCRUD<Room> {
         });
     }
 
-    public Room createRoomInFirebase(User user1, String difficulty, Bitmap bmp){
+    public Room createRoomInFirebase(User user1, Difficulty difficulty, Bitmap bmp){
         Firebase base = rooms.push();
         Room r = new Room(user1.getUserName(), base.getKey());
         java.util.Map<String, Object> map = new java.util.HashMap<String, Object>();
-        map.put("difficulty", difficulty);
+        map.put("difficulty", difficulty.getDifficulty());
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);

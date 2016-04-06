@@ -53,7 +53,7 @@ public class StartScreen extends ActionBarActivity implements CallbackInterface{
         if (requestCode == 1) {
             if(resultCode == RESULT_OK){
                 Intent i = new Intent(this, PlayScreen.class);
-                i.putExtra("difficulty", data.getStringExtra("difficulty"));
+                i.putExtra("difficulty", (Difficulty)data.getSerializableExtra("difficulty"));
                 i.putExtra("image", data.getStringExtra("image"));
                 startActivity(i);
             }

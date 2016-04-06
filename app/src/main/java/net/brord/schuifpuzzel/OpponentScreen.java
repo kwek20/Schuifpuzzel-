@@ -21,6 +21,7 @@ import android.widget.TextView;
 import net.brord.schuifpuzzel.POD.Room;
 import net.brord.schuifpuzzel.POD.User;
 import net.brord.schuifpuzzel.enums.DataReceived;
+import net.brord.schuifpuzzel.enums.Difficulty;
 import net.brord.schuifpuzzel.firebase.FirebaseListener;
 import net.brord.schuifpuzzel.firebase.FirebaseRoomCRUD;
 import net.brord.schuifpuzzel.firebase.FirebaseUsersCRUD;
@@ -45,7 +46,8 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
 
     private net.brord.schuifpuzzel.LocationManager locationManager;
 
-    private String difficulty = null, image = null;
+    private Difficulty difficulty = null;
+    private String image = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,7 +132,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
             if(resultCode == RESULT_OK){
                 TextView group = (TextView) findViewById(R.id.userName);
 
-                difficulty = data.getStringExtra("difficulty");
+                difficulty = (Difficulty) data.getSerializableExtra("difficulty");
                 image = data.getStringExtra("image");
 
                 //does user exist?
