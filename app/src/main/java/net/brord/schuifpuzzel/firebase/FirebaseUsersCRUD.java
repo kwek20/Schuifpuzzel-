@@ -9,6 +9,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import net.brord.schuifpuzzel.OpponentScreen;
+import net.brord.schuifpuzzel.POD.Room;
 import net.brord.schuifpuzzel.POD.User;
 import net.brord.schuifpuzzel.interfaces.CallbackInterface;
 
@@ -60,6 +61,11 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User> {
                 listener.onDataCancelled(ID);
             }
         });
+    }
+
+    public void assignRoomToUser(final User u, final Room r){
+        u.setRoomID(r.getRoomId());
+        users.child(u.getUserName()).setValue(u);
     }
 
     public void queryForOpponent(final User u, final int ID, final FirebaseListener listener) {
