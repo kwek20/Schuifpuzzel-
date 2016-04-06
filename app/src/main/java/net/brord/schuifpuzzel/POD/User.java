@@ -21,7 +21,6 @@ public class User implements Serializable{
 
     public User(String userName, Location userCoords){
         this.userId = getUniqueId();
-
         this.userName = userName;
         this.userCoords = userCoords;
         this.roomStatus = Status.NO_ROOM;

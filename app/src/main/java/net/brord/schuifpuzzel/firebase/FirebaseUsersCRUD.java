@@ -45,7 +45,6 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User> {
     public void setUsersInFirebase(Map<String,User> users){
         this.users.setValue(users);
     }
-
     public void queryUserData(final String userName, final int ID, final FirebaseListener listener) {
         users.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

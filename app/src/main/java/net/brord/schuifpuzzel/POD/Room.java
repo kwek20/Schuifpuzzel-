@@ -16,8 +16,6 @@ public class Room implements Serializable {
     public Room(String user1, String roomId) {
         this.roomId = roomId;
         this.user1 = user1;
-
-        isUser1Active = true;
     }
 
     public void setUser2(String user2){
