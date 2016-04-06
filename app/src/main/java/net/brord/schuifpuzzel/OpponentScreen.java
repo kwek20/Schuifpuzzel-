@@ -64,7 +64,6 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
 
     public void findOpponent(View v){
         //username will be an opponentname in this case
-        opponentName = ((TextView) findViewById(R.id.userName)).getText().toString();
         final EditText input = new EditText(this);
         new AlertDialog.Builder(OpponentScreen.this)
                 .setTitle(R.string.find)
@@ -117,9 +116,9 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
                 startGame((String)o);
                 doneLoading();
             }
-        } else if (ID == DataReceived.USER_QUERIED.getId() && o != null){
+        } else if (ID == DataReceived.USER_QUERIED.getId()){
             //hey user
-            handleUserLoaded((boolean) o);
+            handleUserLoaded( o != null);
 
         } else if (ID == DataReceived.OPPONENT_QUERIED.getId() && o != null){
 
@@ -156,7 +155,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
             doneLoading();
 
             Room r = roomCrud.getRoom(user.getRoomID());
-
+            opponentName = ((TextView) findViewById(R.id.userName)).getText().toString();
             new AlertDialog.Builder(OpponentScreen.this)
                     .setTitle(R.string.success)
                     .setMessage(getString(R.string.opponentavailable))
@@ -165,6 +164,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
 
                         }
                     }).show();
+            roomCrud.setOpponentinRoom(opponentName,r.getRoomId());
             //crud.queryForOpponent(user, DataReceived.USER_LOADED.getId(), OpponentScreen.this);
         }
     }

@@ -21,9 +21,13 @@ public class Room implements Serializable {
     public Room(String user1, String roomId, String image, Difficulty difficulty) {
         this.roomId = roomId;
         this.user1 = user1;
-
+        this.user2 = "";
         this.image = image;
         this.difficulty = difficulty;
+    }
+
+    public  Room(){
+        //firebase serialization
     }
 
     public void setUser2(String user2){

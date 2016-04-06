@@ -38,8 +38,8 @@ public class FirebaseRoomCRUD extends FirebaseCRUD<Room> {
             // Retrieve new posts as they are added to the database
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
-                Room room = snapshot.getValue(Room.class);
-                roomsList.add(room);
+                //Room room = snapshot.getValue(Room.class);
+                //roomsList.add(room);
             }
 
             @Override
@@ -77,11 +77,11 @@ public class FirebaseRoomCRUD extends FirebaseCRUD<Room> {
         base.setValue(r);
         return r;
     }
-    public void setOpponentinRoom(User user2, String roomID){
+    public void setOpponentinRoom(String user2, String roomID){
         //Firebase base = rooms.push();
-        java.util.Map<String, Object> map = new java.util.HashMap<String, Object>();
-        map.put("user2",user2.getUserName());
-        rooms.child(roomID).push().setValue(map);
+
+        rooms.child(roomID).child("user2").setValue(user2);
+
     }
     public Bitmap getImage(Room r){
         Firebase fb = rooms.child(r.getRoomId()).child("image");
