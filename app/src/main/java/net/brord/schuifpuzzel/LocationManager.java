@@ -61,40 +61,6 @@ public class LocationManager {
         return null;
     }
 
-
-    /* GEOFIRE CRAP
-    GeoFire geoFire = new GeoFire(new Firebase(FireBaseCommunicator.URL));
-        if(loc != null) {
-            geoFire.setLocation(prefs.getString("UUID", ""), new GeoLocation(loc.getLatitude(), loc.getLongitude()), new GeoFire.CompletionListener() {
-                @Override
-                public void onComplete(String key, FirebaseError error) {
-                    if (error != null) {
-                        System.err.println("There was an error saving the location to GeoFire: " + error);
-                    } else {
-                        System.out.println("Location saved on server successfully!");
-                    }
-                }
-            });
-        }
-
-        fireBaseCommunicator = new FireBaseCommunicator();
-        Player p = new Player(dummyId, "DummyData", roomList);
-        fireBaseCommunicator.saveAPlayer(dummyId, p);
-
-        if(loc != null) {
-            geoFire.setLocation(dummyId, new GeoLocation(loc.getLatitude(), loc.getLongitude()), new GeoFire.CompletionListener() {
-                @Override
-                public void onComplete(String key, FirebaseError error) {
-                    if (error != null) {
-                        System.err.println("There was an error saving the location to GeoFire: " + error);
-                    } else {
-                        System.out.println("Location saved on server successfully!");
-                    }
-                }
-            });
-        }
-     */
-
     private class LocationManagerListener implements LocationListener{
         public void onLocationChanged(Location location) {
             // Called when a new location is found by the network location provider.
