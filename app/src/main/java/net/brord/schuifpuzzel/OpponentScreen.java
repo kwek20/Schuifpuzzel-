@@ -173,9 +173,10 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
             try {
                 Field f = R.mipmap.class.getField(image);
                 Bitmap bmp = BitmapFactory.decodeResource(getResources(), f.getInt(null));
-                roomCrud.createRoomInFirebase(user, difficulty, bmp);
+                Room r = roomCrud.createRoomInFirebase(user, difficulty, bmp);
                 Log.d("MAD", "Room added");
 
+                crud.assignRoomToUser(user, r);
                 //does user exist?
                 roomCrud.queryForOpponent(DataReceived.WAIT_FOR_OPPONENT.getId(), this);
                 waitForNotification(R.string.waiting);
