@@ -142,6 +142,8 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
                 //does user exist?
                 crud.queryUserData(group.getText().toString(), DataReceived.USER_QUERIED.getId(), this);
                 waitForNotification(R.string.checking);
+                //Intent multiplayerIntent = new Intent(this,MultiPlayScreen.class);
+                //startActivity(multiplayerIntent);
             }
         }
     }
@@ -165,6 +167,8 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
                         }
                     }).show();
             roomCrud.setOpponentinRoom(opponentName,r.getRoomId());
+            //start the actual game here
+
             //crud.queryForOpponent(user, DataReceived.USER_LOADED.getId(), OpponentScreen.this);
         }
     }
