@@ -61,7 +61,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
         crud = new FirebaseUsersCRUD(this);
         roomCrud = new FirebaseRoomCRUD(this);
 
-        user = (User) savedInstanceState.getSerializable("user");
+        user = (User) getIntent().getSerializableExtra("user");
         locationManager = new net.brord.schuifpuzzel.LocationManager(this);
         setGeoFireLocation();
     }
@@ -149,6 +149,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
                 TextView group = (TextView) findViewById(R.id.userName);
 
                 makeRoom((Difficulty) data.getSerializableExtra("difficulty"), data.getStringExtra("image"));
+
             }
         }
     }
@@ -169,7 +170,9 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
 
                         }
                     }).show();
+
             roomCrud.setOpponentinRoom(user.getUserName(),r.getRoomId());
+
             //crud.queryForOpponent(user, DataReceived.USER_LOADED.getId(), OpponentScreen.this);
         }
     }
