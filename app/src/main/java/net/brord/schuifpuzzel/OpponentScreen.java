@@ -162,6 +162,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
 
                         }
                     }).show();
+
             crud.queryForOpponent(user, DataReceived.USER_LOADED.getId(), OpponentScreen.this);
         }
     }
