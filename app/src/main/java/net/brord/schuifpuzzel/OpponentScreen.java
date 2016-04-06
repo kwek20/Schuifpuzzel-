@@ -111,7 +111,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
             if (user != null && o != null){
                 //opponent found
                 Log.d("MAD", "Opponent found");
-                startGame(o);
+                startGame((String)o);
                 doneLoading();
             }
         } else if (ID == DataReceived.USER_QUERIED.getId() && o != null){
@@ -123,6 +123,8 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
             //opponent exists
             handleOpponentFounded((boolean) o);
 //            Log.d("MAD", "Opponent founded");
+        } else if (ID == DataReceived.WAIT_FOR_OPPONENT.getId() && o != null){
+            startGame((String)o);
         }
     }
 
@@ -160,7 +162,8 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
         }
     }
 
-    private void startGame(Object o) {
+    private void startGame(String opponentName) {
+
     }
 
     private void handleUserLoaded(boolean exists) {
