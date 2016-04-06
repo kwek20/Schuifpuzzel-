@@ -10,13 +10,13 @@ import java.util.Map;
  */
 public class Room implements Serializable {
 
-    private String roomId, image;
-    private boolean ready = false;
-    private String user1, user2;
+     String roomId, image;
+     boolean ready = false;
+     String user1, user2;
 
-    private Difficulty difficulty;
+     Difficulty difficulty;
 
-    private boolean isUser1Active;
+     boolean isUser1Active;
 
     public Room(String user1, String roomId, String image, Difficulty difficulty) {
         this.roomId = roomId;
@@ -24,6 +24,7 @@ public class Room implements Serializable {
         this.user2 = "";
         this.image = image;
         this.difficulty = difficulty;
+        this.isUser1Active = true;
     }
 
     public  Room(){
@@ -35,6 +36,18 @@ public class Room implements Serializable {
         ready = true;
     }
 
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public String getRoomId() {
+        return roomId;
+    }
+
     public String getUser1() {
         return user1;
     }
@@ -42,30 +55,5 @@ public class Room implements Serializable {
     public String getUser2() {
         return user2;
     }
-
-    public boolean isReady() {
-        return ready;
-    }
-
-    public String getRoomId() {
-        return roomId;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public Difficulty getDifficulty() {
-        return difficulty;
-    }
-
-    public boolean isUser1Active() {
-        return isUser1Active;
-    }
-
-    public boolean isUser2Active(){
-        return !isUser1Active;
-    }
-
-
 }
+

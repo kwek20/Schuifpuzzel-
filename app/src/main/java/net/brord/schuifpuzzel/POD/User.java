@@ -12,34 +12,24 @@ import java.util.ArrayList;
  */
 public class User implements Serializable{
 
-    private String roomID;
-    private String userName;
-    private Location userCoords;
-    private Status roomStatus;
+    String roomID;
+    String userName;
+    //Location userCoords;
+    Status roomStatus;
 
     public User(String userName, Location userCoords){
         this.userName = userName;
-        this.userCoords = userCoords;
+        //this.userCoords = userCoords;
         this.roomStatus = Status.NO_ROOM;
     }
-    public String getUserName(){
-        return userName;
+
+    public User(){
+
     }
-    public Location getUserCoords(){
+
+    /*public Location getUserCoords() {
         return userCoords;
-    }
-
-    public Status getStatus(){
-        return roomStatus;
-    }
-
-    public void setStatus(Status roomStatus) {
-        this.roomStatus = roomStatus;
-    }
-
-    public void setRoomID(String roomID) {
-        this.roomID = roomID;
-    }
+    }*/
 
     public Status getRoomStatus() {
         return roomStatus;
@@ -47,5 +37,13 @@ public class User implements Serializable{
 
     public String getRoomID() {
         return roomID;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setRoomID(String roomID) {
+        this.roomID = roomID;
     }
 }

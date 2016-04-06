@@ -38,8 +38,8 @@ public class FirebaseRoomCRUD extends FirebaseCRUD<Room> {
             // Retrieve new posts as they are added to the database
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
-                //Room room = snapshot.getValue(Room.class);
-                //roomsList.add(room);
+                Room room = snapshot.getValue(Room.class);
+                roomsList.add(room);
             }
 
             @Override

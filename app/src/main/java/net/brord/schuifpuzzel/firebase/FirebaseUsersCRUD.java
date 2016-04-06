@@ -52,7 +52,7 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User> {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = null;
                 if (dataSnapshot.hasChild(userName)){
-                    user = (User)dataSnapshot.child(userName).getValue();
+                    user = dataSnapshot.child(userName).getValue(User.class);
                 }
                 listener.onDataReceived(user, ID);
             }
