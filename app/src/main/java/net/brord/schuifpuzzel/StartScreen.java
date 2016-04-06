@@ -40,7 +40,7 @@ public class StartScreen extends ActionBarActivity implements CallbackInterface{
 
     public void singlePlayer(View v){
         Intent i = new Intent(this, Schuifpuzzel.class);
-        startActivity(i);
+        startActivityForResult(i, 1);
     }
 
     public void multiPlayer(View v){

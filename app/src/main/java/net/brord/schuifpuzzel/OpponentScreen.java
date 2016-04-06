@@ -80,7 +80,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
 
     public void createGame(View v){
         Intent i = new Intent(this, Schuifpuzzel.class);
-        startActivity(i);
+        startActivityForResult(i, 1);
 
         //create game
         //start intent
