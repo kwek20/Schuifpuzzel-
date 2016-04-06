@@ -158,6 +158,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
                         public void onClick(DialogInterface dialog, int whichButton) {
                         }
                     }).show();
+
             crud.queryForOpponent(user, DataReceived.USER_LOADED.getId(), OpponentScreen.this);
         }
     }
