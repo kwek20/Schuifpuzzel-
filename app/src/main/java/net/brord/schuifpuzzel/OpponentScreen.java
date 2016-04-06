@@ -61,7 +61,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
         crud = new FirebaseUsersCRUD(this);
         roomCrud = new FirebaseRoomCRUD(this);
 
-        user = (User) savedInstanceState.getSerializable("user");
+        user = (User) getIntent().getSerializableExtra("user");
         locationManager = new net.brord.schuifpuzzel.LocationManager(this);
         setGeoFireLocation();
     }
