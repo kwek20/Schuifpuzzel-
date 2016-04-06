@@ -36,6 +36,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
     private static final String LOADER_TAG = "Loader";
 
     private String username;
+    private String opponentName;
     private User user;
 
     private static int message;
@@ -62,6 +63,8 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
     }
 
     public void findOpponent(View v){
+        //username will be an opponentname in this case
+        opponentName = ((TextView) findViewById(R.id.userName)).getText().toString();
         final EditText input = new EditText(this);
         new AlertDialog.Builder(OpponentScreen.this)
                 .setTitle(R.string.find)
@@ -158,8 +161,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
                         public void onClick(DialogInterface dialog, int whichButton) {
                         }
                     }).show();
-
-            crud.queryForOpponent(user, DataReceived.USER_LOADED.getId(), OpponentScreen.this);
+            //crud.queryForOpponent(user, DataReceived.USER_LOADED.getId(), OpponentScreen.this);
         }
     }
 
