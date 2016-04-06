@@ -8,6 +8,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import net.brord.schuifpuzzel.OpponentScreen;
 import net.brord.schuifpuzzel.POD.User;
 import net.brord.schuifpuzzel.interfaces.CallbackInterface;
 
@@ -39,10 +40,7 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User> {
         return userInfo;
     }
     public void setUserInFirebase(User user){
-        //Log.d("MAD", "name: " + user.getUserName());
         users.child(user.getUserName()).setValue(user);
-        //Log.d("MAD", "ADDED CHHILDDASFA");
-        //Log.d("MAD", userInfo);
     }
     public void setUsersInFirebase(Map<String,User> users){
         this.users.setValue(users);
@@ -66,19 +64,19 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User> {
     }
 
     public void queryForOpponent(final User u, final int ID, final FirebaseListener listener) {
-        users.addValueEventListener( new ValueEventListener() {
+        users.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 //                Log.d("FirebaseCrud", "received data is:" + dataSnapshot.getValue());
-                Log.d("MAD","Added user is: " + u.getUserName());
-                listener.onDataReceived(dataSnapshot.hasChild(u.getUserName()),ID);
+                Log.d("MAD", "Added user is: " + u.getUserName());
+                listener.onDataReceived(dataSnapshot.hasChild(u.getUserName()), ID);
                 //Slistener.onDataReceived(dataSnapshot.child("").getValue(), ID);
             }
+
             @Override
             public void onCancelled(FirebaseError firebaseError) {
                 listener.onDataCancelled(ID);
             }
         });
     }
-
 }

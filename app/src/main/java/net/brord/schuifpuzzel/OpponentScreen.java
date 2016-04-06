@@ -6,6 +6,9 @@ import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -15,10 +18,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import net.brord.schuifpuzzel.POD.Room;
 import net.brord.schuifpuzzel.POD.User;
 import net.brord.schuifpuzzel.enums.DataReceived;
 import net.brord.schuifpuzzel.firebase.FirebaseListener;
+import net.brord.schuifpuzzel.firebase.FirebaseRoomCRUD;
 import net.brord.schuifpuzzel.firebase.FirebaseUsersCRUD;
+
+import java.lang.reflect.Field;
 
 /**
  * Created by Brord on 6/18/2015.
@@ -32,16 +39,23 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
 
     private static int message;
     private LoaderDialog loader;
+
     private FirebaseUsersCRUD crud;
+    private FirebaseRoomCRUD roomCrud;
 
     private net.brord.schuifpuzzel.LocationManager locationManager;
+
+    private String difficulty = null, image = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_opponentscreen);
+
         crud = new FirebaseUsersCRUD(this);
+        roomCrud = new FirebaseRoomCRUD(this);
+
         locationManager = new net.brord.schuifpuzzel.LocationManager(this);
     }
 
@@ -65,25 +79,21 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
     }
 
     public void createGame(View v){
-        TextView group = (TextView) findViewById(R.id.userName);
+        Intent i = new Intent(this, Schuifpuzzel.class);
+        startActivity(i);
 
-        //does user exist?
-        crud.queryUserData(group.getText().toString(), DataReceived.USER_QUERIED.getId(), this);
-        waitForNotification(R.string.checking);
+        //create game
+        //start intent
+        //end intent
+        //load game data
+        //check if user exists
+        //create room
+        //wait for opponent
     }
 
     private User loadUser() {
         username = ((TextView) findViewById(R.id.userName)).getText().toString();
         return new User(username, getLocation());
-    }
-
-    private Location getLocation() {
-        return locationManager.getLocation();
-    }
-
-    public void waitForNotification(int message) {
-        this.message = message;
-        (loader = new LoaderDialog()).show(getFragmentManager(), LOADER_TAG);
     }
 
     public void doneLoading() {
@@ -114,12 +124,27 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
         }
     }
 
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK){
+                TextView group = (TextView) findViewById(R.id.userName);
+
+                difficulty = data.getStringExtra("difficulty");
+                image = data.getStringExtra("image");
+
+                //does user exist?
+                crud.queryUserData(group.getText().toString(), DataReceived.USER_QUERIED.getId(), this);
+                waitForNotification(R.string.checking);
+            }
+        }
+    }
+
+
     private void handleOpponentFounded(boolean founded) {
         if(!founded){
             Log.d("MAD", "Opponent not founded");
-
-        }
-        else{
+        } else {
             Log.d("MAD", "Opponent founded");
             doneLoading();
             new AlertDialog.Builder(OpponentScreen.this)
@@ -143,14 +168,20 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
             crud.setUserInFirebase(user);
             doneLoading();
             Log.d("MAD", "User added");
-            //we need to set all game settings before waiting for an opponent
+            try {
+                Field f = R.mipmap.class.getField(image);
+                Bitmap bmp = BitmapFactory.decodeResource(getResources(), f.getInt(null));
+                roomCrud.createRoomInFirebase(user, difficulty, bmp);
+                Log.d("MAD", "Room added");
 
-
-            //wait for the opponent
-            //crud.queryForOpponent(user, DataReceived.USER_LOADED.getId(), OpponentScreen.this);
-            //waitForNotification(R.string.searching);
-            //crud.queryForOpponent(user, USER_LOADED, OpponentScreen.this);
-
+                //does user exist?
+                roomCrud.queryForOpponent(DataReceived.WAIT_FOR_OPPONENT.getId(), this);
+                waitForNotification(R.string.waiting);
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
         } else {
             //user exists
             new AlertDialog.Builder(OpponentScreen.this)
@@ -168,6 +199,16 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
     public void onDataCancelled(int ID) {
 
     }
+
+    private Location getLocation() {
+        return locationManager.getLocation();
+    }
+
+    public void waitForNotification(int message) {
+        this.message = message;
+        (loader = new LoaderDialog()).show(getFragmentManager(), LOADER_TAG);
+    }
+
     public static class LoaderDialog extends DialogFragment {
         public LoaderDialog(){}
 

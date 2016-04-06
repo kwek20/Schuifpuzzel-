@@ -24,7 +24,7 @@ public class ClickListener implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        Intent i = new Intent(v.getContext(), PlayScreen.class);
+        Intent i = new Intent();
 
         Activity host = (Activity) v.getContext();
         RadioGroup radioGroup = (RadioGroup) host.findViewById(R.id.radiogroup);
@@ -37,6 +37,7 @@ public class ClickListener implements View.OnClickListener{
 
         i.putExtra("difficulty", Difficulty.findByName(host, button.getText() + ""));
         i.putExtra("image", ((Button)v).getText());
-        v.getContext().startActivity(i);
+
+        host.finish();
     }
 }

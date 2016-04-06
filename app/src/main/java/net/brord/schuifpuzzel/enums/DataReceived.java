@@ -7,6 +7,7 @@ public enum DataReceived {
     USER_LOADED (1),
     USER_QUERIED (2),
     OPPONENT_QUERIED (3),
+    WAIT_FOR_OPPONENT(5),
     DRAW (4);
 
     private int id;

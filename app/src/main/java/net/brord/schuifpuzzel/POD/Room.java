@@ -7,20 +7,29 @@ import java.io.Serializable;
  */
 public class Room implements Serializable {
 
-    private int roomId;
-    private int user1, user2;
+    private String roomId;
+    private boolean ready = false;
+    private String user1, user2;
 
     private boolean isUser1Active;
 
-    public Room(int roomId, int user1, int user2) {
+    public Room(String user1, String roomId) {
         this.roomId = roomId;
         this.user1 = user1;
-        this.user2 = user2;
 
         isUser1Active = true;
     }
 
-    public int getRoomId() {
+    public void setUser2(String user2){
+        this.user2 = user2;
+        ready = true;
+    }
+
+    public boolean isReady() {
+        return ready;
+    }
+
+    public String getRoomId() {
         return roomId;
     }
 
