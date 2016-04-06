@@ -39,15 +39,12 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User> {
         return userInfo;
     }
     public void setUserInFirebase(User user){
-        //Log.d("MAD", "name: " + user.getUserName());
         users.child(user.getUserName()).setValue(user);
-        //Log.d("MAD", "ADDED CHHILDDASFA");
-        //Log.d("MAD", userInfo);
+        //users.child(user.getUserName()).push().setValue(user);
     }
     public void setUsersInFirebase(Map<String,User> users){
         this.users.setValue(users);
     }
-
     public void queryUserData(final String userName, final int ID, final FirebaseListener listener) {
         users.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

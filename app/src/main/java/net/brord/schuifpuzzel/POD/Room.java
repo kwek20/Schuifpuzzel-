@@ -16,7 +16,6 @@ public class Room implements Serializable {
         this.roomId = roomId;
         this.user1 = user1;
         this.user2 = user2;
-
         isUser1Active = true;
     }
 
