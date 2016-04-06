@@ -1,19 +1,18 @@
 package net.brord.schuifpuzzel;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 
-import net.brord.schuifpuzzel.POD.Room;
 import net.brord.schuifpuzzel.POD.User;
 import net.brord.schuifpuzzel.enums.DataReceived;
 import net.brord.schuifpuzzel.enums.Difficulty;
@@ -21,9 +20,6 @@ import net.brord.schuifpuzzel.firebase.FirebaseListener;
 import net.brord.schuifpuzzel.firebase.FirebaseUsersCRUD;
 import net.brord.schuifpuzzel.interfaces.CallbackInterface;
 
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Brord on 6/18/2015.
@@ -32,8 +28,8 @@ public class StartScreen extends ActionBarActivity implements FirebaseListener{
     public CallbackInterface cb;
 
     private FirebaseUsersCRUD crud;
-    private int message;
-    private OpponentScreen.LoaderDialog loader;
+    private static int message;
+    private LoaderDialog loader;
     private String userName;
 
     @Override
@@ -74,7 +70,7 @@ public class StartScreen extends ActionBarActivity implements FirebaseListener{
 
     public void waitForNotification(int message) {
         this.message = message;
-        (loader = new OpponentScreen.LoaderDialog()).show(getFragmentManager(), OpponentScreen.LOADER_TAG);
+        (loader = new LoaderDialog()).show(getFragmentManager(), OpponentScreen.LOADER_TAG);
     }
 
     public void doneLoading() {
@@ -134,5 +130,25 @@ public class StartScreen extends ActionBarActivity implements FirebaseListener{
     @Override
     public void onDataCancelled(int ID) {
 
+    }
+
+    public static class LoaderDialog extends DialogFragment {
+        public LoaderDialog(){}
+
+        @Override
+        public Dialog onCreateDialog(final Bundle savedInstanceState) {
+
+            ProgressDialog _dialog = new ProgressDialog(getActivity());
+            this.setStyle(STYLE_NO_TITLE, getTheme()); // You can use styles or inflate a view
+            _dialog.setMessage(getString(message)); // set your messages if not inflated from XML
+            _dialog.setCancelable(true);
+            _dialog.setCanceledOnTouchOutside(true);
+            return _dialog;
+        }
+
+        @Override
+        public void onCancel(DialogInterface dialog) {
+            super.onCancel(dialog);
+        }
     }
 }
