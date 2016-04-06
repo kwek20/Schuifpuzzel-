@@ -14,12 +14,12 @@ public class User implements Serializable{
 
     String roomID;
     String userName;
-    //Location userCoords;
+    Double[] userCoords;
     Status roomStatus;
 
     public User(String userName, Location userCoords){
         this.userName = userName;
-        //this.userCoords = userCoords;
+        this.userCoords = new Double[]{userCoords.getLatitude(), userCoords.getLongitude()};
         this.roomStatus = Status.NO_ROOM;
     }
 
@@ -27,9 +27,9 @@ public class User implements Serializable{
 
     }
 
-    /*public Location getUserCoords() {
+    public Double[] getUserCoords() {
         return userCoords;
-    }*/
+    }
 
     public Status getRoomStatus() {
         return roomStatus;
