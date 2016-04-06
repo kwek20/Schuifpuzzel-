@@ -19,7 +19,7 @@ public class User implements Serializable{
 
     public User(String userName, Location userCoords){
         this.userName = userName;
-        this.userCoords = new Double[]{userCoords.getLatitude(), userCoords.getLongitude()};
+        if (userCoords != null) this.userCoords = new Double[]{userCoords.getLatitude(), userCoords.getLongitude()};
         this.roomStatus = Status.NO_ROOM;
     }
 
