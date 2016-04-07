@@ -42,9 +42,9 @@ public class PlayScreen extends ActionBarActivity{
     public Difficulty dif;
 
     private ImageClickListener clickListener;
-    private ImageManager manager;
+    protected ImageManager manager;
 
-    private ImageGridManager grid;
+    protected ImageGridManager grid;
     private AlertDialog dialog;
 
     @Override
@@ -52,23 +52,12 @@ public class PlayScreen extends ActionBarActivity{
         super.onCreate(savedInstanceState);
         Log.d("MAD", "onCreate " + savedInstanceState);
         setContentView(R.layout.activity_playscreen);
+
         LinearLayout group = (LinearLayout) findViewById(R.id.gameImage);
-
-
-
-        //load difficulty
-        dif = (Difficulty) getIntent().getSerializableExtra("difficulty");
         grid = new ImageGridManager(dif.getX(), dif.getY(), BORDER, group);
 
-        //load image manager for handling the image drawing
-        manager = new ImageManager(grid,
-                generateDrawables(getImage(getIntent().getStringExtra("image"))), //its a manager not generator
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        //win(); //WOOT!
-                    }
-                });
+        //load screen
+        setupScreen();
 
         //the listener for each image
         grid.setClickListener(clickListener = new ImageClickListener(manager));
@@ -81,6 +70,21 @@ public class PlayScreen extends ActionBarActivity{
 
         //start countdown
         startCountdown();
+    }
+
+    public void setupScreen(){
+        dif = (Difficulty) getIntent().getSerializableExtra("difficulty");
+
+        //load image manager for handling the image drawing
+        manager = new ImageManager(grid,
+                generateDrawables(getImage(getIntent().getStringExtra("image"))), //its a manager not generator
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        //win(); //WOOT!
+                    }
+                });
+
     }
 
     private void loadDialog() {
@@ -240,7 +244,7 @@ public class PlayScreen extends ActionBarActivity{
         return null;
     }
 
-    private ArrayList<ImageTile> generateDrawables(ImageView image) {
+    protected ArrayList<ImageTile> generateDrawables(ImageView image) {
         //For the number of rows and columns of the grid to be displayed
         int rows = dif.getX(), cols = dif.getY();
 

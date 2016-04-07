@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import net.brord.schuifpuzzel.POD.Room;
@@ -34,19 +35,36 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
     private FirebaseRoomCRUD roomCrud;
 
     protected void onCreate(Bundle savedInstanceState) {
-        this.room = room;
+        room = (Room) getIntent().getSerializableExtra("room");
+        user = (User) getIntent().getSerializableExtra("user");
 
         roomCrud = new FirebaseRoomCRUD(this);
+
+        super.onCreate(savedInstanceState);
 
         Bitmap bg = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
         canvas = new Canvas(bg);
         Paint clearPaint = new Paint();
         canvas.drawRect(50, 50, 200, 200, clearPaint);
-
-        //attach to an element?!
-        /*LinearLayout ll = (LinearLayout) findViewById(R.id.rect);
-        ll.setBackgroundDrawable(new BitmapDrawable(bg));*/
 }
+
+    @Override
+    public void setupScreen() {
+        dif = room.getDifficulty();
+
+        ImageView iv = new ImageView(this);
+        iv.setImageBitmap(roomCrud.getImage(room));
+
+        manager = new ImageManager(grid,
+                generateDrawables(iv), //its a manager not generator
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        //win(); //WOOT!
+                    }
+                });
+    }
+
     public void startTurn(){
         unloadCanvas();
 
