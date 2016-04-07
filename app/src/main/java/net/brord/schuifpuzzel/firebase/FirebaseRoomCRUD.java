@@ -112,14 +112,21 @@ public class FirebaseRoomCRUD extends FirebaseCRUD<Room> {
         });
     }
 
-    public void queryForOpponent(Room r, final DataReceived id, final FirebaseListener listener) {
+    public void queryForOpponent(final Room r, final DataReceived id, final FirebaseListener listener) {
         rooms.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 //                Log.d("FirebaseCrud", "received data is:" + dataSnapshot.getValue());
-                String newUser = "dataSnapshot.userfromSnapshot";
-                Log.d("MAD", "Added user is: " + newUser);
-                listener.onDataReceived(newUser, id);
+
+                if (dataSnapshot.hasChild(r.getRoomId())) {
+                    Room roomFound = dataSnapshot.child(r.getRoomId()).getValue(Room.class);
+                    if (r.getRoomId() == roomFound.getRoomId()) {
+                        if (!roomFound.getUser2().equals("")) {
+                            String newUser = roomFound.getUser2();
+                            listener.onDataReceived(newUser, id);
+                        }
+                    }
+                }
             }
 
             @Override
