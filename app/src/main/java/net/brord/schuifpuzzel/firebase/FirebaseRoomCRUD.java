@@ -112,7 +112,7 @@ public class FirebaseRoomCRUD extends FirebaseCRUD<Room> {
         });
     }
 
-    public void queryForOpponent(final DataReceived id, final FirebaseListener listener) {
+    public void queryForOpponent(Room r, final DataReceived id, final FirebaseListener listener) {
         rooms.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

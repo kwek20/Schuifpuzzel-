@@ -109,7 +109,6 @@ public class StartScreen extends ActionBarActivity implements FirebaseListener{
         if (user == null) {
             User u;
             crud.setUserInFirebase(u = new User(userName));
-            doneLoading();
 
             Log.d("MAD", "User added");
 

@@ -210,7 +210,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
 
             crud.assignRoomToUser(user, r);
             //does user exist?
-            roomCrud.queryForOpponent(DataReceived.WAIT_FOR_OPPONENT, this);
+            roomCrud.queryForOpponent(r, DataReceived.WAIT_FOR_OPPONENT, this);
             waitForNotification(R.string.waiting);
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
