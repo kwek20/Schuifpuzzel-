@@ -20,12 +20,14 @@ import com.firebase.geofire.GeoLocation;
 public class LocationManager {
 
     private final Context context;
+    private final LocationUpdater l;
 
     private android.location.LocationManager locationManager;
     private LocationListener locationListener;
 
-    public LocationManager (Context c){
+    public LocationManager (Context c, LocationUpdater l){
         this.context = c;
+        this.l = l;
         startSearching();
     }
 
@@ -66,6 +68,7 @@ public class LocationManager {
         public void onLocationChanged(Location location) {
             // Called when a new location is found by the network location provider.
             //makeUseOfNewLocation(location);
+            l.setGeoFireLocation(location);
         }
 
         public void onStatusChanged(String provider, int status, Bundle extras) {}
