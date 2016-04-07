@@ -41,6 +41,7 @@
             android:layout_height="wrap_content"
             android:text="@string/findByLoc"
             android:id="@+id/button5"
+            android:enabled="false"
             android:layout_gravity="center_horizontal"
             android:onClick="findOpponentLoc" />
 

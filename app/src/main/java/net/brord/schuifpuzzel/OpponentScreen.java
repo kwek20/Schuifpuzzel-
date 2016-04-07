@@ -8,22 +8,19 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
-import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
-import com.google.android.gms.games.Player;
 
 import net.brord.schuifpuzzel.POD.Room;
 import net.brord.schuifpuzzel.POD.User;
@@ -40,7 +37,7 @@ import java.lang.reflect.Field;
 /**
  * Created by Brord on 6/18/2015.
  */
-public class OpponentScreen extends ActionBarActivity implements FirebaseListener {
+public class OpponentScreen extends ActionBarActivity implements FirebaseListener, LocationUpdater {
 
     //loader dialog data
     private static int message;
@@ -55,6 +52,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
 
     //location management
     private GeoFire geoFire;
+    private boolean locationSet = false;
     private net.brord.schuifpuzzel.LocationManager locationManager;
 
     @Override
@@ -68,13 +66,10 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
         geoFire = new GeoFire(FirebaseRef.getFirebaseRef().child("locations"));
 
         user = (User) getIntent().getSerializableExtra("user");
-        locationManager = new net.brord.schuifpuzzel.LocationManager(this);
-        setGeoFireLocation();
+        locationManager = new net.brord.schuifpuzzel.LocationManager(this, this);
     }
 
-    private void setGeoFireLocation(){
-
-        Location loc = locationManager.getLocation();
+    public void setGeoFireLocation(Location loc){
         if(loc != null) {
             geoFire.setLocation(user.getUserName(), new GeoLocation(loc.getLatitude(), loc.getLongitude()), new GeoFire.CompletionListener() {
                 @Override
@@ -83,10 +78,17 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
                         System.err.println("There was an error saving the location to GeoFire: " + error);
                     } else {
                         System.out.println("Location saved on server successfully!");
+                        locationSet = true;
+                        setLocationSearchEnabled(true);
                     }
                 }
             });
         }
+    }
+
+    private void setLocationSearchEnabled(boolean enabled){
+        Button searchLocButton = (Button) this.findViewById(R.id.button5);
+        searchLocButton.setEnabled(enabled);
     }
 
     /**
