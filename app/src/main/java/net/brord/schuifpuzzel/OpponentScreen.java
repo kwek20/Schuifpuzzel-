@@ -195,7 +195,8 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
     }
 
     private void startGame(String opponentName) {
-
+        Intent i = new Intent(this, MultiPlayScreen.class);
+        startActivityForResult(i, 1);
     }
 
     private void joinRoom(Room r){
