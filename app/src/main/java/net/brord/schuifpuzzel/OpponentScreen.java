@@ -140,14 +140,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
 
     @Override
     public void onDataReceived(Object o, DataReceived ID) {
-        if (ID == DataReceived.USER_LOADED){
-            if (user != null && o != null){
-                //opponent found
-                Log.d("MAD", "Opponent found");
-                startGame((String)o);
-                doneLoading();
-            }
-        } else if (ID == DataReceived.OPPONENT_QUERIED && o != null) {
+        if (ID == DataReceived.OPPONENT_QUERIED && o != null) {
             //opponent exists, we join THEIR game
 
             handleOpponentFound((User) o);
@@ -156,7 +149,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
         } else if (ID == DataReceived.WAIT_FOR_OPPONENT && o != null){
             //we found an opponent for OUR game
             doneLoading();
-            startGame((String)o);
+            startGame((Room)o);
         }
     }
 
@@ -194,14 +187,15 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
         }
     }
 
-    private void startGame(String opponentName) {
+    private void startGame(Room room) {
         Intent i = new Intent(this, MultiPlayScreen.class);
-        startActivityForResult(i, 1);
+        startActivity(i);
     }
 
     private void joinRoom(Room r){
         showAlert(R.string.success, getString(R.string.opponentavailable));
         roomCrud.setOpponentinRoom(user.getUserName(),r.getRoomId());
+        startGame(r);
     }
 
     private void makeRoom(Difficulty difficulty, String image) {
