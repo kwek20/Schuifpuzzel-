@@ -85,8 +85,7 @@ public class FirebaseRoomCRUD extends FirebaseCRUD<Room> {
 
     }
     public Bitmap getImage(Room r){
-        Firebase fb = rooms.child(r.getRoomId()).child("image");
-        byte[] imageAsBytes = Base64.decode(fb.getKey(), Base64.DEFAULT);
+        byte[] imageAsBytes = Base64.decode(r.getImage(), Base64.DEFAULT);
         Bitmap bmp = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
         return bmp;
     }
