@@ -68,6 +68,13 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
                 });
     }
 
+    @Override
+    protected ImageView loadImage() {
+        ImageView iv = new ImageView(this);
+        iv.setImageBitmap(roomCrud.getImage(room));
+        return iv;
+    }
+
     public void startTurn(){
         unloadCanvas();
 

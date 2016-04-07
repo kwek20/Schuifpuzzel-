@@ -97,8 +97,12 @@ public class PlayScreen extends ActionBarActivity{
             }
 
         };
-        dialog.setView(getImage(getIntent().getStringExtra("image")));
+        dialog.setView(loadImage());
         dialog.setTitle(R.string.dismiss);
+    }
+
+    protected ImageView loadImage(){
+        return getImage(getIntent().getStringExtra("image"));
     }
 
     public void endTurn(View v){
