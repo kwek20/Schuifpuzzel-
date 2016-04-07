@@ -142,9 +142,11 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
             }
         } else if (ID == DataReceived.OPPONENT_QUERIED.getId() && o != null){
             //opponent exists, we join THEIR game
+
             handleOpponentFound((User) o);
         } else if (ID == DataReceived.WAIT_FOR_OPPONENT.getId() && o != null){
             //we found an opponent for OUR game
+            doneLoading();
             startGame((String)o);
         }
     }
@@ -169,7 +171,6 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
         } else {
             Log.d("MAD", "Opponent found: " + user.getUserName());
             doneLoading();
-
             if (user.getRoomStatus().equals(Status.NO_ROOM)){
                 //no room
                 showAlert(R.string.error, getString(R.string.opponent_no_room));
@@ -190,7 +191,6 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
 
     private void joinRoom(Room r){
         showAlert(R.string.success, getString(R.string.opponentavailable));
-
         roomCrud.setOpponentinRoom(user.getUserName(),r.getRoomId());
     }
 
