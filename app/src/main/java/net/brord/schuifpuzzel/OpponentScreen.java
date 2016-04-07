@@ -28,6 +28,7 @@ import net.brord.schuifpuzzel.POD.Room;
 import net.brord.schuifpuzzel.POD.User;
 import net.brord.schuifpuzzel.enums.DataReceived;
 import net.brord.schuifpuzzel.enums.Difficulty;
+import net.brord.schuifpuzzel.enums.Status;
 import net.brord.schuifpuzzel.firebase.FirebaseListener;
 import net.brord.schuifpuzzel.firebase.FirebaseRef;
 import net.brord.schuifpuzzel.firebase.FirebaseRoomCRUD;
@@ -146,7 +147,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
         } else if (ID == DataReceived.OPPONENT_QUERIED.getId() && o != null){
 
             //opponent exists
-            handleOpponentFounded((User) o);
+            handleOpponentFound((User) o);
 //            Log.d("MAD", "Opponent founded");
         } else if (ID == DataReceived.WAIT_FOR_OPPONENT.getId() && o != null){
             startGame((String)o);
@@ -165,27 +166,42 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
         }
     }
 
-    private void handleOpponentFounded(User user) {
+    private void handleOpponentFound(User user) {
         if(user == null){
-            Log.d("MAD", "Opponent not founded");
+            Log.d("MAD", "Opponent not found");
         } else {
-            Log.d("MAD", "Opponent founded: " + user.getUserName());
+            Log.d("MAD", "Opponent found: " + user.getUserName());
             doneLoading();
 
-            Room r = roomCrud.getRoom(user.getRoomID());
-            new AlertDialog.Builder(OpponentScreen.this)
-                    .setTitle(R.string.success)
-                    .setMessage(getString(R.string.opponentavailable))
-                    .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-
-                        }
-                    }).show();
-
-            roomCrud.setOpponentinRoom(user.getUserName(),r.getRoomId());
-
-            //crud.queryForOpponent(user, DataReceived.USER_LOADED.getId(), OpponentScreen.this);
+            if (user.getRoomStatus().equals(Status.NO_ROOM)){
+                //no room
+                showAlert(R.string.error, getString(R.string.opponent_no_room));
+            } else if (user.getRoomStatus().equals(Status.SEARCHING)){
+                joinRoom(roomCrud.getRoom(user.getRoomID()));
+            } else if (user.getRoomStatus().equals(Status.STARTED)){
+                //playing
+                showAlert(R.string.error, getString(R.string.opponent_already_playing));
+            } else {
+                showAlert(R.string.error, getString(R.string.error));
+            }
         }
+    }
+
+    private void joinRoom(Room r){
+        showAlert(R.string.success, getString(R.string.opponentavailable));
+
+        roomCrud.setOpponentinRoom(user.getUserName(),r.getRoomId());
+    }
+
+    private void showAlert(int title, String message){
+        new AlertDialog.Builder(OpponentScreen.this)
+                .setTitle(title)
+                .setMessage(message)
+                .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                    }
+                }).show();
     }
 
     private void startGame(String opponentName) {

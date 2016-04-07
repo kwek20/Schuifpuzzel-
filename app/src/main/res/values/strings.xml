@@ -36,5 +36,7 @@
     <string name="checking">Checking user info</string>
     <string name="opponentunavailable">There is no opponent with that name</string>
     <string name="opponentavailable">Opponent found</string>
+    <string name="opponent_already_playing">Opponent is already playing</string>
+    <string name="opponent_no_room">Opponent has no room</string>
     <string name="cancelledOpponentSearch">Cancelled search</string>
 </resources>
