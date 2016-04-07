@@ -59,7 +59,7 @@ public class StartScreen extends ActionBarActivity implements FirebaseListener{
                         Editable value = input.getText();
                         userName = value.toString();
                         crud.queryUserData(value.toString(), DataReceived.USER_QUERIED.getId(), StartScreen.this);
-                        waitForNotification(R.string.searching);
+                        waitForNotification(R.string.checking);
                     }
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
