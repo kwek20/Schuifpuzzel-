@@ -25,11 +25,13 @@ import net.brord.schuifpuzzel.interfaces.CallbackInterface;
  * Created by Brord on 6/18/2015.
  */
 public class StartScreen extends ActionBarActivity implements FirebaseListener{
-    public CallbackInterface cb;
-
-    private FirebaseUsersCRUD crud;
+    //loader data
+    private static final String LOADER_TAG = "Loader";
     private static int message;
     private LoaderDialog loader;
+
+
+    private FirebaseUsersCRUD crud;
     private String userName;
 
     @Override
@@ -70,7 +72,7 @@ public class StartScreen extends ActionBarActivity implements FirebaseListener{
 
     public void waitForNotification(int message) {
         this.message = message;
-        (loader = new LoaderDialog()).show(getFragmentManager(), OpponentScreen.LOADER_TAG);
+        (loader = new LoaderDialog()).show(getFragmentManager(), StartScreen.LOADER_TAG);
     }
 
     public void doneLoading() {
@@ -96,14 +98,15 @@ public class StartScreen extends ActionBarActivity implements FirebaseListener{
     public void onDataReceived(Object o, int ID) {
         if (ID == DataReceived.USER_QUERIED.getId()){
             //hey user
-            handleUserLoaded( o != null);
+            handleUserLoaded( (User) o);
 
         }
     }
 
-    private void handleUserLoaded(boolean exists) {
+    private void handleUserLoaded(User user) {
         //user doesnt exist, add and wait
-        if (!exists) {
+        doneLoading();
+        if (user == null) {
             User u;
             crud.setUserInFirebase(u = new User(userName));
             doneLoading();

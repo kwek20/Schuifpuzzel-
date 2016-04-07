@@ -41,16 +41,19 @@ import java.lang.reflect.Field;
  */
 public class OpponentScreen extends ActionBarActivity implements FirebaseListener {
 
-    public static final String LOADER_TAG = "Loader";
+    //loader dialog data
+    private static int message;
+    private static final String LOADER_TAG = "Loader";
+    private LoaderDialog loader;
 
     private User user;
 
-    private static int message;
-    private LoaderDialog loader;
-
+    //Firebase connection handlers
     private FirebaseUsersCRUD crud;
     private FirebaseRoomCRUD roomCrud;
 
+    //location management
+    private GeoFire geoFire;
     private net.brord.schuifpuzzel.LocationManager locationManager;
 
     @Override
@@ -61,6 +64,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
 
         crud = new FirebaseUsersCRUD(this);
         roomCrud = new FirebaseRoomCRUD(this);
+        geoFire = new GeoFire(FirebaseRef.getFirebaseRef());
 
         user = (User) getIntent().getSerializableExtra("user");
         locationManager = new net.brord.schuifpuzzel.LocationManager(this);
@@ -68,7 +72,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
     }
 
     private void setGeoFireLocation(){
-        GeoFire geoFire = new GeoFire(FirebaseRef.getFirebaseRef());
+
         Location loc = locationManager.getLocation();
         if(loc != null) {
             geoFire.setLocation(user.getUserName(), new GeoLocation(loc.getLatitude(), loc.getLongitude()), new GeoFire.CompletionListener() {
@@ -137,11 +141,10 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
                 doneLoading();
             }
         } else if (ID == DataReceived.OPPONENT_QUERIED.getId() && o != null){
-
-            //opponent exists
+            //opponent exists, we join THEIR game
             handleOpponentFound((User) o);
-//            Log.d("MAD", "Opponent founded");
         } else if (ID == DataReceived.WAIT_FOR_OPPONENT.getId() && o != null){
+            //we found an opponent for OUR game
             startGame((String)o);
         }
     }

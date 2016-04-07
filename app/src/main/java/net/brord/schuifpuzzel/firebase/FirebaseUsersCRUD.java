@@ -11,6 +11,7 @@ import com.firebase.client.ValueEventListener;
 import net.brord.schuifpuzzel.OpponentScreen;
 import net.brord.schuifpuzzel.POD.Room;
 import net.brord.schuifpuzzel.POD.User;
+import net.brord.schuifpuzzel.enums.Status;
 import net.brord.schuifpuzzel.interfaces.CallbackInterface;
 
 import java.util.Map;
@@ -66,6 +67,7 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User> {
 
     public void assignRoomToUser(final User u, final Room r){
         u.setRoomID(r.getRoomId());
+        u.setRoomStatus(Status.SEARCHING);
         users.child(u.getUserName()).setValue(u);
     }
 
