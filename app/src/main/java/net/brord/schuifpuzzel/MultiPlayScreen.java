@@ -52,6 +52,9 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
     public void setupScreen() {
         dif = room.getDifficulty();
 
+        LinearLayout group = (LinearLayout) findViewById(R.id.gameImage);
+        grid = new ImageGridManager(dif.getX(), dif.getY(), BORDER, group);
+
         ImageView iv = new ImageView(this);
         iv.setImageBitmap(roomCrud.getImage(room));
 
