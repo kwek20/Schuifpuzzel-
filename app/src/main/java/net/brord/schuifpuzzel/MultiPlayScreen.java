@@ -89,7 +89,9 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
             drawOnCanvas();
         }
     }
+    public void getRoomData(Room r){
 
+    }
     @Override
     public void onDataCancelled(DataReceived ID) {
 
