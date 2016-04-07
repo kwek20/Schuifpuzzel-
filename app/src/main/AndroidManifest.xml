@@ -28,6 +28,9 @@
             android:name=".PlayScreen">
         </activity>
         <activity
+            android:name=".MultiPlayScreen">
+        </activity>
+        <activity
             android:name=".WinScreen">
         </activity>
         <activity
