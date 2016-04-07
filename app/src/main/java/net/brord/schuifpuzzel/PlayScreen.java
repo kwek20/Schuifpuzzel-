@@ -35,7 +35,7 @@ import java.util.ArrayList;
 public class PlayScreen extends ActionBarActivity{
 
     private static final String MAD = "Mad";
-    private static int BORDER = 10;
+    protected static int BORDER = 10;
 
 
 
@@ -56,10 +56,6 @@ public class PlayScreen extends ActionBarActivity{
         //load screen
         setupScreen();
 
-        LinearLayout group = (LinearLayout) findViewById(R.id.gameImage);
-        grid = new ImageGridManager(dif.getX(), dif.getY(), BORDER, group);
-
-
         //the listener for each image
         grid.setClickListener(clickListener = new ImageClickListener(manager));
         grid.setup(this);
@@ -75,6 +71,9 @@ public class PlayScreen extends ActionBarActivity{
 
     public void setupScreen(){
         dif = (Difficulty) getIntent().getSerializableExtra("difficulty");
+
+        LinearLayout group = (LinearLayout) findViewById(R.id.gameImage);
+        grid = new ImageGridManager(dif.getX(), dif.getY(), BORDER, group);
 
         //load image manager for handling the image drawing
         manager = new ImageManager(grid,
