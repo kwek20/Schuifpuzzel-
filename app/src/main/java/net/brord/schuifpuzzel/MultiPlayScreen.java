@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.widget.LinearLayout;
 
 import net.brord.schuifpuzzel.POD.Room;
+import net.brord.schuifpuzzel.POD.User;
 import net.brord.schuifpuzzel.enums.DataReceived;
 import net.brord.schuifpuzzel.enums.Difficulty;
 import net.brord.schuifpuzzel.firebase.FirebaseListener;
@@ -23,7 +24,8 @@ import net.brord.schuifpuzzel.images.ImageManager;
  */
 public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
 
-    //private final Room room;
+    private Room room;
+    private User user;
 
     private int myId;
 
@@ -31,53 +33,19 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
 
     private FirebaseRoomCRUD roomCrud;
 
-//    public MultiPlayScreen(Room room, int myId){
-//        this.room = room;
-//
-//        roomCrud = new FirebaseRoomCRUD(this);
-//
-//        Bitmap bg = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
-//        canvas = new Canvas(bg);
-//        Paint clearPaint = new Paint();
-//        canvas.drawRect(50, 50, 200, 200, clearPaint);
-//
-//        //attach to an element?!
-//        /*LinearLayout ll = (LinearLayout) findViewById(R.id.rect);
-//        ll.setBackgroundDrawable(new BitmapDrawable(bg));*/
-//    }
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        this.room = room;
+
         roomCrud = new FirebaseRoomCRUD(this);
-        setContentView(R.layout.activity_playscreen);
-        LinearLayout group = (LinearLayout) findViewById(R.id.gameImage);
 
-//        //load difficulty
-//        dif = (Difficulty) getIntent().getSerializableExtra("difficulty");
-//        grid = new ImageGridManager(dif.getX(), dif.getY(), BORDER, group);
-//
-//        //load image manager for handling the image drawing
-//        manager = new ImageManager(grid,
-//                generateDrawables(getImage(getIntent().getStringExtra("image"))), //its a manager not generator
-//                new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        //win(); //WOOT!
-//                    }
-//                });
-//
-//        //the listener for each image
-//        grid.setClickListener(clickListener = new ImageClickListener(manager));
-//        grid.setup(this);
-//
-//        //load images in layout
-//        manager.loadImage(dif);
-//
-//        loadDialog();
-//
-//        //start countdown
-//        startCountdown();
-        //saving it in the firebase
+        Bitmap bg = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
+        canvas = new Canvas(bg);
+        Paint clearPaint = new Paint();
+        canvas.drawRect(50, 50, 200, 200, clearPaint);
 
+        //attach to an element?!
+        /*LinearLayout ll = (LinearLayout) findViewById(R.id.rect);
+        ll.setBackgroundDrawable(new BitmapDrawable(bg));*/
 }
     public void startTurn(){
         unloadCanvas();

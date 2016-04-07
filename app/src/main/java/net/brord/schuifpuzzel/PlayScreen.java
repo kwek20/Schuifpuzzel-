@@ -37,6 +37,8 @@ public class PlayScreen extends ActionBarActivity{
     private static final String MAD = "Mad";
     private static int BORDER = 10;
 
+
+
     public Difficulty dif;
 
     private ImageClickListener clickListener;
@@ -51,6 +53,8 @@ public class PlayScreen extends ActionBarActivity{
         Log.d("MAD", "onCreate " + savedInstanceState);
         setContentView(R.layout.activity_playscreen);
         LinearLayout group = (LinearLayout) findViewById(R.id.gameImage);
+
+
 
         //load difficulty
         dif = (Difficulty) getIntent().getSerializableExtra("difficulty");
