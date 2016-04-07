@@ -67,7 +67,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
         setGeoFireLocation();
     }
 
-    public void setGeoFireLocation(){
+    private void setGeoFireLocation(){
         GeoFire geoFire = new GeoFire(FirebaseRef.getFirebaseRef());
         Location loc = locationManager.getLocation();
         if(loc != null) {
@@ -85,7 +85,8 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
     }
 
     /**
-     * Find opponent by username
+     * Find opponent by username<br/>
+     * Button click handler
      * @param v
      */
     public void findOpponent(View v){
@@ -108,31 +109,22 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
     }
 
     /**
-     * find opponent by geoloc
+     * find opponent by geoloc<br/>
+     * Button click handler
      * @param v
      */
     public void findOpponentLoc(View v){
 
     }
 
+    /**
+     * Create game<br/>
+     * button click handler
+     * @param v
+     */
     public void createGame(View v){
         Intent i = new Intent(this, Schuifpuzzel.class);
         startActivityForResult(i, 1);
-
-        //create game
-        //start intent
-        //end intent
-        //load game data
-        //check if user exists
-        //create room
-        //wait for opponent
-    }
-
-    public void doneLoading() {
-
-        if (loader != null && loader.getShowsDialog()) {
-            loader.dismiss();
-        }
     }
 
     @Override
@@ -154,14 +146,16 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
         }
     }
 
+    @Override
+    public void onDataCancelled(int ID) {
+
+    }
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if(resultCode == RESULT_OK){
-                TextView group = (TextView) findViewById(R.id.userName);
-
-                makeRoom((Difficulty) data.getSerializableExtra("difficulty"), data.getStringExtra("image"));
-
+                 makeRoom((Difficulty) data.getSerializableExtra("difficulty"), data.getStringExtra("image"));
             }
         }
     }
@@ -187,25 +181,14 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
         }
     }
 
+    private void startGame(String opponentName) {
+
+    }
+
     private void joinRoom(Room r){
         showAlert(R.string.success, getString(R.string.opponentavailable));
 
         roomCrud.setOpponentinRoom(user.getUserName(),r.getRoomId());
-    }
-
-    private void showAlert(int title, String message){
-        new AlertDialog.Builder(OpponentScreen.this)
-                .setTitle(title)
-                .setMessage(message)
-                .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-
-                    }
-                }).show();
-    }
-
-    private void startGame(String opponentName) {
-
     }
 
     private void makeRoom(Difficulty difficulty, String image) {
@@ -226,14 +209,45 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
         }
     }
 
-    @Override
-    public void onDataCancelled(int ID) {
+    /*=================
+        UTIL METHODS
+     =================*/
 
+    /**
+     *
+     * @param title
+     * @param message
+     */
+    private void showAlert(int title, String message){
+        new AlertDialog.Builder(OpponentScreen.this)
+                .setTitle(title)
+                .setMessage(message)
+                .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                    }
+                }).show();
     }
 
+    /**
+     * Start a loaddialog with the message.<br/>
+     * Stop using @fun
+     *
+     * @param message
+     */
     public void waitForNotification(int message) {
         this.message = message;
         (loader = new LoaderDialog()).show(getFragmentManager(), LOADER_TAG);
+    }
+
+    /**
+     * Stop the loader, if it was loading
+     */
+    public void doneLoading() {
+
+        if (loader != null && loader.getShowsDialog()) {
+            loader.dismiss();
+        }
     }
 
     public static class LoaderDialog extends DialogFragment {
