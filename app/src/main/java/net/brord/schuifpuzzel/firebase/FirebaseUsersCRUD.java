@@ -11,6 +11,7 @@ import com.firebase.client.ValueEventListener;
 import net.brord.schuifpuzzel.OpponentScreen;
 import net.brord.schuifpuzzel.POD.Room;
 import net.brord.schuifpuzzel.POD.User;
+import net.brord.schuifpuzzel.enums.DataReceived;
 import net.brord.schuifpuzzel.enums.Status;
 import net.brord.schuifpuzzel.interfaces.CallbackInterface;
 
@@ -47,7 +48,7 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User> {
     public void setUsersInFirebase(Map<String,User> users){
         this.users.setValue(users);
     }
-    public void queryUserData(final String userName, final int ID, final FirebaseListener listener) {
+    public void queryUserData(final String userName, final DataReceived ID, final FirebaseListener listener) {
         users.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -71,7 +72,7 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User> {
         users.child(u.getUserName()).setValue(u);
     }
 
-    public void queryForOpponent(final User u, final int ID, final FirebaseListener listener) {
+    public void queryForOpponent(final User u, final DataReceived ID, final FirebaseListener listener) {
         users.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

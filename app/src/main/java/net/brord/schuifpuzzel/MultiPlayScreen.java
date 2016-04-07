@@ -74,15 +74,15 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
     }
 
     @Override
-    public void onDataReceived(Object o, int ID) {
-        if (ID == DataReceived.DRAW.getId()){
+    public void onDataReceived(Object o, DataReceived ID) {
+        if (ID == DataReceived.DRAW){
             //drawing! WOOOOO
             drawOnCanvas();
         }
     }
 
     @Override
-    public void onDataCancelled(int ID) {
+    public void onDataCancelled(DataReceived ID) {
 
     }
 }
