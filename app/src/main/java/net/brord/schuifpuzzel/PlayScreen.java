@@ -53,11 +53,12 @@ public class PlayScreen extends ActionBarActivity{
         Log.d("MAD", "onCreate " + savedInstanceState);
         setContentView(R.layout.activity_playscreen);
 
+        //load screen
+        setupScreen();
+
         LinearLayout group = (LinearLayout) findViewById(R.id.gameImage);
         grid = new ImageGridManager(dif.getX(), dif.getY(), BORDER, group);
 
-        //load screen
-        setupScreen();
 
         //the listener for each image
         grid.setClickListener(clickListener = new ImageClickListener(manager));
