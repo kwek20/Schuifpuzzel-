@@ -83,11 +83,14 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
         }
     }
 
+    /**
+     * Find opponent by username
+     * @param v
+     */
     public void findOpponent(View v){
-        //username will be an opponentname in this case
         final EditText input = new EditText(this);
         new AlertDialog.Builder(OpponentScreen.this)
-                .setTitle(R.string.find)
+                .setTitle(R.string.findByName)
                 .setMessage(getString(R.string.username))
                 .setView(input)
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -101,6 +104,14 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
                 // Do nothing.
             }
         }).show();
+    }
+
+    /**
+     * find opponent by geoloc
+     * @param v
+     */
+    public void findOpponentLoc(View v){
+
     }
 
     public void createGame(View v){

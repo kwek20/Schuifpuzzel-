@@ -20,13 +20,6 @@
         android:weightSum="1"
         android:gravity="center_vertical">
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:id="@+id/userName" />
-
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -38,10 +31,18 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/find"
+            android:text="@string/findByName"
             android:id="@+id/button4"
             android:layout_gravity="center_horizontal"
             android:onClick="findOpponent" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/findByLoc"
+            android:id="@+id/button5"
+            android:layout_gravity="center_horizontal"
+            android:onClick="findOpponentLoc" />
 
     </LinearLayout>
 </RelativeLayout>

@@ -26,7 +26,8 @@
 
     <string name="username">Username: \u0020</string>
     <string name="create">Create game</string>
-    <string name="find">Find game</string>
+    <string name="findByName">Find by username</string>
+    <string name="findByLoc">Find by location range</string>
     <string name="error">Error!</string>
     <string name="success">Success!</string>
     <string name="unavailable">Username unavailable</string>

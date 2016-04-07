@@ -51,7 +51,7 @@ public class StartScreen extends ActionBarActivity implements FirebaseListener{
     public void multiPlayer(View v){
         final EditText input = new EditText(this);
         new AlertDialog.Builder(StartScreen.this)
-                .setTitle(R.string.find)
+                .setTitle(R.string.username)
                 .setMessage(getString(R.string.username))
                 .setView(input)
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
