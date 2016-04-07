@@ -22,6 +22,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.GeoQuery;
 import com.google.android.gms.games.Player;
 
 import net.brord.schuifpuzzel.POD.Room;
@@ -64,7 +65,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
 
         crud = new FirebaseUsersCRUD(this);
         roomCrud = new FirebaseRoomCRUD(this);
-        geoFire = new GeoFire(FirebaseRef.getFirebaseRef());
+        geoFire = new GeoFire(FirebaseRef.getFirebaseRef().child("locations"));
 
         user = (User) getIntent().getSerializableExtra("user");
         locationManager = new net.brord.schuifpuzzel.LocationManager(this);
@@ -102,7 +103,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         Editable value = input.getText();
-                        crud.queryUserData(value.toString(), DataReceived.OPPONENT_QUERIED.getId(), OpponentScreen.this);
+                        crud.queryUserData(value.toString(), DataReceived.OPPONENT_QUERIED, OpponentScreen.this);
                         waitForNotification(R.string.searching);
                     }
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -118,7 +119,11 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
      * @param v
      */
     public void findOpponentLoc(View v){
+        Location loc = locationManager.getLocation();
+        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(loc.getLatitude(), loc.getLongitude()), 0.6);
+        geoQuery.addGeoQueryEventListener(new GeoListener(this));
 
+        waitForNotification(R.string.searchByLoc);
     }
 
     /**
@@ -132,25 +137,27 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
     }
 
     @Override
-    public void onDataReceived(Object o, int ID) {
-        if (ID == DataReceived.USER_LOADED.getId()){
+    public void onDataReceived(Object o, DataReceived ID) {
+        if (ID == DataReceived.USER_LOADED){
             if (user != null && o != null){
                 //opponent found
                 Log.d("MAD", "Opponent found");
                 startGame((String)o);
                 doneLoading();
             }
-        } else if (ID == DataReceived.OPPONENT_QUERIED.getId() && o != null){
+        } else if (ID == DataReceived.OPPONENT_QUERIED && o != null) {
             //opponent exists, we join THEIR game
             handleOpponentFound((User) o);
-        } else if (ID == DataReceived.WAIT_FOR_OPPONENT.getId() && o != null){
+        } else if (ID == DataReceived.OPPONENT_QUERIED_LOCATION && o != null){
+            crud.queryUserData((String) o, DataReceived.OPPONENT_QUERIED, this);
+        } else if (ID == DataReceived.WAIT_FOR_OPPONENT && o != null){
             //we found an opponent for OUR game
             startGame((String)o);
         }
     }
 
     @Override
-    public void onDataCancelled(int ID) {
+    public void onDataCancelled(DataReceived ID) {
 
     }
 
@@ -203,7 +210,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
 
             crud.assignRoomToUser(user, r);
             //does user exist?
-            roomCrud.queryForOpponent(DataReceived.WAIT_FOR_OPPONENT.getId(), this);
+            roomCrud.queryForOpponent(DataReceived.WAIT_FOR_OPPONENT, this);
             waitForNotification(R.string.waiting);
         } catch (NoSuchFieldException e) {
             e.printStackTrace();

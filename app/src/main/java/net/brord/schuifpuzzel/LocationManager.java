@@ -46,14 +46,15 @@ public class LocationManager {
 
     public Location getLocation(){
         android.location.LocationManager service = (android.location.LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        boolean enabled = service
-                .isProviderEnabled(android.location.LocationManager.GPS_PROVIDER);
+        boolean enabled = service.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)
+                || service.isProviderEnabled(android.location.LocationManager.NETWORK_PROVIDER);
 
         if (!enabled) {
             Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             context.startActivity(intent);
         } else {
             Criteria criteria = new Criteria();
+
             String provider = service.getBestProvider(criteria, false);
             Location location = service.getLastKnownLocation(provider);
             return location;

@@ -60,7 +60,7 @@ public class StartScreen extends ActionBarActivity implements FirebaseListener{
                     public void onClick(DialogInterface dialog, int whichButton) {
                         Editable value = input.getText();
                         userName = value.toString();
-                        crud.queryUserData(value.toString(), DataReceived.USER_QUERIED.getId(), StartScreen.this);
+                        crud.queryUserData(value.toString(), DataReceived.USER_QUERIED, StartScreen.this);
                         waitForNotification(R.string.checking);
                     }
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -95,8 +95,8 @@ public class StartScreen extends ActionBarActivity implements FirebaseListener{
     }
 
     @Override
-    public void onDataReceived(Object o, int ID) {
-        if (ID == DataReceived.USER_QUERIED.getId()){
+    public void onDataReceived(Object o, DataReceived ID) {
+        if (ID == DataReceived.USER_QUERIED){
             //hey user
             handleUserLoaded( (User) o);
 
@@ -131,7 +131,7 @@ public class StartScreen extends ActionBarActivity implements FirebaseListener{
     }
 
     @Override
-    public void onDataCancelled(int ID) {
+    public void onDataCancelled(DataReceived ID) {
 
     }
 

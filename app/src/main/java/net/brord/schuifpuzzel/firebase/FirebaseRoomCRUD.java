@@ -16,6 +16,7 @@ import com.firebase.client.ValueEventListener;
 import net.brord.schuifpuzzel.OpponentScreen;
 import net.brord.schuifpuzzel.POD.Room;
 import net.brord.schuifpuzzel.POD.User;
+import net.brord.schuifpuzzel.enums.DataReceived;
 import net.brord.schuifpuzzel.enums.Difficulty;
 import net.brord.schuifpuzzel.interfaces.CallbackInterface;
 
@@ -97,7 +98,7 @@ public class FirebaseRoomCRUD extends FirebaseCRUD<Room> {
         return null;
     }
 
-    public void queryRoomData(final String userName, final int ID, final FirebaseListener listener) {
+    public void queryRoomData(final String userName, final DataReceived ID, final FirebaseListener listener) {
         rooms.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -111,7 +112,7 @@ public class FirebaseRoomCRUD extends FirebaseCRUD<Room> {
         });
     }
 
-    public void queryForOpponent(final int id, final FirebaseListener listener) {
+    public void queryForOpponent(final DataReceived id, final FirebaseListener listener) {
         rooms.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
