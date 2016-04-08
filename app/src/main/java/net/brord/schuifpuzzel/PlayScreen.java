@@ -41,7 +41,7 @@ public class PlayScreen extends ActionBarActivity{
 
     public Difficulty dif;
 
-    private ImageClickListener clickListener;
+    protected ImageClickListener clickListener;
     protected ImageManager manager;
 
     protected ImageGridManager grid;
@@ -51,14 +51,10 @@ public class PlayScreen extends ActionBarActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("MAD", "onCreate " + savedInstanceState);
-        setContentView(R.layout.activity_playscreen);
+        setContentView(getLayout());
 
         //load screen
         setupScreen();
-
-        //the listener for each image
-        grid.setClickListener(clickListener = new ImageClickListener(manager));
-        grid.setup(this);
 
         //load images in layout
         manager.loadImage(dif);
@@ -67,6 +63,10 @@ public class PlayScreen extends ActionBarActivity{
 
         //start countdown
         startCountdown();
+    }
+
+    protected int getLayout(){
+        return R.layout.activity_playscreen;
     }
 
     public void setupScreen(){
@@ -129,7 +129,7 @@ public class PlayScreen extends ActionBarActivity{
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_schuifpuzzel, menu);
+        inflater.inflate(getMenu(), menu);
 
         MenuItem difficulty = menu.findItem(R.id.action_settings);
         SubMenu submenu = difficulty.getSubMenu();
@@ -140,6 +140,10 @@ public class PlayScreen extends ActionBarActivity{
             }
         }
         return true;
+    }
+
+    protected int getMenu(){
+        return R.menu.menu_schuifpuzzel;
     }
 
     @Override

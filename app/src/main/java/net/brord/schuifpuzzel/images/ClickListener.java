@@ -1,4 +1,4 @@
-package net.brord.schuifpuzzel;
+package net.brord.schuifpuzzel.images;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import net.brord.schuifpuzzel.R;
+import net.brord.schuifpuzzel.Schuifpuzzel;
 import net.brord.schuifpuzzel.enums.Difficulty;
 
 /**

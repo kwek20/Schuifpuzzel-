@@ -22,6 +22,7 @@ import net.brord.schuifpuzzel.enums.Difficulty;
 import net.brord.schuifpuzzel.interfaces.CallbackInterface;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -117,6 +118,7 @@ public class FirebaseRoomCRUD extends FirebaseCRUD<Room> {
                     Room roomFound = dataSnapshot.child(r.getRoomId()).getValue(Room.class);
                     if (r.getRoomId().equals(roomFound.getRoomId())) {
                         if (!roomFound.getUser2().equals("")) {
+                            rooms.removeEventListener(this);
                             listener.onDataReceived(roomFound, id);
                         }
                     }
@@ -138,6 +140,7 @@ public class FirebaseRoomCRUD extends FirebaseCRUD<Room> {
                     Room roomFound = dataSnapshot.child(room.getRoomId()).getValue(Room.class);
                     if (room.getRoomId().equals(roomFound.getRoomId())) {
                         if (roomFound.getUser1Active() == b) {
+                            rooms.removeEventListener(this);
                             listener.onDataReceived(roomFound, id);
                         }
                     }
@@ -151,14 +154,15 @@ public class FirebaseRoomCRUD extends FirebaseCRUD<Room> {
         });
     }
 
-    public void queryFoTileData(final Room room, final DataReceived id, final FirebaseListener listener) {
+    public void queryForTileData(final Room room, final DataReceived id, final FirebaseListener listener) {
         rooms.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChild(room.getRoomId())) {
                     Room roomFound = dataSnapshot.child(room.getRoomId()).getValue(Room.class);
                     if (room.getRoomId().equals(roomFound.getRoomId())) {
-                        if (roomFound.getTileData() != room.getTileData()) {
+                        if (!Arrays.equals(roomFound.getTileData(),room.getTileData())) {
+                            rooms.removeEventListener(this);
                             listener.onDataReceived(roomFound, id);
                         }
                     }

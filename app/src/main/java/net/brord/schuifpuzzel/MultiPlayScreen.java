@@ -14,10 +14,8 @@ import android.widget.TextView;
 import net.brord.schuifpuzzel.POD.Room;
 import net.brord.schuifpuzzel.POD.User;
 import net.brord.schuifpuzzel.enums.DataReceived;
-import net.brord.schuifpuzzel.enums.Difficulty;
 import net.brord.schuifpuzzel.firebase.FirebaseListener;
 import net.brord.schuifpuzzel.firebase.FirebaseRoomCRUD;
-import net.brord.schuifpuzzel.firebase.FirebaseUsersCRUD;
 import net.brord.schuifpuzzel.images.ImageClickListener;
 import net.brord.schuifpuzzel.images.ImageGridManager;
 import net.brord.schuifpuzzel.images.ImageManager;
@@ -35,7 +33,9 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
     private Canvas canvas;
 
     private FirebaseRoomCRUD roomCrud;
+
     private boolean host;
+    private boolean started = false;
 
     protected void onCreate(Bundle savedInstanceState) {
         room = (Room) getIntent().getSerializableExtra("room");
@@ -57,13 +57,16 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
 }
 
     @Override
+    protected int getLayout() {
+        return R.layout.activity_multiplayscreen;
+    }
+
+    @Override
     public void setupScreen() {
         dif = room.getDifficulty();
 
         LinearLayout group = (LinearLayout) findViewById(R.id.gameImage);
         grid = new ImageGridManager(dif.getX(), dif.getY(), BORDER, group);
-        setGridEnabled(false);
-
 
         ImageView iv = new ImageView(this);
         iv.setImageBitmap(roomCrud.getImage(room));
@@ -76,6 +79,13 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
                         //win(); //WOOT!
                     }
                 });
+
+        //the listener for each image
+        grid.setClickListener(clickListener = new ImageClickListener(manager));
+        grid.setup(this);
+
+        //disable grid stuff after setup!
+        setGridEnabled(false);
     }
 
     @Override
@@ -95,8 +105,9 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
             //wait for opponent end turn
             waitForStart();
 
-            setUserLabelName(room.getUser1() == user.getUserName() ? room.getUser2() : room.getUser1());
+            setUserLabelName(room.getUser1().equals(user.getUserName()) ? room.getUser2() : room.getUser1());
         }
+        started = true;
     }
 
     @Override
@@ -106,11 +117,6 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
         } else {
             //wait for tile send data!
         }
-    }
-
-    public void endTurn(View v){
-        //we ended the turn by button press
-        endTurn();
     }
 
     private void loadNewRoomTiles(){
@@ -141,6 +147,11 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
         //we can make moves now
     }
 
+    public void endTurn(View v){
+        //we ended the turn by button press
+        endTurn();
+    }
+
     public void endTurn(){
         //disable our grid for movement
         setGridEnabled(false);
@@ -149,7 +160,7 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
         room.setUser1Active(!room.getUser1Active());
 
         //set user label to opponent name
-        setUserLabelName(room.getUser1() == user.getUserName() ? room.getUser2() : room.getUser1());
+        setUserLabelName(room.getUser1().equals(user.getUserName()) ? room.getUser2() : room.getUser1());
 
         //send update data and notify user that our turn has ended
         sendRoomTiles();
@@ -170,22 +181,25 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
     }
 
     private void waitForTileData(){
-        roomCrud.queryFoTileData(room, DataReceived.WAIT_FOR_TILE_DATA, this);
+        roomCrud.queryForTileData(room, DataReceived.WAIT_FOR_TILE_DATA, this);
     }
 
     private void setUserLabelName(String s) {
         TextView group = (TextView) findViewById(R.id.currentPlayer);
-        group.setText(getString(R.string.currentPlayer) + s);
+        group.setText(getString(R.string.currentPlayer) + "" + s);
     }
 
     private void setGridEnabled(boolean b) {
         LinearLayout group = (LinearLayout) findViewById(R.id.gameImage);
         group.setEnabled(b);
+
+        clickListener.setActive(b);
     }
 
     private void cleanCanvas(){
         Paint clearPaint = new Paint();
         clearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+        clearPaint.setARGB(20, 20, 0, 0);
         canvas.drawRect(0, 0, 100, 100, clearPaint);
     }
 
@@ -217,6 +231,10 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
         } else if (ID == DataReceived.WAIT_FOR_TILE_DATA){
             room = (Room) o;
             loadNewRoomTiles();
+
+            if (!started){ //first time we receive images, so also fire up our magic <3
+                gameStarted();
+            }
         }
     }
 

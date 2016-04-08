@@ -17,6 +17,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import net.brord.schuifpuzzel.enums.Difficulty;
+import net.brord.schuifpuzzel.images.ClickListener;
 
 import java.lang.reflect.Field;
 
