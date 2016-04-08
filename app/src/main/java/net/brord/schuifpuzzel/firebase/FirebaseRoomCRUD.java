@@ -80,10 +80,7 @@ public class FirebaseRoomCRUD extends FirebaseCRUD<Room> {
         return r;
     }
     public void setOpponentinRoom(String user2, String roomID){
-        //Firebase base = rooms.push();
-
         rooms.child(roomID).child("user2").setValue(user2);
-
     }
     public Bitmap getImage(Room r){
         byte[] imageAsBytes = Base64.decode(r.getImage(), Base64.DEFAULT);
@@ -116,8 +113,6 @@ public class FirebaseRoomCRUD extends FirebaseCRUD<Room> {
         rooms.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-//                Log.d("FirebaseCrud", "received data is:" + dataSnapshot.getValue());
-
                 if (dataSnapshot.hasChild(r.getRoomId())) {
                     Room roomFound = dataSnapshot.child(r.getRoomId()).getValue(Room.class);
                     if (r.getRoomId().equals(roomFound.getRoomId())) {
@@ -139,8 +134,6 @@ public class FirebaseRoomCRUD extends FirebaseCRUD<Room> {
         rooms.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-//                Log.d("FirebaseCrud", "received data is:" + dataSnapshot.getValue());
-
                 if (dataSnapshot.hasChild(room.getRoomId())) {
                     Room roomFound = dataSnapshot.child(room.getRoomId()).getValue(Room.class);
                     if (room.getRoomId().equals(roomFound.getRoomId())) {
@@ -162,8 +155,6 @@ public class FirebaseRoomCRUD extends FirebaseCRUD<Room> {
         rooms.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-//                Log.d("FirebaseCrud", "received data is:" + dataSnapshot.getValue());
-
                 if (dataSnapshot.hasChild(room.getRoomId())) {
                     Room roomFound = dataSnapshot.child(room.getRoomId()).getValue(Room.class);
                     if (room.getRoomId().equals(roomFound.getRoomId())) {
@@ -179,5 +170,9 @@ public class FirebaseRoomCRUD extends FirebaseCRUD<Room> {
                 listener.onDataCancelled(id);
             }
         });
+    }
+
+    public void sendRoomUpdate(Room room) {
+        rooms.child(room.getRoomId()).setValue(room);
     }
 }

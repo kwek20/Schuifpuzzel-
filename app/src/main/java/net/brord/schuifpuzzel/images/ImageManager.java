@@ -20,6 +20,7 @@ public class ImageManager {
     private final ArrayList<ImageTile> images;
     private final ImageGridManager manager;
     private final Runnable callback;
+    private int[] tileData;
 
     /**
      * Creates a manager for images in the tile puzzle game
@@ -74,6 +75,7 @@ public class ImageManager {
         return c;
     }
 
+
     public boolean checkMethod(View v, Integer num){
         if (v instanceof ImageView && ((ImageView)v).getBackground() instanceof ImageTile) {
             return (((ImageTile) ((ImageView) v).getBackground()).getImageNumber() == num);
@@ -107,6 +109,19 @@ public class ImageManager {
                 imageCount++;
             }
         }
+    }
+
+    public int[] getTileData() {
+        int[] tileData = new int[images.size()];
+        int imageCount = 0;
+        for (int x=0; x<manager.getX(); x++) {
+            for (int y = 0; y < manager.getY(); y++) {
+                ImageTile tile = (ImageTile) manager.getView(x,y).getBackground();
+                tileData[imageCount] = tile.getImageNumber();
+                imageCount++;
+            }
+        }
+        return tileData;
     }
 
     ///////////////////////////////
@@ -158,6 +173,14 @@ public class ImageManager {
     }
 
     public void loadDataFrom(int[] tileData) {
+        this.tileData = tileData;
+        int imgId = 0;
+        for (int x=0; x<manager.getX(); x++) {
+            for (int y = 0; y < manager.getY(); y++) {
+                manager.getView(x,y).setBackground(images.get(tileData[imgId]));
+                imgId++;
+            }
+        }
     }
 
     public void restore(String stored){

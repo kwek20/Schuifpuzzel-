@@ -62,6 +62,8 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
 
         LinearLayout group = (LinearLayout) findViewById(R.id.gameImage);
         grid = new ImageGridManager(dif.getX(), dif.getY(), BORDER, group);
+        setGridEnabled(false);
+
 
         ImageView iv = new ImageView(this);
         iv.setImageBitmap(roomCrud.getImage(room));
@@ -79,6 +81,9 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
     @Override
     protected void gameStarted(){
         if (user.getUserName().equals(room.getUser1()) && room.isUser1Active()){
+            //shuffle that shit
+            super.gameStarted();
+
             //we start, send OUR tile data
             sendRoomTiles();
 
@@ -89,21 +94,6 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
         }
     }
 
-    public void endTurn(View v){
-        //we ended the turn
-        endTurn();
-    }
-
-    private void loadNewROomTiles(){
-        //new tiles in room variable
-    }
-
-    private void sendRoomTiles() {
-        //set tiles in room variable
-        //send room to firebase
-        //opponent will receive a OPPONENT_END_TURN notification
-    }
-
     @Override
     protected void onCountdownFinished() {
         if (host){
@@ -111,6 +101,25 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
         } else {
             //wait for tile send data!
         }
+    }
+
+    public void endTurn(View v){
+        //we ended the turn by button press
+        endTurn();
+    }
+
+    private void loadNewRoomTiles(){
+        //new tiles in room variable
+        manager.loadDataFrom(room.getTileData());
+    }
+
+    private void sendRoomTiles() {
+        //set tiles in room variable
+        room.setTileData(manager.getTileData());
+
+        //send room to firebase
+        roomCrud.sendRoomUpdate(room);
+        //opponent will receive a OPPONENT_END_TURN or a WAIT_FOR_TILE_DATA notification
     }
 
     @Override
@@ -149,6 +158,10 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
 
     private void waitForStart() {
         roomCrud.queryForRoomUser1Active(room, !room.isUser1Active(), DataReceived.OPPONENT_END_TURN, this);
+    }
+
+    private void waitForDrawing() {
+        roomCrud.queryForRoomUser1Active(room, !room.isUser1Active(), DataReceived.DRAW, this);
     }
 
     private void waitForTileData(){
@@ -196,13 +209,16 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
         } else if (ID == DataReceived.OPPONENT_END_TURN){
             room = (Room) o;
             startTurn();
-        } else if (ID == DataReceived.OPPONENT_QUERIED.WAIT_FOR_TILE_DATA){
-            manager.loadDataFrom(((Room)o).getTileData());
+        } else if (ID == DataReceived.WAIT_FOR_TILE_DATA){
+            room = (Room) o;
+            loadNewRoomTiles();
         }
     }
+
     public void getRoomData(Room r){
 
     }
+
     @Override
     public void onDataCancelled(DataReceived ID) {
 

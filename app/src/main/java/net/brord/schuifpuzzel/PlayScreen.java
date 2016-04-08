@@ -189,7 +189,13 @@ public class PlayScreen extends ActionBarActivity{
     }
 
     protected void gameStarted() {
-        //we dont care, maybe others do
+        manager.shuffle();
+        grid.getView(dif.getX() - 1, dif.getY() - 1).setVisibility(View.INVISIBLE);
+        clickListener.setActive(true);
+
+        if (dif.getX() % 2 == 0) {
+            manager.swap(manager.getView(dif.getX() - 1, dif.getY() - 2), manager.getView(dif.getX() - 1, dif.getY() - 3));
+        }
     }
 
     private void startCountdown() {
@@ -226,15 +232,8 @@ public class PlayScreen extends ActionBarActivity{
     }
 
     protected void onCountdownFinished(){
-        manager.shuffle();
-        grid.getView(dif.getX() - 1, dif.getY() - 1).setVisibility(View.INVISIBLE);
         clickListener.setActive(true);
         t.cancel(); //cancel last toast
-
-
-        if (dif.getX() % 2 == 0) {
-            manager.swap(manager.getView(dif.getX() - 1, dif.getY() - 2), manager.getView(dif.getX() - 1, dif.getY() - 3));
-        }
 
         gameStarted();
     }
