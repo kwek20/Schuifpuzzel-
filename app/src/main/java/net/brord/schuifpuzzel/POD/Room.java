@@ -11,14 +11,14 @@ import java.util.Map;
 public class Room implements Serializable {
 
      String roomId, image;
-     boolean ready = false;
+     Boolean ready = false;
      String user1, user2;
 
      Difficulty difficulty;
 
-     boolean isUser1Active;
+     Boolean user1Active;
 
-    int[] tileData = new int[difficulty.getX()*difficulty.getY()];
+    int[] tileData;
 
     public Room(String user1, String roomId, String image, Difficulty difficulty) {
         this.roomId = roomId;
@@ -26,7 +26,8 @@ public class Room implements Serializable {
         this.user2 = "";
         this.image = image;
         this.difficulty = difficulty;
-        this.isUser1Active = true;
+        tileData = new int[difficulty.getX()*difficulty.getY()];
+        this.user1Active = new Boolean(true);
     }
 
     public  Room(){
@@ -58,12 +59,12 @@ public class Room implements Serializable {
         return user2;
     }
 
-    public boolean isUser1Active() {
-        return isUser1Active;
+    public Boolean getUser1Active() {
+        return user1Active;
     }
 
-    public void setIsUser1Active(boolean isUser1Active) {
-        this.isUser1Active = isUser1Active;
+    public void setUser1Active(Boolean user1Active) {
+        this.user1Active = user1Active;
     }
 
     public int[] getTileData() {

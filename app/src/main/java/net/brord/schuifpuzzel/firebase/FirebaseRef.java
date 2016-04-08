@@ -12,7 +12,7 @@ public class FirebaseRef {
 
     public static Firebase getFirebaseRef(){
         if (firebase == null){
-            firebase = new Firebase("https://npuzzle.firebaseio.com");
+            firebase = new Firebase("https://npuzzle2.firebaseio.com/");
         }
         return firebase;
     }

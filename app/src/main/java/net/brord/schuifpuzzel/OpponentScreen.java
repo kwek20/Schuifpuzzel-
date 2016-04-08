@@ -196,7 +196,6 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
     }
 
     private void joinRoom(Room r){
-        showAlert(R.string.success, getString(R.string.opponentavailable));
         roomCrud.setOpponentinRoom(user.getUserName(),r.getRoomId());
         startGame(r, false);
     }

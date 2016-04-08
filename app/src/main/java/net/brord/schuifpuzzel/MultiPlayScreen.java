@@ -80,7 +80,7 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
 
     @Override
     protected void gameStarted(){
-        if (user.getUserName().equals(room.getUser1()) && room.isUser1Active()){
+        if (room.getUser1Active() && user.getUserName().equals(room.getUser1())){
             //shuffle that shit
             super.gameStarted();
 
@@ -89,8 +89,13 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
 
             startTurn();
         } else {
-            //they start
-            endTurn();
+            //load drawing canvas
+            loadCanvas();
+
+            //wait for opponent end turn
+            waitForStart();
+
+            setUserLabelName(room.getUser1() == user.getUserName() ? room.getUser2() : room.getUser1());
         }
     }
 
@@ -141,7 +146,7 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
         setGridEnabled(false);
 
         //change active user
-        room.setIsUser1Active(!room.isUser1Active());
+        room.setUser1Active(!room.getUser1Active());
 
         //set user label to opponent name
         setUserLabelName(room.getUser1() == user.getUserName() ? room.getUser2() : room.getUser1());
@@ -157,11 +162,11 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
     }
 
     private void waitForStart() {
-        roomCrud.queryForRoomUser1Active(room, !room.isUser1Active(), DataReceived.OPPONENT_END_TURN, this);
+        roomCrud.queryForRoomUser1Active(room, !room.getUser1Active(), DataReceived.OPPONENT_END_TURN, this);
     }
 
     private void waitForDrawing() {
-        roomCrud.queryForRoomUser1Active(room, !room.isUser1Active(), DataReceived.DRAW, this);
+        roomCrud.queryForRoomUser1Active(room, !room.getUser1Active(), DataReceived.DRAW, this);
     }
 
     private void waitForTileData(){
@@ -170,7 +175,7 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
 
     private void setUserLabelName(String s) {
         TextView group = (TextView) findViewById(R.id.currentPlayer);
-        group.setText(s);
+        group.setText(getString(R.string.currentPlayer) + s);
     }
 
     private void setGridEnabled(boolean b) {

@@ -137,7 +137,7 @@ public class FirebaseRoomCRUD extends FirebaseCRUD<Room> {
                 if (dataSnapshot.hasChild(room.getRoomId())) {
                     Room roomFound = dataSnapshot.child(room.getRoomId()).getValue(Room.class);
                     if (room.getRoomId().equals(roomFound.getRoomId())) {
-                        if (roomFound.isUser1Active() == b) {
+                        if (roomFound.getUser1Active() == b) {
                             listener.onDataReceived(roomFound, id);
                         }
                     }
