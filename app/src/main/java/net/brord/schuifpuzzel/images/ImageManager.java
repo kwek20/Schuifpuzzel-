@@ -140,7 +140,7 @@ public class ImageManager {
     public int getY() { return manager.getY();}
 
     public ImageView getView(int x, int y) {
-        return manager.getView(x,y); }
+        return manager.getView(x, y); }
 
     public String store() {
         String data = "";
@@ -155,6 +155,9 @@ public class ImageManager {
         }
 
         return data;
+    }
+
+    public void loadDataFrom(int[] tileData) {
     }
 
     public void restore(String stored){

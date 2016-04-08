@@ -149,7 +149,7 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
         } else if (ID == DataReceived.WAIT_FOR_OPPONENT && o != null){
             //we found an opponent for OUR game
             doneLoading();
-            startGame((Room)o);
+            startGame((Room)o, true);
         }
     }
 
@@ -187,17 +187,18 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
         }
     }
 
-    private void startGame(Room room) {
+    private void startGame(Room room, boolean isHost) {
         Intent i = new Intent(this, MultiPlayScreen.class);
         i.putExtra("user", user);
         i.putExtra("room", room);
+        i.putExtra("isHost", isHost);
         startActivity(i);
     }
 
     private void joinRoom(Room r){
         showAlert(R.string.success, getString(R.string.opponentavailable));
         roomCrud.setOpponentinRoom(user.getUserName(),r.getRoomId());
-        startGame(r);
+        startGame(r, false);
     }
 
     private void makeRoom(Difficulty difficulty, String image) {

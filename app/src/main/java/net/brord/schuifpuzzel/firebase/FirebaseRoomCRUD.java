@@ -13,6 +13,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import net.brord.schuifpuzzel.MultiPlayScreen;
 import net.brord.schuifpuzzel.OpponentScreen;
 import net.brord.schuifpuzzel.POD.Room;
 import net.brord.schuifpuzzel.POD.User;
@@ -121,6 +122,52 @@ public class FirebaseRoomCRUD extends FirebaseCRUD<Room> {
                     Room roomFound = dataSnapshot.child(r.getRoomId()).getValue(Room.class);
                     if (r.getRoomId().equals(roomFound.getRoomId())) {
                         if (!roomFound.getUser2().equals("")) {
+                            listener.onDataReceived(roomFound, id);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                listener.onDataCancelled(id);
+            }
+        });
+    }
+
+    public void queryForRoomUser1Active(final Room room, final boolean b, final DataReceived id, final FirebaseListener listener) {
+        rooms.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+//                Log.d("FirebaseCrud", "received data is:" + dataSnapshot.getValue());
+
+                if (dataSnapshot.hasChild(room.getRoomId())) {
+                    Room roomFound = dataSnapshot.child(room.getRoomId()).getValue(Room.class);
+                    if (room.getRoomId().equals(roomFound.getRoomId())) {
+                        if (roomFound.isUser1Active() == b) {
+                            listener.onDataReceived(roomFound, id);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                listener.onDataCancelled(id);
+            }
+        });
+    }
+
+    public void queryFoTileData(final Room room, final DataReceived id, final FirebaseListener listener) {
+        rooms.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+//                Log.d("FirebaseCrud", "received data is:" + dataSnapshot.getValue());
+
+                if (dataSnapshot.hasChild(room.getRoomId())) {
+                    Room roomFound = dataSnapshot.child(room.getRoomId()).getValue(Room.class);
+                    if (room.getRoomId().equals(roomFound.getRoomId())) {
+                        if (roomFound.getTileData() != room.getTileData()) {
                             listener.onDataReceived(roomFound, id);
                         }
                     }

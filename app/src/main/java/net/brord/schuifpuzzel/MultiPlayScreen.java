@@ -6,8 +6,10 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import net.brord.schuifpuzzel.POD.Room;
 import net.brord.schuifpuzzel.POD.User;
@@ -33,12 +35,18 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
     private Canvas canvas;
 
     private FirebaseRoomCRUD roomCrud;
+    private boolean host;
 
     protected void onCreate(Bundle savedInstanceState) {
         room = (Room) getIntent().getSerializableExtra("room");
         user = (User) getIntent().getSerializableExtra("user");
-
+        host = (boolean) getIntent().getSerializableExtra("isHost");
         roomCrud = new FirebaseRoomCRUD(this);
+
+        if (!host){
+            //wait for tile send data
+            waitForTileData();
+        }
 
         super.onCreate(savedInstanceState);
 
@@ -69,6 +77,43 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
     }
 
     @Override
+    protected void gameStarted(){
+        if (user.getUserName().equals(room.getUser1()) && room.isUser1Active()){
+            //we start, send OUR tile data
+            sendRoomTiles();
+
+            startTurn();
+        } else {
+            //they start
+            endTurn();
+        }
+    }
+
+    public void endTurn(View v){
+        //we ended the turn
+        endTurn();
+    }
+
+    private void loadNewROomTiles(){
+        //new tiles in room variable
+    }
+
+    private void sendRoomTiles() {
+        //set tiles in room variable
+        //send room to firebase
+        //opponent will receive a OPPONENT_END_TURN notification
+    }
+
+    @Override
+    protected void onCountdownFinished() {
+        if (host){
+            super.onCountdownFinished();
+        } else {
+            //wait for tile send data!
+        }
+    }
+
+    @Override
     protected ImageView loadImage() {
         ImageView iv = new ImageView(this);
         iv.setImageBitmap(roomCrud.getImage(room));
@@ -77,14 +122,47 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
 
     public void startTurn(){
         unloadCanvas();
-
+        setGridEnabled(true);
+        setUserLabelName(user.getUserName());
         //we can make moves now
     }
 
     public void endTurn(){
-        //disable movement
+        //disable our grid for movement
+        setGridEnabled(false);
 
+        //change active user
+        room.setIsUser1Active(!room.isUser1Active());
+
+        //set user label to opponent name
+        setUserLabelName(room.getUser1() == user.getUserName() ? room.getUser2() : room.getUser1());
+
+        //send update data and notify user that our turn has ended
+        sendRoomTiles();
+
+        //load drawing canvas
         loadCanvas();
+
+        //wait for opponent end turn
+        waitForStart();
+    }
+
+    private void waitForStart() {
+        roomCrud.queryForRoomUser1Active(room, !room.isUser1Active(), DataReceived.OPPONENT_END_TURN, this);
+    }
+
+    private void waitForTileData(){
+        roomCrud.queryFoTileData(room, DataReceived.WAIT_FOR_TILE_DATA, this);
+    }
+
+    private void setUserLabelName(String s) {
+        TextView group = (TextView) findViewById(R.id.currentPlayer);
+        group.setText(s);
+    }
+
+    private void setGridEnabled(boolean b) {
+        LinearLayout group = (LinearLayout) findViewById(R.id.gameImage);
+        group.setEnabled(b);
     }
 
     private void cleanCanvas(){
@@ -115,6 +193,11 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
         if (ID == DataReceived.DRAW){
             //drawing! WOOOOO
             drawOnCanvas();
+        } else if (ID == DataReceived.OPPONENT_END_TURN){
+            room = (Room) o;
+            startTurn();
+        } else if (ID == DataReceived.OPPONENT_QUERIED.WAIT_FOR_TILE_DATA){
+            manager.loadDataFrom(((Room)o).getTileData());
         }
     }
     public void getRoomData(Room r){

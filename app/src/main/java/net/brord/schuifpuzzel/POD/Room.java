@@ -18,6 +18,8 @@ public class Room implements Serializable {
 
      boolean isUser1Active;
 
+    int[] tileData = new int[difficulty.getX()*difficulty.getY()];
+
     public Room(String user1, String roomId, String image, Difficulty difficulty) {
         this.roomId = roomId;
         this.user1 = user1;
@@ -54,6 +56,22 @@ public class Room implements Serializable {
 
     public String getUser2() {
         return user2;
+    }
+
+    public boolean isUser1Active() {
+        return isUser1Active;
+    }
+
+    public void setIsUser1Active(boolean isUser1Active) {
+        this.isUser1Active = isUser1Active;
+    }
+
+    public int[] getTileData() {
+        return tileData;
+    }
+
+    public void setTileData(int[] tileData) {
+        this.tileData = tileData;
     }
 }
 

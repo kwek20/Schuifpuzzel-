@@ -10,7 +10,9 @@ public enum DataReceived {
     WAIT_FOR_OPPONENT(5),
     DRAW (4),
     ROOM_CREATED(6),
-    OPPONENT_QUERIED_LOCATION(7);
+    OPPONENT_QUERIED_LOCATION(7),
+    OPPONENT_END_TURN(8),
+    WAIT_FOR_TILE_DATA(9);
 
     private int id;
 

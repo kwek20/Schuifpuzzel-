@@ -105,10 +105,6 @@ public class PlayScreen extends ActionBarActivity{
         return getImage(getIntent().getStringExtra("image"));
     }
 
-    public void endTurn(View v){
-
-    }
-
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         Log.d("MAD", "onSaveInstanceState");
@@ -192,31 +188,27 @@ public class PlayScreen extends ActionBarActivity{
         startActivity(i);
     }
 
+    protected void gameStarted() {
+        //we dont care, maybe others do
+    }
+
     private void startCountdown() {
         toast(dif.getDuration() / 1000);
         new CountDownTimer(dif.getDuration(), 100) { //interval 100 ticks
 
-            long newInterval = dif.getDuration()-1000; //startinterval is duration - 1 sec
+            long newInterval = dif.getDuration() - 1000; //startinterval is duration - 1 sec
 
             @Override
             public void onTick(long millisUntilFinished) {
                 if (millisUntilFinished < newInterval) { //were after our  target
-                    toast(Math.ceil(millisUntilFinished/1000.0));
-                    newInterval-=1000; //decrease and start again
+                    toast(Math.ceil(millisUntilFinished / 1000.0));
+                    newInterval -= 1000; //decrease and start again
                 }
             }
 
             @Override
             public void onFinish() {
-                manager.shuffle();
-                grid.getView(dif.getX() - 1, dif.getY() - 1).setVisibility(View.INVISIBLE);
-                clickListener.setActive(true);
-                t.cancel(); //cancel last toast
-
-
-                if (dif.getX() % 2 == 0) {
-                    manager.swap(manager.getView(dif.getX() - 1, dif.getY() - 2), manager.getView(dif.getX() - 1, dif.getY() - 3));
-                }
+                onCountdownFinished();
                 //win();
             }
         }.start();
@@ -231,6 +223,20 @@ public class PlayScreen extends ActionBarActivity{
 
         t = Toast.makeText(PlayScreen.this, text, Toast.LENGTH_LONG);
         t.show();
+    }
+
+    protected void onCountdownFinished(){
+        manager.shuffle();
+        grid.getView(dif.getX() - 1, dif.getY() - 1).setVisibility(View.INVISIBLE);
+        clickListener.setActive(true);
+        t.cancel(); //cancel last toast
+
+
+        if (dif.getX() % 2 == 0) {
+            manager.swap(manager.getView(dif.getX() - 1, dif.getY() - 2), manager.getView(dif.getX() - 1, dif.getY() - 3));
+        }
+
+        gameStarted();
     }
 
     private ImageView getImage(String name) {
