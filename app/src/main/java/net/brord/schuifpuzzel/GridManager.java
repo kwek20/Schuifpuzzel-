@@ -5,6 +5,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.firebase.client.FirebaseError;
+import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.GeoQueryEventListener;
+
 /**
  * Created by Brord on 4/2/2015.
  */
@@ -71,4 +75,42 @@ public abstract class GridManager<T extends View> {
     public abstract T newView(Context c);
 
     public abstract ViewGroup getLayout(Context c);
+
+    /**
+     * Created by Brord on 4/7/2016.
+     */
+    public static class GeoListener implements GeoQueryEventListener {
+
+        private final OpponentScreen opponentScreen;
+
+        public GeoListener(OpponentScreen opponentScreen) {
+            this.opponentScreen = opponentScreen;
+        }
+
+        @Override
+        public void onKeyEntered(String key, GeoLocation location) {
+            Log.d("MAD", "key: " + key);
+            opponentScreen.locationOpponentFound(key);
+        }
+
+        @Override
+        public void onKeyExited(String key) {
+
+        }
+
+        @Override
+        public void onKeyMoved(String key, GeoLocation location) {
+
+        }
+
+        @Override
+        public void onGeoQueryReady() {
+
+        }
+
+        @Override
+        public void onGeoQueryError(FirebaseError error) {
+
+        }
+    }
 }

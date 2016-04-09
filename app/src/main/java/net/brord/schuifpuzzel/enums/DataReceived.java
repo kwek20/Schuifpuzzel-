@@ -13,7 +13,8 @@ public enum DataReceived {
     OPPONENT_QUERIED_LOCATION(7),
     OPPONENT_END_TURN(8),
     WAIT_FOR_TILE_DATA(9),
-    USER_LEFT(10);
+    USER_LEFT(10),
+    USER_HAS_ROOM(11);
 
     private int id;
 

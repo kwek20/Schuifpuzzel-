@@ -94,4 +94,29 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User> {
         user.setRoomStatus(started);
         users.child(user.getUserName()).setValue(user);
     }
+
+    public void queryUserHasOpenRoom(final String userName, final DataReceived ID, final FirebaseListener listener) {
+        users.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("MAD", "queryUserHasOpenRoom.onDataChange: ");
+                if (!dataSnapshot.hasChild(userName)){
+                    //abort?
+                    Log.d("MAD", "queryUserHasOpenRoom.onDataChange abort");
+                } else {
+                    User user = dataSnapshot.child(userName).getValue(User.class);
+                    Log.d("MAD", "queryUserHasOpenRoom.onDataChange user found");
+                    if (user.getRoomStatus() == Status.SEARCHING) {
+                        Log.d("MAD", "queryUserHasOpenRoom.onDataChange user room open!");
+                        listener.onDataReceived(user, ID);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
 }

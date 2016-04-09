@@ -31,7 +31,6 @@ import net.brord.schuifpuzzel.firebase.FirebaseListener;
 import net.brord.schuifpuzzel.firebase.FirebaseRef;
 import net.brord.schuifpuzzel.firebase.FirebaseRoomCRUD;
 import net.brord.schuifpuzzel.firebase.FirebaseUsersCRUD;
-import net.brord.schuifpuzzel.interfaces.GeoListener;
 
 import java.lang.reflect.Field;
 
@@ -129,12 +128,18 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
      * Button click handler
      * @param v
      */
+    GeoQuery geoQuery;
     public void findOpponentLoc(View v){
         Location loc = locationManager.getLocation();
-        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(loc.getLatitude(), loc.getLongitude()), 0.6);
-        geoQuery.addGeoQueryEventListener(new GeoListener(this));
+        geoQuery = geoFire.queryAtLocation(new GeoLocation(loc.getLatitude(), loc.getLongitude()), 0.6);
+        geoQuery.addGeoQueryEventListener(new GridManager.GeoListener(this));
 
         waitForNotification(R.string.searchByLoc);
+    }
+
+    public void locationOpponentFound(String userName) {
+        Log.d("MAD", "locationOpponentFound: " + userName);
+        crud.queryUserHasOpenRoom(userName, DataReceived.USER_HAS_ROOM, this);
     }
 
     /**
@@ -150,15 +155,26 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
     @Override
     public void onDataReceived(Object o, DataReceived ID) {
         if (ID == DataReceived.OPPONENT_QUERIED && o != null) {
+            Log.d("MAD", "onDataReceived.OPPONENT_QUERIED received");
             //opponent exists, we join THEIR game
 
             handleOpponentFound((User) o);
         } else if (ID == DataReceived.OPPONENT_QUERIED_LOCATION && o != null){
-            crud.queryUserData((String) o, DataReceived.OPPONENT_QUERIED, this);
+            Log.d("MAD", "onDataReceived.OPPONENT_QUERIED_LOCATION received");
+            if (!((String)o).equals(user.getUserName())){
+                //we did not find ourself, thats nice!
+                Log.d("MAD", "Found location opponent: " + o);
+                crud.queryUserData((String) o, DataReceived.OPPONENT_QUERIED, this);
+            }
         } else if (ID == DataReceived.WAIT_FOR_OPPONENT && o != null){
+            Log.d("MAD", "onDataReceived.WAIT_FOR_OPPONENT received");
             //we found an opponent for OUR game
             doneLoading();
             startGame((Room)o, true);
+        } else if (ID == DataReceived.USER_HAS_ROOM && o != null){
+            Log.d("MAD", "onDataReceived.USER_HAS_ROOM received");
+            geoQuery.removeAllListeners();
+            onDataReceived(((User) o).getUserName(), DataReceived.OPPONENT_QUERIED_LOCATION);
         }
     }
 
