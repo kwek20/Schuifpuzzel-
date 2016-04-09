@@ -176,7 +176,33 @@ public class FirebaseRoomCRUD extends FirebaseCRUD<Room> {
         });
     }
 
+    public void queryForUserLeave(final Room room, final DataReceived id, final FirebaseListener listener) {
+        rooms.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild(room.getRoomId())) {
+                    Room roomFound = dataSnapshot.child(room.getRoomId()).getValue(Room.class);
+                    if (room.getRoomId().equals(roomFound.getRoomId())) {
+                        if (roomFound.getUser2().equals("")) {
+                            rooms.removeEventListener(this);
+                            listener.onDataReceived(roomFound, id);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                listener.onDataCancelled(id);
+            }
+        });
+    }
+
     public void sendRoomUpdate(Room room) {
         rooms.child(room.getRoomId()).setValue(room);
+    }
+
+    public void leaveRoom(Room room, User user) {
+        rooms.child(room.getRoomId()).child("user2").setValue("");
     }
 }

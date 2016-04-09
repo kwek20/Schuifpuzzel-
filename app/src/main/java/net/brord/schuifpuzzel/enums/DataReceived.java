@@ -12,7 +12,8 @@ public enum DataReceived {
     ROOM_CREATED(6),
     OPPONENT_QUERIED_LOCATION(7),
     OPPONENT_END_TURN(8),
-    WAIT_FOR_TILE_DATA(9);
+    WAIT_FOR_TILE_DATA(9),
+    USER_LEFT(10);
 
     private int id;
 

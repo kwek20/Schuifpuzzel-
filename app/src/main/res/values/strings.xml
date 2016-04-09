@@ -44,5 +44,6 @@
     <string name="opponent_joined_room">Opponent has joined the room</string>
 
     <string name="cancelledOpponentSearch">Cancelled search</string>
+    <string name="user_left">Opponent left... Stopping</string>
 
 </resources>

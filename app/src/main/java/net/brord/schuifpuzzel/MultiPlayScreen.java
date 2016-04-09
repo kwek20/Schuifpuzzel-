@@ -1,5 +1,6 @@
 package net.brord.schuifpuzzel;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import net.brord.schuifpuzzel.POD.Room;
 import net.brord.schuifpuzzel.POD.User;
 import net.brord.schuifpuzzel.enums.DataReceived;
+import net.brord.schuifpuzzel.enums.Difficulty;
 import net.brord.schuifpuzzel.firebase.FirebaseListener;
 import net.brord.schuifpuzzel.firebase.FirebaseRoomCRUD;
 import net.brord.schuifpuzzel.images.ImageGridManager;
@@ -89,6 +91,23 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
     }
 
     @Override
+    protected void quitGame() {
+        //notify opponent
+        roomCrud.leaveRoom(room, user);
+
+        super.quitGame();
+    }
+
+    @Override
+    protected void restart(Difficulty d){
+        Intent i = new Intent();
+        i.setClass(this, this.getClass());
+        i.putExtra("user", user);
+        i.putExtra("room", room);
+        startActivity(i);
+    }
+
+    @Override
     protected void gameStarted(){
         if (room.getUser1Active() && user.getUserName().equals(room.getUser1())){
             //shuffle that shit
@@ -107,7 +126,10 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
 
             setUserLabelName(room.getUser1().equals(user.getUserName()) ? room.getUser2() : room.getUser1());
         }
+
         started = true;
+        //listen for user leave :(
+        roomCrud.queryForUserLeave(room, DataReceived.USER_LEFT, this);
     }
 
     @Override
@@ -238,6 +260,9 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
             if (!started){ //first time we receive images, so also fire up our magic <3
                 gameStarted();
             }
+        } else if (ID == DataReceived.USER_LEFT){
+            toast(getString(R.string.user_left));
+            quitGame();
         }
     }
 

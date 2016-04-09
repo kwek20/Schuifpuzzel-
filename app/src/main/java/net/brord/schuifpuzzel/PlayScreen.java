@@ -165,15 +165,19 @@ public class PlayScreen extends ActionBarActivity{
                 dialog.show();
                 return true;
             case R.id.quit:
-                Intent i = new Intent(this, StartScreen.class);
-                startActivity(i);
+                quitGame();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void restart(Difficulty dif) {
+    protected void quitGame() {
+        Intent i = new Intent(this, StartScreen.class);
+        startActivity(i);
+    }
+
+    protected void restart(Difficulty dif) {
         Intent i = new Intent();
         i.setClass(this, this.getClass());
         i.putExtra("difficulty", dif);
@@ -228,7 +232,7 @@ public class PlayScreen extends ActionBarActivity{
     private void toast(double seconds){
         toast("Starting in " + (int) seconds);
     }
-    private void toast(String text){
+    protected void toast(String text){
         if (t != null) t.cancel();
 
         t = Toast.makeText(PlayScreen.this, text, Toast.LENGTH_LONG);
