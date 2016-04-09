@@ -103,7 +103,7 @@ public class DrawView extends View {
                 invalidate();
                 break;
             case MotionEvent.ACTION_UP:
-                touch_up();
+                touch_up(true);
                 invalidate();
                 break;
         }
@@ -134,7 +134,7 @@ public class DrawView extends View {
         }
     }
 
-    private void touch_up() {
+    private void touch_up(boolean update) {
         mPath.lineTo(mX, mY);
         circlePath.reset();
         // commit the path to our offscreen
@@ -143,8 +143,8 @@ public class DrawView extends View {
         mPath.reset();
 
         storedData.add(new DrawData(0, 0, false, true));
-        listener.sendDrawUpdate(storedData);
-        //TODO send drawing data update!
+
+        if (update)listener.sendDrawUpdate(storedData);
     }
 
     public void loadFromData(java.util.List<DrawData> data){
@@ -152,7 +152,7 @@ public class DrawView extends View {
             if (d.getStarted()){
                 touch_start(d.getX(), d.getY());
             } else if (d.getEnded()){
-                touch_up();
+                touch_up(false);
             } else {
                 touch_move(d.getX(), d.getY());
             }
