@@ -21,6 +21,7 @@
     <string name="timeLeft">Tijd: </string>
 
     <string name="leave">Quit game</string>
+    <string name="clearScreen">Clear screen</string>
     <string name="firebase">https://npuzzle.firebaseio.com</string>
     <string name="singleplayer">Singleplayer</string>
     <string name="multiplayer">Multiplayer</string>

@@ -9,14 +9,18 @@ import android.graphics.Path;
 import android.view.MotionEvent;
 import android.view.View;
 
+import net.brord.schuifpuzzel.POD.DrawData;
+
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Created by Brord on 4/9/2016.
  * Source: http://stackoverflow.com/questions/16650419/draw-in-canvas-by-finger-android
  *
  */
 public class DrawView extends View {
-    public int width;
-    public  int height;
+    private boolean disabled = true;
 
     private Bitmap mBitmap;
     private Canvas  mCanvas;
@@ -30,9 +34,16 @@ public class DrawView extends View {
 
     private Path circlePath;
 
-    public DrawView(Context c) {
+    private java.util.List<DrawData> storedData;
+    private DrawListener listener;
+
+    public DrawView(Context c, DrawListener listener) {
         super(c);
         context=c;
+
+        this.listener = listener;
+        storedData = new LinkedList<>();
+
         mPath = new Path();
         mBitmapPaint = new Paint(Paint.DITHER_FLAG);
         circlePath = new Path();
@@ -74,6 +85,30 @@ public class DrawView extends View {
     private float mX, mY;
     private static final float TOUCH_TOLERANCE = 4;
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (disabled) return false;
+
+        float x = event.getX();
+        float y = event.getY();
+
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                touch_start(x, y);
+                invalidate();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                touch_move(x, y);
+                invalidate();
+                break;
+            case MotionEvent.ACTION_UP:
+                touch_up();
+                invalidate();
+                break;
+        }
+        return true;
+    }
+
     private void touch_start(float x, float y) {
         mPath.reset();
         mPath.moveTo(x, y);
@@ -98,30 +133,48 @@ public class DrawView extends View {
         mPath.lineTo(mX, mY);
         circlePath.reset();
         // commit the path to our offscreen
-        mCanvas.drawPath(mPath,  mPaint);
+        mCanvas.drawPath(mPath, mPaint);
         // kill this so we don't double draw
         mPath.reset();
+
+        //TODO send drawing data update!
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        float x = event.getX();
-        float y = event.getY();
-
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                touch_start(x, y);
-                invalidate();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                touch_move(x, y);
-                invalidate();
-                break;
-            case MotionEvent.ACTION_UP:
+    public void loadFromData(java.util.List<DrawData> data){
+        for (DrawData d : data){
+            if (d.getStarted()){
+                touch_start(d.getX(), d.getY());
+            } else if (d.getEnded()){
                 touch_up();
-                invalidate();
-                break;
+            } else {
+                touch_move(d.getX(), d.getY());
+            }
         }
-        return true;
+    }
+
+    public void clearDrawing()
+    {
+        storedData.clear();
+        setDrawingCacheEnabled(false);
+        // don't forget that one and the match below,
+        // or you just keep getting a duplicate when you save.
+
+        onSizeChanged(getWidth(), getHeight(), getWidth(), getHeight());
+        invalidate();
+
+        setDrawingCacheEnabled(true);
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+        setEnabled(!disabled);
+    }
+
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    public List<DrawData> getStoredData() {
+        return storedData;
     }
 }

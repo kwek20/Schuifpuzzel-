@@ -6,15 +6,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import net.brord.schuifpuzzel.POD.DrawData;
 import net.brord.schuifpuzzel.POD.Room;
 import net.brord.schuifpuzzel.POD.User;
 import net.brord.schuifpuzzel.enums.DataReceived;
@@ -26,17 +24,15 @@ import net.brord.schuifpuzzel.images.ImageGridManager;
 import net.brord.schuifpuzzel.images.ImageManager;
 import net.brord.schuifpuzzel.images.MultiPlayerImageClickListener;
 
+import java.util.List;
+
 /**
  * Created by Brord on 4/1/2016.
  */
-public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
+public class MultiPlayScreen extends PlayScreen implements FirebaseListener, DrawListener {
 
     private Room room;
     private User user;
-
-    private int myId;
-
-    private Canvas canvas;
 
     private FirebaseRoomCRUD roomCrud;
 
@@ -57,11 +53,6 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
         }
 
         super.onCreate(savedInstanceState);
-
-        Bitmap bg = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
-        canvas = new Canvas(bg);
-        Paint clearPaint = new Paint();
-        canvas.drawRect(50, 50, 200, 200, clearPaint);
 }
 
     @Override
@@ -95,7 +86,9 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
         //disable grid stuff after setup!
         setGridEnabled(false);
 
-        drawingView = new DrawView(this);
+        drawingView = new DrawView(this, this);
+        LinearLayout l = (LinearLayout) findViewById(R.id.gameImage);
+        addContentView(drawingView, l.getLayoutParams());
     }
 
     @Override
@@ -228,7 +221,7 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
     }
 
     private void waitForDrawing() {
-        roomCrud.queryForRoomUser1Active(room, !room.getUser1Active(), DataReceived.DRAW, this);
+        roomCrud.queryForDrawData(room, DataReceived.DRAW, this);
     }
 
     private void waitForTileData(){
@@ -237,7 +230,7 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
 
     private void setUserLabelName(String s) {
         TextView group = (TextView) findViewById(R.id.currentPlayer);
-        group.setText(getString(R.string.currentPlayer) + "" + s);
+        group.setText(getString(R.string.currentPlayer) + " " + s);
     }
 
     private void setGridEnabled(boolean b) {
@@ -248,38 +241,40 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
     }
 
     private void cleanCanvas(){
-        Paint clearPaint = new Paint();
-        clearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-        clearPaint.setARGB(20, 20, 0, 0);
-        canvas.drawRect(0, 0, 100, 100, clearPaint);
+        drawingView.clearDrawing();
     }
 
     private void drawOnCanvas(){
-        if (canvas == null) return;
+        drawingView.clearDrawing();
+        drawingView.loadFromData(room.getDrawData());
+    }
 
-        //draw stuff?
-        Paint red = new Paint();
-        red.setARGB(20, 20, 0, 0);
-        canvas.drawCircle(20, 20, 10, red);
+    public void clearScreen(View v){
+        //clear screen button
+        cleanCanvas();
     }
 
     private void loadCanvas(){
-        LinearLayout l = (LinearLayout) findViewById(R.id.gameImage);
-
-        addContentView(drawingView, l.getLayoutParams());
-        drawingView.bringToFront();
-
+        drawingView.setDisabled(false);
         cleanCanvas();
     }
 
     private void unloadCanvas(){
+        drawingView.setDisabled(true);
         cleanCanvas();
+    }
+
+    @Override
+    public void sendDrawUpdate(List<DrawData> data) {
+        room.setDrawData(drawingView.getStoredData());
+        roomCrud.sendRoomUpdate(room);
     }
 
     @Override
     public void onDataReceived(Object o, DataReceived ID) {
         if (ID == DataReceived.DRAW){
             //drawing! WOOOOO
+            room = (Room) o;
             drawOnCanvas();
         } else if (ID == DataReceived.OPPONENT_END_TURN){
             room = (Room) o;

@@ -3,6 +3,7 @@ package net.brord.schuifpuzzel.POD;
 import net.brord.schuifpuzzel.enums.Difficulty;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,6 +20,7 @@ public class Room implements Serializable {
      Boolean user1Active;
 
     int[] tileData;
+    java.util.List<DrawData> drawData;
 
     public Room(String user1, String roomId, String image, Difficulty difficulty) {
         this.roomId = roomId;
@@ -27,6 +29,7 @@ public class Room implements Serializable {
         this.image = image;
         this.difficulty = difficulty;
         tileData = new int[difficulty.getX()*difficulty.getY()];
+        drawData = new java.util.LinkedList<DrawData>();
         this.user1Active = new Boolean(true);
     }
 
@@ -77,6 +80,14 @@ public class Room implements Serializable {
 
     public void setDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty;
+    }
+
+    public List<DrawData> getDrawData() {
+        return drawData;
+    }
+
+    public void setDrawData(List<DrawData> drawData) {
+        this.drawData = drawData;
     }
 }
 
