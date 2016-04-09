@@ -35,7 +35,7 @@ public class DrawView extends View {
 
     private Path circlePath;
 
-    private java.util.List<DrawData> storedData;
+    private LinkedList<DrawData> storedData;
     private DrawListener listener;
 
     public DrawView(Context c, DrawListener listener) {
@@ -115,6 +115,8 @@ public class DrawView extends View {
         mPath.moveTo(x, y);
         mX = x;
         mY = y;
+
+        storedData.add(new DrawData(x, y, true, false));
     }
 
     private void touch_move(float x, float y) {
@@ -127,6 +129,8 @@ public class DrawView extends View {
 
             circlePath.reset();
             circlePath.addCircle(mX, mY, 30, Path.Direction.CW);
+
+            storedData.add(new DrawData(x, y, false, false));
         }
     }
 
@@ -138,6 +142,8 @@ public class DrawView extends View {
         // kill this so we don't double draw
         mPath.reset();
 
+        storedData.add(new DrawData(0, 0, false, true));
+        listener.sendDrawUpdate(storedData);
         //TODO send drawing data update!
     }
 
@@ -175,7 +181,7 @@ public class DrawView extends View {
         return disabled;
     }
 
-    public List<DrawData> getStoredData() {
+    public LinkedList<DrawData> getStoredData() {
         return storedData;
     }
 }

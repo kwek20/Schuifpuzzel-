@@ -271,7 +271,7 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener, Dra
     }
 
     @Override
-    public void sendDrawUpdate(List<DrawData> data) {
+    public void sendDrawUpdate(java.util.LinkedList<DrawData> data) {
         room.setDrawData(drawingView.getStoredData());
         roomCrud.sendRoomUpdate(room);
     }
