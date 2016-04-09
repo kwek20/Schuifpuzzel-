@@ -8,6 +8,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -39,6 +40,8 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
 
     private boolean host;
     private boolean started = false;
+
+    private DrawView drawingView;
 
     protected void onCreate(Bundle savedInstanceState) {
         room = (Room) getIntent().getSerializableExtra("room");
@@ -89,6 +92,8 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
 
         //disable grid stuff after setup!
         setGridEnabled(false);
+
+        drawingView = new DrawView(this);
     }
 
     @Override
@@ -110,6 +115,8 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
     protected void restart(Difficulty d){
         Intent i = new Intent();
         i.setClass(this, this.getClass());
+
+        room.setDifficulty(d);
         i.putExtra("user", user);
         i.putExtra("room", room);
         i.putExtra("isHost", host);
@@ -246,6 +253,9 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
     }
 
     private void loadCanvas(){
+        addContentView(drawingView, new ViewGroup.LayoutParams(100, 100));
+        drawingView.bringToFront();
+
         cleanCanvas();
     }
 

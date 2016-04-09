@@ -74,5 +74,9 @@ public class Room implements Serializable {
     public void setTileData(int[] tileData) {
         this.tileData = tileData;
     }
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
+    }
 }
 
