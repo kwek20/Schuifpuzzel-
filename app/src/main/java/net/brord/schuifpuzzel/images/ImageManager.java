@@ -112,7 +112,7 @@ public class ImageManager {
     }
 
     public int[] getTileData() {
-        int[] tileData = new int[images.size()];
+        int[] tileData = new int[images.size()+2];
         int imageCount = 0;
         for (int x=0; x<manager.getX(); x++) {
             for (int y = 0; y < manager.getY(); y++) {
@@ -121,6 +121,17 @@ public class ImageManager {
                 imageCount++;
             }
         }
+
+        int x=0, y=0;
+        outerloop:
+        for (x=0; x<manager.getX(); x++) {
+            for (y = 0; y < manager.getY(); y++) {
+                if (manager.getView(x,y).getVisibility() == View.INVISIBLE) break outerloop;
+            }
+        }
+
+        tileData[imageCount] = x;
+        tileData[imageCount+1] = y;
         return tileData;
     }
 
@@ -181,6 +192,9 @@ public class ImageManager {
                 imgId++;
             }
         }
+
+        int x = tileData[imgId], y = tileData[imgId+1];
+        manager.getView(x, y).setVisibility(View.INVISIBLE);
     }
 
     public void restore(String stored){

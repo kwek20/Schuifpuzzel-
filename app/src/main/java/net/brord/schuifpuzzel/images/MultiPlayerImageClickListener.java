@@ -6,7 +6,7 @@ import android.widget.ImageView;
 /**
  * Created by Brord on 3/30/2015.
  */
-public class ImageClickListener implements View.OnClickListener {
+public class MultiPlayerImageClickListener implements View.OnClickListener {
 
     private ImageManager manager;
     private ImageView oldClicked;
@@ -14,7 +14,7 @@ public class ImageClickListener implements View.OnClickListener {
     private boolean active = false;
     private int moves = 0;
 
-    public ImageClickListener(ImageManager manager) {
+    public MultiPlayerImageClickListener(ImageManager manager) {
         this.manager = manager;
     }
 
