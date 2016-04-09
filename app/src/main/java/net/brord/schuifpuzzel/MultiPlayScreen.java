@@ -112,6 +112,7 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
         i.setClass(this, this.getClass());
         i.putExtra("user", user);
         i.putExtra("room", room);
+        i.putExtra("isHost", host);
         startActivity(i);
     }
 
