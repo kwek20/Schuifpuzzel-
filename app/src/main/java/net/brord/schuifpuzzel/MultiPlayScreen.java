@@ -251,8 +251,17 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener, Dra
     }
 
     private void drawOnCanvas(){
-        drawingView.clearDrawing();
-        drawingView.loadFromData(room.getDrawData());
+
+        if (room.getUser1Active() && room.getUser1().equals(user.getUserName())){
+
+            drawingView.clearDrawing();
+            drawingView.loadFromData(room.getDrawData());
+        } else {
+            //were active, block receiving anything but clear
+            if (room.getDrawData().isEmpty()){
+                drawingView.clearDrawing();
+            }
+        }
     }
 
     public void clearScreen(View v){
