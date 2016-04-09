@@ -29,7 +29,7 @@ public class Room implements Serializable {
         this.image = image;
         this.difficulty = difficulty;
         tileData = new int[difficulty.getX()*difficulty.getY()];
-        drawData = new java.util.LinkedList<DrawData>();
+        drawData = new java.util.LinkedList<>();
         this.user1Active = new Boolean(true);
     }
 

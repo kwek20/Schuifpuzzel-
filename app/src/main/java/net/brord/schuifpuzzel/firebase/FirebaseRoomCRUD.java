@@ -205,7 +205,7 @@ public class FirebaseRoomCRUD extends FirebaseCRUD<Room> {
                 if (dataSnapshot.hasChild(room.getRoomId())) {
                     Room roomFound = dataSnapshot.child(room.getRoomId()).getValue(Room.class);
                     if (room.getRoomId().equals(roomFound.getRoomId())) {
-                        if (!roomFound.getDrawData().equals(room.getDrawData())) {
+                        if (roomFound.getDrawData() != null && !roomFound.getDrawData().equals(room.getDrawData())) {
                             rooms.removeEventListener(this);
                             listener.onDataReceived(roomFound, id);
                         }
