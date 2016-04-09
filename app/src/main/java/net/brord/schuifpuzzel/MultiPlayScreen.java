@@ -1,5 +1,7 @@
 package net.brord.schuifpuzzel;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -99,16 +101,25 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
     @Override
     protected void quitGame() {
         if (room.getUser2().equals("")){
-            toast(getString(R.string.user_left));
-            roomCrud.delete(room);
+            new AlertDialog.Builder(MultiPlayScreen.this)
+                    .setTitle(getString(R.string.user_left))
+                    .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            roomCrud.delete(room);
+
+                            Intent i = new Intent(MultiPlayScreen.this, OpponentScreen.class);
+                            i.putExtra("user", user);
+                            startActivity(i);
+                        }
+                    }).show();
+        } else {
+            roomCrud.leaveRoom(room, user);
+            new FirebaseUsersCRUD(this).userLeaveRoom(user);
+
+            Intent i = new Intent(this, OpponentScreen.class);
+            i.putExtra("user", user);
+            startActivity(i);
         }
-
-        roomCrud.leaveRoom(room, user);
-        new FirebaseUsersCRUD(this).userLeaveRoom(user);
-
-        Intent i = new Intent(this, OpponentScreen.class);
-        i.putExtra("user", user);
-        startActivity(i);
     }
 
     @Override
@@ -253,7 +264,9 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
     }
 
     private void loadCanvas(){
-        addContentView(drawingView, new ViewGroup.LayoutParams(100, 100));
+        LinearLayout l = (LinearLayout) findViewById(R.id.gameImage);
+
+        addContentView(drawingView, l.getLayoutParams());
         drawingView.bringToFront();
 
         cleanCanvas();
