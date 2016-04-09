@@ -205,4 +205,8 @@ public class FirebaseRoomCRUD extends FirebaseCRUD<Room> {
     public void leaveRoom(Room room, User user) {
         rooms.child(room.getRoomId()).child("user2").setValue("");
     }
+
+    public void delete(Room room) {
+        rooms.child(room.getRoomId()).setValue(null);
+    }
 }

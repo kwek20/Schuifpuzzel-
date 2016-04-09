@@ -92,8 +92,12 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
 
     @Override
     protected void quitGame() {
-        //notify opponent
-        roomCrud.leaveRoom(room, user);
+        if (room.getUser2().equals("")){
+            roomCrud.delete(room);
+        } else {
+            //notify opponent
+            roomCrud.leaveRoom(room, user);
+        }
 
         super.quitGame();
     }
