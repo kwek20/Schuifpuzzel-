@@ -16,9 +16,9 @@ import net.brord.schuifpuzzel.POD.User;
 import net.brord.schuifpuzzel.enums.DataReceived;
 import net.brord.schuifpuzzel.firebase.FirebaseListener;
 import net.brord.schuifpuzzel.firebase.FirebaseRoomCRUD;
-import net.brord.schuifpuzzel.images.ImageClickListener;
 import net.brord.schuifpuzzel.images.ImageGridManager;
 import net.brord.schuifpuzzel.images.ImageManager;
+import net.brord.schuifpuzzel.images.MultiPlayerImageClickListener;
 
 /**
  * Created by Brord on 4/1/2016.
@@ -81,7 +81,7 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
                 });
 
         //the listener for each image
-        grid.setClickListener(clickListener = new ImageClickListener(manager));
+        grid.setClickListener(clickListener = new MultiPlayerImageClickListener(manager));
         grid.setup(this);
 
         //disable grid stuff after setup!
@@ -227,6 +227,7 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
             drawOnCanvas();
         } else if (ID == DataReceived.OPPONENT_END_TURN){
             room = (Room) o;
+            loadNewRoomTiles();
             startTurn();
         } else if (ID == DataReceived.WAIT_FOR_TILE_DATA){
             room = (Room) o;

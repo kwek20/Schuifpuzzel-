@@ -8,11 +8,11 @@ import android.widget.ImageView;
  */
 public class ImageClickListener implements View.OnClickListener {
 
-    private ImageManager manager;
-    private ImageView oldClicked;
+    protected ImageManager manager;
+    protected ImageView oldClicked;
 
-    private boolean active = false;
-    private int moves = 0;
+    protected boolean active = false;
+    protected int moves = 0;
 
     public ImageClickListener(ImageManager manager) {
         this.manager = manager;
@@ -36,11 +36,11 @@ public class ImageClickListener implements View.OnClickListener {
         manager.swap(manager.getEmpty(), img);
     }
 
-    private boolean adjecentTo(View first, ImageView view) {
+    protected boolean adjecentTo(View first, ImageView view) {
         int firstNumer = ((ImageTile)first.getBackground()).getImageNumber();
         int viewNumer = ((ImageTile)view.getBackground()).getImageNumber();
         for (int x=0; x<manager.getX(); x++){
-            for (int y=0; x<manager.getY(); y++){
+            for (int y=0; y<manager.getY(); y++){
                 if (getTileNumber(manager.getView(x,y)) != viewNumer) continue;
 
                 if (x > 0){if (getTileNumber(manager.getView(x-1,y)) == firstNumer) return true;}
@@ -52,7 +52,7 @@ public class ImageClickListener implements View.OnClickListener {
         return false;
     }
 
-    private int getTileNumber(View v){
+    protected int getTileNumber(View v){
         if (!(v instanceof ImageView)) return -1;
         return ((ImageTile)(v.getBackground())).getImageNumber();
     }
