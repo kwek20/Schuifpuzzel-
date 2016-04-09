@@ -47,5 +47,6 @@
 
     <string name="cancelledOpponentSearch">Cancelled search</string>
     <string name="user_left">Opponent left... Stopping</string>
+    <string name="not_your_turn">Its not your turn!</string>
 
 </resources>

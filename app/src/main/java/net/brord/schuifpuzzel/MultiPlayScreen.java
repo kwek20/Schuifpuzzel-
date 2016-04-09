@@ -115,9 +115,13 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener, Dra
 
     @Override
     protected void restart(Difficulty d){
+        if (room.getUser1Active() && !room.getUser1().equals(user.getUserName())) {
+            toast(getString(R.string.not_your_turn));
+            return;
+        }
+
         Intent i = new Intent();
         i.setClass(this, this.getClass());
-
         room.setDifficulty(d);
         i.putExtra("user", user);
         i.putExtra("room", room);
@@ -146,6 +150,10 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener, Dra
         }
 
         started = true;
+
+        //always listen for drawdata since anyoen can clear it
+        waitForDrawing();
+
         //listen for user leave :(
         roomCrud.queryForUserLeave(room, DataReceived.USER_LEFT, this);
     }
