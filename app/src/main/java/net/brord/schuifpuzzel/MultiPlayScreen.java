@@ -18,6 +18,7 @@ import net.brord.schuifpuzzel.enums.DataReceived;
 import net.brord.schuifpuzzel.enums.Difficulty;
 import net.brord.schuifpuzzel.firebase.FirebaseListener;
 import net.brord.schuifpuzzel.firebase.FirebaseRoomCRUD;
+import net.brord.schuifpuzzel.firebase.FirebaseUsersCRUD;
 import net.brord.schuifpuzzel.images.ImageGridManager;
 import net.brord.schuifpuzzel.images.ImageManager;
 import net.brord.schuifpuzzel.images.MultiPlayerImageClickListener;
@@ -95,10 +96,10 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
         if (room.getUser2().equals("")){
             toast(getString(R.string.user_left));
             roomCrud.delete(room);
-        } else {
-            //notify opponent
-            roomCrud.leaveRoom(room, user);
         }
+
+        roomCrud.leaveRoom(room, user);
+        new FirebaseUsersCRUD(this).userLeaveRoom(user);
 
         Intent i = new Intent(this, OpponentScreen.class);
         i.putExtra("user", user);

@@ -39,14 +39,8 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User> {
         });
     }
 
-    public String getAllUserData() {
-        return userInfo;
-    }
     public void setUserInFirebase(User user){
         users.child(user.getUserName()).setValue(user);
-    }
-    public void setUsersInFirebase(Map<String,User> users){
-        this.users.setValue(users);
     }
     public void queryUserData(final String userName, final DataReceived ID, final FirebaseListener listener) {
         users.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -76,10 +70,7 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User> {
         users.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-//                Log.d("FirebaseCrud", "received data is:" + dataSnapshot.getValue());
-                Log.d("MAD", "Added user is: " + u.getUserName());
                 listener.onDataReceived(dataSnapshot.hasChild(u.getUserName()), ID);
-                //Slistener.onDataReceived(dataSnapshot.child("").getValue(), ID);
             }
 
             @Override
@@ -91,5 +82,16 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User> {
 
     public void deleteUser(User user) {
         users.child(user.getUserName()).setValue(null);
+    }
+
+    public void userLeaveRoom(User user) {
+        user.setRoomID("");
+        user.setRoomStatus(Status.NO_ROOM);
+        users.child(user.getUserName()).setValue(user);
+    }
+
+    public void changeUserStatus(User user, Status started) {
+        user.setRoomStatus(started);
+        users.child(user.getUserName()).setValue(user);
     }
 }
