@@ -1,9 +1,11 @@
 package net.brord.schuifpuzzel.POD;
 
+import java.io.Serializable;
+
 /**
  * Created by Brord on 4/9/2016.
  */
-public class DrawData {
+public class DrawData implements Serializable {
     private float x, y;
     private Boolean started, ended;
 
