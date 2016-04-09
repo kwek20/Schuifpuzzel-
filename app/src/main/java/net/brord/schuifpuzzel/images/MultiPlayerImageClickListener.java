@@ -45,4 +45,8 @@ public class MultiPlayerImageClickListener extends ImageClickListener implements
             moves--;
         }
     }
+
+    public void newRound(){
+        oldClicked = null;
+    }
 }

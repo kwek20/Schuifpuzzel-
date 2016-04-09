@@ -153,6 +153,8 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
     }
 
     public void endTurn(){
+        ((MultiPlayerImageClickListener)clickListener).newRound();
+
         //disable our grid for movement
         setGridEnabled(false);
 
@@ -239,13 +241,8 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
         }
     }
 
-    public void getRoomData(Room r){
-
-    }
-
     @Override
     public void onDataCancelled(DataReceived ID) {
 
     }
-
 }

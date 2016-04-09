@@ -190,14 +190,10 @@ public class ImageManager {
             for (int y = 0; y < manager.getY(); y++) {
                 ImageView v = manager.getView(x, y);
                 v.setBackground(images.get(tileData[imgId]));
+                v.setVisibility(View.VISIBLE);
                 imgId++;
             }
         }
-
-        //set old invisible visible
-        getEmpty().setVisibility(View.VISIBLE);
-
-        //and make the new one shoo away!
         int x = tileData[imgId], y = tileData[imgId+1];
         manager.getView(x, y).setVisibility(View.INVISIBLE);
     }
