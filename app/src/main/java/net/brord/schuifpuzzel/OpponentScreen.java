@@ -91,6 +91,14 @@ public class OpponentScreen extends ActionBarActivity implements FirebaseListene
         searchLocButton.setEnabled(enabled);
     }
 
+    public void leaveGame(View v){
+        //whoa we left :(
+        crud.deleteUser(user);
+
+        Intent i = new Intent(this, StartScreen.class);
+        startActivity(i);
+    }
+
     /**
      * Find opponent by username<br/>
      * Button click handler

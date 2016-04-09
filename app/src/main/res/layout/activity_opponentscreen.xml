@@ -45,5 +45,19 @@
             android:layout_gravity="center_horizontal"
             android:onClick="findOpponentLoc" />
 
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="@color/dim_foreground_disabled_material_light" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/leave"
+            android:id="@+id/leaveButton"
+            android:enabled="true"
+            android:layout_gravity="center_horizontal"
+            android:onClick="leaveGame" />
+
     </LinearLayout>
 </RelativeLayout>

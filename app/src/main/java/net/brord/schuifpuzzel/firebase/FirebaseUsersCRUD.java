@@ -53,7 +53,7 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User> {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = null;
-                if (dataSnapshot.hasChild(userName)){
+                if (dataSnapshot.hasChild(userName)) {
                     user = dataSnapshot.child(userName).getValue(User.class);
                 }
                 listener.onDataReceived(user, ID);
@@ -87,5 +87,9 @@ public class FirebaseUsersCRUD extends FirebaseCRUD<User> {
                 listener.onDataCancelled(ID);
             }
         });
+    }
+
+    public void deleteUser(User user) {
+        users.child(user.getUserName()).setValue(null);
     }
 }

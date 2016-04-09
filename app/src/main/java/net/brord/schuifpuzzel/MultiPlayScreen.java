@@ -93,13 +93,16 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
     @Override
     protected void quitGame() {
         if (room.getUser2().equals("")){
+            toast(getString(R.string.user_left));
             roomCrud.delete(room);
         } else {
             //notify opponent
             roomCrud.leaveRoom(room, user);
         }
 
-        super.quitGame();
+        Intent i = new Intent(this, OpponentScreen.class);
+        i.putExtra("user", user);
+        startActivity(i);
     }
 
     @Override
@@ -265,7 +268,6 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener {
                 gameStarted();
             }
         } else if (ID == DataReceived.USER_LEFT){
-            toast(getString(R.string.user_left));
             quitGame();
         }
     }
