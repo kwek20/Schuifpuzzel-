@@ -3,9 +3,6 @@ package net.brord.schuifpuzzel;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,6 +20,7 @@ import net.brord.schuifpuzzel.firebase.FirebaseUsersCRUD;
 import net.brord.schuifpuzzel.images.ImageGridManager;
 import net.brord.schuifpuzzel.images.ImageManager;
 import net.brord.schuifpuzzel.images.MultiPlayerImageClickListener;
+import net.brord.schuifpuzzel.interfaces.DrawListener;
 
 import java.util.List;
 

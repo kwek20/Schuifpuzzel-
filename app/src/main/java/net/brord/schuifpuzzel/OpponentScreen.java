@@ -31,6 +31,7 @@ import net.brord.schuifpuzzel.firebase.FirebaseListener;
 import net.brord.schuifpuzzel.firebase.FirebaseRef;
 import net.brord.schuifpuzzel.firebase.FirebaseRoomCRUD;
 import net.brord.schuifpuzzel.firebase.FirebaseUsersCRUD;
+import net.brord.schuifpuzzel.interfaces.GeoListener;
 
 import java.lang.reflect.Field;
 
