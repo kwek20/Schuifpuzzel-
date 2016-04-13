@@ -148,6 +148,7 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener, Dra
             waitForStart();
 
             setUserLabelName(room.getUser1().equals(user.getUserName()) ? room.getUser2() : room.getUser1());
+            startTurnOverTimer(false);
         }
 
         started = true;
@@ -198,7 +199,7 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener, Dra
         startTurnOverTimer(true);
     }
 
-    private static final int countdownTime = 1000*60*90; //90 seconds
+    private static final int countdownTime = 1000*90; //90 seconds
     private static final int delay = 1000; //1 second
     private boolean notificate = true; //1 second
     private CountDownTimer countDownTimer = new CountDownTimer(countdownTime, delay){
@@ -215,6 +216,10 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener, Dra
         }
     };
 
+    /**
+     * Start the countdown on the time left label
+     * @param notificate true if you wish to end when we reach 0
+     */
     private void startTurnOverTimer(boolean notificate) {
         this.notificate = notificate;
         countDownTimer.start();
