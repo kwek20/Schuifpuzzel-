@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -193,6 +194,30 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener, Dra
         setGridEnabled(true);
         setUserLabelName(user.getUserName());
         //we can make moves now
+
+        startTurnOverTimer(true);
+    }
+
+    private static final int countdownTime = 1000*60*90; //90 seconds
+    private static final int delay = 1000; //1 second
+    private boolean notificate = true; //1 second
+    private CountDownTimer countDownTimer = new CountDownTimer(countdownTime, delay){
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+            TextView group = (TextView) findViewById(R.id.timeLeft);
+            group.setText(getString(R.string.timeLeft) + " " + Long.toString(millisUntilFinished/1000) + " seconds");
+        }
+
+        @Override
+        public void onFinish() {
+            if (notificate)endTurn();
+        }
+    };
+
+    private void startTurnOverTimer(boolean notificate) {
+        this.notificate = notificate;
+        countDownTimer.start();
     }
 
     public void endTurn(View v){
@@ -205,6 +230,7 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener, Dra
 
         //disable our grid for movement
         setGridEnabled(false);
+        countDownTimer.cancel();
 
         //change active user
         room.setUser1Active(!room.getUser1Active());
@@ -220,6 +246,7 @@ public class MultiPlayScreen extends PlayScreen implements FirebaseListener, Dra
 
         //wait for opponent end turn
         waitForStart();
+        startTurnOverTimer(false);
     }
 
     private void waitForStart() {
